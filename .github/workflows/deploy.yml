@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Test SSH port
+        run: |
+          echo "Testing SSH connectivity..."
+          nc -vz ${{ secrets.HOSTINGER_HOST }} ${{ secrets.HOSTINGER_PORT }}
+
       - name: Deploy by SSH
         uses: easingthemes/ssh-deploy@v5.1.0
         with:

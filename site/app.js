@@ -6,6 +6,8 @@ const CHANNELS = {
   disney: { name: "Disney+", file: "disney-plus.png", url: "https://www.disneyplus.com/" },
 };
 
+const MATCH_END_MS = (2 * 60 + 10) * 60000;
+
 const ENGLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}";
 const SCOTLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}";
 
@@ -315,8 +317,8 @@ function buildFeaturedMatchBlock(match) {
 function buildMatchCard(match, nowUTC) {
   const card = createElement("article", { className: "match-card" });
   const diff = matchDatetimeBogota(match) - nowUTC;
-  const isLive = diff <= 0 && diff > -6300000;
-  const isDone = diff <= -6300000;
+  const isLive = diff <= 0 && diff > -MATCH_END_MS;
+  const isDone = diff <= -MATCH_END_MS;
 
   if (isDone) card.classList.add("is-done");
 
@@ -352,12 +354,21 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   if (!dayMatches.length) return null;
 
   let featuredIdx = -1;
-  let minDiff = Infinity;
+  let minLiveElapsed = Infinity;
+  let minUpcomingDiff = Infinity;
 
   dayMatches.forEach((match, index) => {
     const diff = matchDatetimeBogota(match) - nowUTC;
-    if (diff > 0 && diff < minDiff) {
-      minDiff = diff;
+    const isLive = diff <= 0 && diff > -MATCH_END_MS;
+
+    if (isLive && Math.abs(diff) < minLiveElapsed) {
+      minLiveElapsed = Math.abs(diff);
+      featuredIdx = index;
+      return;
+    }
+
+    if (featuredIdx === -1 && diff > 0 && diff < minUpcomingDiff) {
+      minUpcomingDiff = diff;
       featuredIdx = index;
     }
   });
@@ -368,10 +379,10 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   const featuredTime = matchDatetimeBogota(featuredMatch);
   const diffMs = featuredTime - nowUTC;
   const countdown = formatCountdown(diffMs);
-  const isLive = diffMs <= 0 && diffMs > -6300000;
-  const isDone = diffMs <= -6300000;
+  const isLive = diffMs <= 0 && diffMs > -MATCH_END_MS;
+  const isDone = diffMs <= -MATCH_END_MS;
   const hasUpcomingMatches = dayMatches.some((match) => matchDatetimeBogota(match) - nowUTC > 0);
-  const allMatchesDone = dayMatches.every((match) => matchDatetimeBogota(match) - nowUTC <= -6300000);
+  const allMatchesDone = dayMatches.every((match) => matchDatetimeBogota(match) - nowUTC <= -MATCH_END_MS);
   const featuredGroup = dayMatches.filter((match) => match.time === featuredMatch.time);
   const featuredIndices = new Set(dayMatches.map((match, index) => (match.time === featuredMatch.time ? index : -1)).filter((index) => index >= 0));
   const isSimultaneous = featuredGroup.length > 1;
@@ -474,8 +485,8 @@ function buildFinishedSection(finishedMatches, nowUTC) {
 function render({ animate = true, scrollActiveDay = true } = {}) {
   const nowUTC = new Date();
   const dayMatches = MATCHES.filter((match) => match.date === currentDateStr);
-  const activeMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC > -6300000);
-  const finishedMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC <= -6300000);
+  const activeMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC > -MATCH_END_MS);
+  const finishedMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC <= -MATCH_END_MS);
   const [y, mo, d] = currentDateStr.split("-").map(Number);
   const currentDate = new Date(y, mo - 1, d);
 

@@ -296,7 +296,6 @@ function buildFeaturedMatchBlock(match) {
     buildInfoItem("📍", match.city),
     createElement("div", { className: "fc-info-item", text: `Grupo ${match.grupo} · Jornada ${match.jornada}` })
   );
-
   info.append(left);
 
   if (match.channels.length) {
@@ -460,9 +459,23 @@ function buildRestSection(restMatches, nowUTC) {
   return section;
 }
 
+function buildFinishedSection(finishedMatches, nowUTC) {
+  if (!finishedMatches.length) return null;
+
+  const section = createElement("section", { attrs: { "aria-labelledby": "finishedHeading" } });
+  section.append(createElement("h2", { className: "section-label", text: "Finalizados", attrs: { id: "finishedHeading" } }));
+
+  const list = createElement("div", { className: "matches-list" });
+  finishedMatches.forEach((match) => list.append(buildMatchCard(match, nowUTC)));
+  section.append(list);
+  return section;
+}
+
 function render({ animate = true, scrollActiveDay = true } = {}) {
   const nowUTC = new Date();
   const dayMatches = MATCHES.filter((match) => match.date === currentDateStr);
+  const activeMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC > -6300000);
+  const finishedMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC <= -6300000);
   const [y, mo, d] = currentDateStr.split("-").map(Number);
   const currentDate = new Date(y, mo - 1, d);
 
@@ -488,12 +501,19 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
     );
     content.append(empty);
   } else {
-    const featured = buildFeaturedSection(dayMatches, nowUTC);
-    if (featured) {
-      content.append(featured.node);
-      const restMatches = dayMatches.filter((_, index) => !featured.featuredIndices.has(index));
-      const restSection = buildRestSection(restMatches, nowUTC);
-      if (restSection) content.append(restSection);
+    if (activeMatches.length > 0) {
+      const featured = buildFeaturedSection(activeMatches, nowUTC);
+      if (featured) {
+        content.append(featured.node);
+        const restMatches = activeMatches.filter((_, index) => !featured.featuredIndices.has(index));
+        const restSection = buildRestSection(restMatches, nowUTC);
+        if (restSection) content.append(restSection);
+      }
+    }
+
+    const finishedSection = buildFinishedSection(finishedMatches, nowUTC);
+    if (finishedSection) {
+      content.append(finishedSection);
     }
   }
 
@@ -502,7 +522,7 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
 
 function updateClock() {
   const now = getBogotaDate();
-  elements.clockTime.textContent = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  elements.clockTime.textContent = formatTime12(`${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`);
 }
 
 function goToDate(date) {

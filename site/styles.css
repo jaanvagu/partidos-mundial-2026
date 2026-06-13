@@ -154,6 +154,7 @@ a:focus-visible {
 }
 
 .clock-time {
+  display: block;
   font-size: 20px;
   font-weight: 800;
   line-height: 1;
@@ -161,10 +162,13 @@ a:focus-visible {
 }
 
 .clock-label {
+  display: block;
+  margin-top: 4px;
   font-size: 10px;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 1px;
+  line-height: 1;
 }
 
 .hero {
@@ -177,6 +181,22 @@ a:focus-visible {
   margin-bottom: 10px;
   color: var(--muted2);
   font-weight: 700;
+}
+
+.deploy-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 14px;
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 212, 170, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 212, 170, 0.1);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 .hero-date {
@@ -813,6 +833,7 @@ a:focus-visible {
   .mc-name {
     font-size: 12px;
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

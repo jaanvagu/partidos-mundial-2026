@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de Partidos 2026 · Colombia</title>
+  <meta name="description" content="Guía visual de partidos del torneo internacional 2026. Horarios en hora Colombia, canales y plataformas.">
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y="52" font-size="52">⚽</text></svg>'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Saltar al contenido principal</a>
+
+  <header class="header" aria-label="Encabezado principal">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon" aria-hidden="true">⚽</div>
+        <div>
+          <p class="logo-text">Guía de Partidos</p>
+          <p class="logo-sub">Mundial 2026 · Colombia</p>
+        </div>
+      </div>
+      <div class="clock-area" aria-live="polite" aria-atomic="true">
+        <p class="clock-time" id="clockTime">--:--</p>
+        <p class="clock-label">Bogotá · COL</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="heroDate">
+    <p class="eyebrow">Calendario del torneo</p>
+    <h1 class="hero-date" id="heroDate">Cargando...</h1>
+    <p class="hero-count" id="heroCount" aria-live="polite"></p>
+  </section>
+
+  <nav class="day-nav" aria-label="Navegación por fechas">
+    <div class="day-nav-scroll" id="dayNav" role="tablist" aria-label="Días disponibles"></div>
+  </nav>
+
+  <section class="nav-buttons" aria-label="Controles de navegación">
+    <button class="btn-nav" id="btnPrev" type="button">
+      <span class="arrow" aria-hidden="true">←</span>
+      <span>Anterior</span>
+    </button>
+    <div class="scroll-pill">
+      <button class="today-btn" id="btnToday" type="button">Ir a hoy</button>
+    </div>
+    <button class="btn-nav" id="btnNext" type="button">
+      <span>Siguiente</span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </button>
+  </section>
+
+  <main class="main" id="mainContent" tabindex="-1" aria-live="polite"></main>
+
+  <footer class="footer">
+    <p>Guía no oficial de partidos · Horarios en hora Colombia (UTC-5)</p>
+    <p>Esta página no está afiliada con ningún organizador oficial del torneo.</p>
+    <p class="footer-site">culturarunner.com.co</p>
+  </footer>
+
+  <script src="app.js?v=2" defer></script>
+</body>
+</html>

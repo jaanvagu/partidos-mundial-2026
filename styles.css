@@ -1,0 +1,829 @@
+:root {
+  --bg: #0a0e1a;
+  --bg2: #111827;
+  --card: #141c2e;
+  --card2: #1e2a40;
+  --border: rgba(255, 255, 255, 0.07);
+  --accent: #00d4aa;
+  --accent2: #ff6b35;
+  --accent3: #ffd60a;
+  --blue: #3b82f6;
+  --text: #f0f4ff;
+  --muted: #7a8aaa;
+  --muted2: #a0b0cc;
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accent3);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 1000;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  backdrop-filter: blur(20px);
+}
+
+.header-inner,
+.day-nav,
+.nav-buttons,
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+  gap: 16px;
+}
+
+.logo-area,
+.fc-team,
+.fc-vs,
+.fc-info-item,
+.badge-row,
+.mc-team,
+.ch-badge,
+.section-label {
+  display: flex;
+  align-items: center;
+}
+
+.logo-area {
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--blue));
+  font-size: 18px;
+}
+
+.logo-text,
+.logo-sub,
+.clock-time,
+.clock-label,
+.eyebrow,
+.hero-date,
+.hero-count,
+.section-label,
+.footer p {
+  margin: 0;
+}
+
+.logo-text,
+.hero-date,
+.fc-team-name,
+.fc-time,
+.mc-time-badge {
+  font-family: "Oswald", sans-serif;
+}
+
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.logo-sub,
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.logo-sub {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.clock-area {
+  text-align: right;
+}
+
+.clock-time {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.clock-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero {
+  padding: 28px 20px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, #1e1b4b 0%, var(--bg) 100%);
+}
+
+.eyebrow {
+  margin-bottom: 10px;
+  color: var(--muted2);
+  font-weight: 700;
+}
+
+.hero-date {
+  font-size: clamp(24px, 5vw, 34px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero-count {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted2);
+}
+
+.hero-count strong {
+  color: var(--accent);
+}
+
+.day-nav {
+  padding: 16px 20px 8px;
+}
+
+.day-nav-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.day-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.day-chip {
+  flex-shrink: 0;
+  min-width: 86px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+  scroll-snap-align: start;
+  transition: all 0.2s ease;
+}
+
+.day-chip:hover,
+.day-chip[aria-selected="true"] {
+  border-color: var(--accent);
+  background: var(--card2);
+}
+
+.day-chip[aria-selected="true"] {
+  box-shadow: 0 0 16px rgba(0, 212, 170, 0.35);
+}
+
+.day-chip[aria-selected="true"] .dc-day,
+.day-chip[aria-selected="true"] .dc-num,
+.day-chip[aria-selected="true"] .dc-mes {
+  color: #fff;
+}
+
+.dc-day,
+.dc-mes {
+  text-transform: uppercase;
+  display: block;
+}
+
+.dc-day {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+  font-weight: 600;
+}
+
+.dc-num {
+  display: block;
+  margin: 2px 0 1px;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.dc-mes {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.dc-today {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0, 212, 170, 0.12);
+  color: var(--accent);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.day-chip[aria-selected="true"] .dc-today {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 20px 16px;
+}
+
+.btn-nav,
+.today-btn {
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.btn-nav:hover:not(:disabled),
+.today-btn:hover {
+  border-color: var(--accent);
+  background: var(--card2);
+  color: var(--accent);
+}
+
+.btn-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.scroll-pill {
+  display: flex;
+  justify-content: center;
+}
+
+.today-btn {
+  padding: 7px 20px;
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  background: rgba(0, 212, 170, 0.1);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+.main {
+  padding: 0 20px 60px;
+}
+
+.content-stack,
+.matches-list,
+.fc-info-left,
+.fc-channels,
+.mc-channels,
+.fc-badges,
+.mc-meta {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.content-stack,
+.matches-list {
+  flex-direction: column;
+}
+
+.content-stack {
+  gap: 32px;
+}
+
+.matches-list {
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.featured-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-label {
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.featured-card,
+.match-card,
+.empty-state,
+.no-featured {
+  border-radius: var(--radius);
+}
+
+.featured-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  background: linear-gradient(135deg, #1a2a4a 0%, #0d1929 60%, #1a1040 100%);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0, 212, 170, 0.1);
+}
+
+.featured-card::before,
+.featured-card::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.featured-card::before {
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.12) 0%, transparent 70%);
+}
+
+.featured-card::after {
+  bottom: -40px;
+  left: -40px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+}
+
+.fc-top,
+.fc-info,
+.mc-top,
+.mc-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fc-badges,
+.mc-meta,
+.fc-info-left,
+.fc-channels,
+.mc-channels {
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-next {
+  background: linear-gradient(135deg, var(--accent), #00b894);
+  color: #000;
+}
+
+.badge-live {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  animation: pulse-badge 1.5s infinite;
+}
+
+.badge-done,
+.badge-group {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--muted2);
+  border: 1px solid var(--border);
+}
+
+.badge-jornada {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.fc-countdown {
+  padding: 4px 12px;
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  border-radius: 999px;
+  background: rgba(0, 212, 170, 0.1);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.fc-block-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fc-block + .fc-block {
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.fc-teams {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.fc-team {
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.fc-flag {
+  font-size: 52px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.fc-team-name {
+  font-size: clamp(14px, 3.5vw, 20px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fc-vs {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-vs-text,
+.mc-vs,
+.fc-channels-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.mc-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  line-height: 1;
+}
+
+.fc-time {
+  font-size: clamp(22px, 5vw, 30px);
+  color: var(--accent3);
+}
+
+.fc-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+
+.fc-info-item {
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.fc-channels-label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+  align-self: center;
+  margin-right: 2px;
+}
+
+.simul-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.simul-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent2);
+}
+
+.simul-label::before {
+  content: "⚡";
+}
+
+.ch-badge {
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ch-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.ch-badge img {
+  display: block;
+  width: auto;
+  max-width: 60px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.ch-fallback {
+  display: none;
+  font-size: 11px;
+  font-weight: 800;
+  color: #111;
+  white-space: nowrap;
+}
+
+.match-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition: all 0.2s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 212, 170, 0.25);
+  background: var(--card2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.match-card.is-done {
+  opacity: 0.6;
+}
+
+.mc-time-badge {
+  font-size: 15px;
+  color: var(--accent3);
+}
+
+.mc-teams {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mc-team {
+  display: inline-flex;
+  gap: 8px;
+  min-height: 36px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.mc-team.left {
+  justify-self: end;
+  align-self: center;
+  flex-direction: row;
+}
+
+.mc-team.right {
+  justify-self: start;
+  align-self: center;
+}
+
+.mc-flag {
+  flex-shrink: 0;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.mc-name {
+  display: inline-flex;
+  align-items: center;
+  font-size: clamp(12px, 2.8vw, 15px);
+  line-height: 1.15;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.mc-bottom {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+
+.mc-venue {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.empty-state,
+.no-featured {
+  padding: 32px 20px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  background: var(--card);
+  color: var(--muted);
+}
+
+.empty-state .icon {
+  margin-bottom: 16px;
+  font-size: 48px;
+}
+
+.footer {
+  padding: 24px 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.footer-site {
+  margin-top: 8px;
+  color: #4a5568;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-badge {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-buttons {
+    flex-wrap: wrap;
+  }
+
+  .nav-buttons > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding-inline: 16px;
+  }
+
+  .main,
+  .day-nav,
+  .nav-buttons,
+  .hero {
+    padding-inline: 16px;
+  }
+
+  .featured-card {
+    padding: 18px;
+  }
+
+  .fc-flag {
+    font-size: 38px;
+  }
+
+  .fc-team-name {
+    font-size: 13px;
+  }
+
+  .fc-time {
+    font-size: 22px;
+  }
+
+  .mc-flag {
+    font-size: 22px;
+  }
+
+  .mc-name {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

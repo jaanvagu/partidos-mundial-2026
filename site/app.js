@@ -90,6 +90,12 @@ const APP_CONFIG = window.APP_CONFIG || {};
 const RESULTS_STORAGE_KEY = "wc2026-results-cache-v1";
 const RESULTS_MIN_REFRESH_MS = 40000;
 const KNOWN_RESULT_STATUSES = new Set(["SCHEDULED", "LIVE", "HALFTIME", "FINISHED", "UNKNOWN"]);
+const DEBUG_RESULTS = typeof window !== "undefined"
+  && (
+    window.location.search.includes("debugResults=1")
+    || window.localStorage?.getItem("debugResults") === "1"
+    || window.__DEBUG_RESULTS__ === true
+  );
 
 const state = {
   resultsByMatchNumber: new Map(),
@@ -334,6 +340,15 @@ function safeWriteCachedResults(payload) {
   }
 }
 
+function debugLog(label, payload) {
+  if (!DEBUG_RESULTS) return;
+  if (payload === undefined) {
+    console.log(`[results-debug] ${label}`);
+    return;
+  }
+  console.log(`[results-debug] ${label}`, payload);
+}
+
 function clearResultMaps() {
   state.resultsByMatchNumber.clear();
   state.resultsByPair.clear();
@@ -376,20 +391,36 @@ function ingestResultsPayload(payload) {
     state.resultsRefreshMs = RESULTS_MIN_REFRESH_MS;
   }
 
+  debugLog("Payload ingerido", {
+    totalResults: payload.results.length,
+    byMatchNumber: state.resultsByMatchNumber.size,
+    byPair: state.resultsByPair.size,
+    refreshMs: state.resultsRefreshMs,
+  });
+
   return true;
 }
 
 function resolveResultForMatch(match) {
   const byMatchNumber = state.resultsByMatchNumber.get(match.matchNumber);
   if (byMatchNumber && isResultCompatibleWithMatch(byMatchNumber, match)) {
+    debugLog(`Match #${match.matchNumber} resuelto por match_number`, {
+      match: `${match.home.name} vs ${match.away.name}`,
+      result: byMatchNumber,
+    });
     return byMatchNumber;
   }
 
   const byPair = state.resultsByPair.get(buildPairKey(match.homeCanonicalId, match.awayCanonicalId));
   if (byPair && isResultCompatibleWithMatch(byPair, match)) {
+    debugLog(`Match #${match.matchNumber} resuelto por alias`, {
+      match: `${match.home.name} vs ${match.away.name}`,
+      result: byPair,
+    });
     return byPair;
   }
 
+  debugLog(`Match #${match.matchNumber} sin resultado confiable`, `${match.home.name} vs ${match.away.name}`);
   return null;
 }
 
@@ -442,14 +473,14 @@ function getResultMinuteLabel(match, result, nowUTC) {
 function getMatchPresentation(match, nowUTC) {
   const fallback = getFallbackTemporalState(match, nowUTC);
   const result = resolveResultForMatch(match);
-  const hasScore = isNumericScore(result);
-
   let phase = result ? normalizeResultStatus(result.status) : "UNKNOWN";
   if (phase === "UNKNOWN") {
     if (fallback.isFinished) phase = "FINISHED";
     else if (fallback.isLive) phase = "LIVE";
     else phase = "SCHEDULED";
   }
+
+  const hasScore = isNumericScore(result) && phase !== "SCHEDULED";
 
   const minuteLabel = getResultMinuteLabel(match, result, nowUTC);
   const isLive = phase === "LIVE" || phase === "HALFTIME";
@@ -561,6 +592,9 @@ function buildMatchCard(match, nowUTC) {
   home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: match.home.name }));
 
   const center = createElement("div", { className: "mc-center" });
+  center.classList.add(presentation.hasScore ? "is-score" : "is-schedule");
+  if (presentation.isFinished) center.classList.add("is-final");
+  if (presentation.isLive) center.classList.add("is-live");
   center.append(
     createElement("div", { className: "mc-center-sub", text: presentation.centerSecondary }),
     createElement("div", { className: `mc-center-main${presentation.hasScore ? " mc-score" : ""}`, text: presentation.centerPrimary })
@@ -783,6 +817,20 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
   renderDayNav({ scrollActive: scrollActiveDay });
 
   const content = createElement("div", { className: `content-stack${animate ? " fade-in" : ""}` });
+  if (DEBUG_RESULTS) {
+    console.groupCollapsed(`[results-debug] Render ${currentDateStr}`);
+    dayMatches.forEach((match) => {
+      const presentation = getMatchPresentation(match, nowUTC);
+      console.log(`#${match.matchNumber}`, `${match.home.name} vs ${match.away.name}`, {
+        phase: presentation.phase,
+        hasScore: presentation.hasScore,
+        centerPrimary: presentation.centerPrimary,
+        centerSecondary: presentation.centerSecondary,
+        result: presentation.result,
+      });
+    });
+    console.groupEnd();
+  }
   if (!dayMatches.length) {
     const empty = createElement("section", { className: "empty-state" });
     empty.append(
@@ -864,24 +912,33 @@ function scheduleResultsRefresh(ms = state.resultsRefreshMs) {
 async function fetchResultsSilently() {
   const config = getAppConfig();
   if (!config.apiBaseUrl) {
+    debugLog("No hay API_BASE_URL configurado");
     scheduleResultsRefresh();
     return;
   }
 
   try {
+    debugLog("Fetch /api/results", { apiBaseUrl: config.apiBaseUrl });
     const response = await fetch(`${config.apiBaseUrl.replace(/\/$/, "")}/api/results`, { cache: "no-store" });
 
     if (!response.ok) {
+      debugLog("Fetch falló", { status: response.status, statusText: response.statusText });
       scheduleResultsRefresh();
       return;
     }
 
     const payload = await response.json();
+    debugLog("Fetch exitoso", {
+      status: response.status,
+      refresh_interval_seconds: payload?.meta?.refresh_interval_seconds,
+      totalResults: Array.isArray(payload?.results) ? payload.results.length : 0,
+    });
     if (ingestResultsPayload(payload)) {
       safeWriteCachedResults(payload);
       render({ animate: false, scrollActiveDay: false });
     }
   } catch {
+    debugLog("Excepción al consultar resultados");
     // Keep the last valid cached results silently.
   } finally {
     scheduleResultsRefresh();
@@ -891,7 +948,12 @@ async function fetchResultsSilently() {
 function hydrateResultsFromCache() {
   const cachedPayload = safeReadCachedResults();
   if (cachedPayload) {
+    debugLog("Resultados cargados desde localStorage", {
+      totalResults: Array.isArray(cachedPayload.results) ? cachedPayload.results.length : 0,
+    });
     ingestResultsPayload(cachedPayload);
+  } else {
+    debugLog("No había caché local de resultados");
   }
 }
 

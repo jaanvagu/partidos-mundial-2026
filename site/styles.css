@@ -559,9 +559,43 @@ a:focus-visible {
   line-height: 1;
 }
 
+.mc-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  gap: 4px;
+  text-align: center;
+}
+
+.mc-center-sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.mc-center-main {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(18px, 4vw, 24px);
+  line-height: 1;
+  color: var(--accent3);
+}
+
+.mc-score {
+  letter-spacing: 0.8px;
+}
+
 .fc-time {
   font-size: clamp(22px, 5vw, 30px);
   color: var(--accent3);
+}
+
+.fc-score {
+  letter-spacing: 1px;
 }
 
 .fc-info {
@@ -808,6 +842,10 @@ a:focus-visible {
 
   .fc-time {
     font-size: 22px;
+  }
+
+  .mc-center {
+    min-width: 72px;
   }
 
   .mc-flag {

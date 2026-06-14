@@ -86,6 +86,83 @@ const MATCHES = [
   { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Argelia", flag: "🇩🇿" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports"] },
 ];
 
+const APP_CONFIG = window.APP_CONFIG || {};
+const RESULTS_STORAGE_KEY = "wc2026-results-cache-v1";
+const RESULTS_MIN_REFRESH_MS = 40000;
+const KNOWN_RESULT_STATUSES = new Set(["SCHEDULED", "LIVE", "HALFTIME", "FINISHED", "UNKNOWN"]);
+
+const state = {
+  resultsByMatchNumber: new Map(),
+  resultsByPair: new Map(),
+  lastResultsPayload: null,
+  resultsRefreshMs: RESULTS_MIN_REFRESH_MS,
+  resultsPollTimerId: null,
+  clockIntervalId: null,
+  liveRefreshIntervalId: null,
+};
+
+const TEAM_ALIAS_GROUPS = {
+  MEX: ["México", "Mexico", "MEX"],
+  RSA: ["Sudáfrica", "South Africa", "RSA"],
+  KOR: ["Corea del Sur", "South Korea", "KOR"],
+  CZE: ["Chequia", "Czechia", "Rep. Checa", "CZE"],
+  CAN: ["Canadá", "Canada", "CAN"],
+  BIH: ["Bosnia", "Bosnia y Herzegovina", "Bosnia and Herzegovina", "Bosnia-Herzegovina", "BIH"],
+  USA: ["Estados Unidos", "United States", "USA"],
+  PAR: ["Paraguay", "PAR"],
+  QAT: ["Catar", "Qatar", "QAT"],
+  SUI: ["Suiza", "Switzerland", "SUI"],
+  BRA: ["Brasil", "Brazil", "BRA"],
+  MAR: ["Marruecos", "Morocco", "MAR"],
+  HAI: ["Haití", "Haiti", "HAI", "HTI"],
+  SCO: ["Escocia", "Scotland", "SCO"],
+  AUS: ["Australia", "AUS"],
+  TUR: ["Turquía", "Turkey", "TUR"],
+  GER: ["Alemania", "Germany", "GER"],
+  CUW: ["Curazao", "Curacao", "Curaçao", "CUW"],
+  NED: ["Países Bajos", "Netherlands", "NED"],
+  JPN: ["Japón", "Japan", "JPN"],
+  CIV: ["Costa de Marfil", "Ivory Coast", "CIV"],
+  ECU: ["Ecuador", "ECU"],
+  SWE: ["Suecia", "Sweden", "SWE"],
+  TUN: ["Túnez", "Tunisia", "TUN"],
+  ESP: ["España", "Spain", "ESP"],
+  CPV: ["Cabo Verde", "Cape Verde", "Cape Verde Islands", "CPV"],
+  BEL: ["Bélgica", "Belgium", "BEL"],
+  EGY: ["Egipto", "Egypt", "EGY"],
+  KSA: ["Arabia Saudita", "Saudi Arabia", "KSA"],
+  URU: ["Uruguay", "URY", "URU"],
+  IRN: ["Irán", "Iran", "IRI", "IRN"],
+  NZL: ["Nueva Zelanda", "New Zealand", "NZL"],
+  FRA: ["Francia", "France", "FRA"],
+  SEN: ["Senegal", "SEN"],
+  IRQ: ["Irak", "Iraq", "IRQ"],
+  NOR: ["Noruega", "Norway", "NOR"],
+  ARG: ["Argentina", "ARG"],
+  DZA: ["Argelia", "Algeria", "DZA"],
+  AUT: ["Austria", "AUT"],
+  JOR: ["Jordania", "Jordan", "JOR"],
+  POR: ["Portugal", "POR"],
+  COD: ["RD Congo", "DR Congo", "Congo DR", "COD"],
+  UZB: ["Uzbekistán", "Uzbekistan", "UZB"],
+  COL: ["Colombia", "COL"],
+  ENG: ["Inglaterra", "England", "ENG"],
+  CRO: ["Croacia", "Croatia", "CRO"],
+  GHA: ["Ghana", "GHA"],
+  PAN: ["Panamá", "Panama", "PAN"],
+};
+
+const teamAliasMap = new Map();
+Object.entries(TEAM_ALIAS_GROUPS).forEach(([canonicalId, aliases]) => {
+  aliases.forEach((alias) => teamAliasMap.set(normalizeText(alias), canonicalId));
+});
+
+MATCHES.forEach((match, index) => {
+  match.matchNumber = index + 1;
+  match.homeCanonicalId = resolveCanonicalTeamId(match.home.name);
+  match.awayCanonicalId = resolveCanonicalTeamId(match.away.name);
+});
+
 const elements = {
   heroDate: document.getElementById("heroDate"),
   heroCount: document.getElementById("heroCount"),
@@ -96,6 +173,62 @@ const elements = {
   btnToday: document.getElementById("btnToday"),
   mainContent: document.getElementById("mainContent"),
 };
+
+function normalizeText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function resolveCanonicalTeamId(value) {
+  if (!value) return null;
+  return teamAliasMap.get(normalizeText(value)) || null;
+}
+
+function buildPairKey(homeCanonicalId, awayCanonicalId) {
+  if (!homeCanonicalId || !awayCanonicalId) return null;
+  return `${homeCanonicalId}__${awayCanonicalId}`;
+}
+
+function getResultTeamCanonicalId(result, side) {
+  return resolveCanonicalTeamId(result[`${side}_code`])
+    || resolveCanonicalTeamId(result[`${side}_name`]);
+}
+
+function getPairKeyFromResult(result) {
+  return buildPairKey(getResultTeamCanonicalId(result, "home"), getResultTeamCanonicalId(result, "away"));
+}
+
+function isNumericScore(result) {
+  return Number.isFinite(result?.score_home) && Number.isFinite(result?.score_away);
+}
+
+function normalizeResultStatus(status) {
+  const normalized = String(status || "UNKNOWN").toUpperCase();
+  return KNOWN_RESULT_STATUSES.has(normalized) ? normalized : "UNKNOWN";
+}
+
+function isResultCompatibleWithMatch(result, match) {
+  const homeCanonicalId = getResultTeamCanonicalId(result, "home");
+  const awayCanonicalId = getResultTeamCanonicalId(result, "away");
+
+  if (homeCanonicalId && match.homeCanonicalId && homeCanonicalId !== match.homeCanonicalId) return false;
+  if (awayCanonicalId && match.awayCanonicalId && awayCanonicalId !== match.awayCanonicalId) return false;
+
+  return Boolean(
+    (homeCanonicalId && awayCanonicalId)
+    || Number.isInteger(result.match_number)
+  );
+}
+
+function getAppConfig() {
+  return {
+    apiBaseUrl: String(APP_CONFIG.API_BASE_URL || "").trim(),
+  };
+}
 
 function getBogotaDate() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/Bogota" }));
@@ -125,13 +258,6 @@ function formatCountdown(ms) {
   const h = Math.floor(totalMin / 60);
   const m = totalMin % 60;
   return h > 0 ? `Arranca en ${h}h ${m}m` : `Arranca en ${m}m`;
-}
-
-function formatElapsed(ms) {
-  const totalMin = Math.max(1, Math.floor(Math.abs(ms) / 60000));
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  return h > 0 ? `En juego desde hace ${h}h ${m}m` : `En juego desde hace ${m}m`;
 }
 
 function capitalize(text) {
@@ -188,6 +314,390 @@ function createChannelBadge(key) {
 
   link.append(img, fallback);
   return link;
+}
+
+function safeReadCachedResults() {
+  try {
+    const raw = localStorage.getItem(RESULTS_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function safeWriteCachedResults(payload) {
+  try {
+    localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // Ignore storage failures silently.
+  }
+}
+
+function clearResultMaps() {
+  state.resultsByMatchNumber.clear();
+  state.resultsByPair.clear();
+}
+
+function ingestResultsPayload(payload) {
+  if (!payload || !Array.isArray(payload.results)) return false;
+
+  clearResultMaps();
+
+  payload.results.forEach((result) => {
+    const normalizedStatus = normalizeResultStatus(result?.status);
+    const hasTeamMetadata = Boolean(
+      result?.home_name || result?.away_name || result?.home_code || result?.away_code
+    );
+    const hasMatchNumber = Number.isInteger(result?.match_number);
+
+    if (!hasMatchNumber && !hasTeamMetadata) return;
+    if (normalizedStatus === "UNKNOWN" && !hasMatchNumber && !hasTeamMetadata) return;
+
+    const safeResult = {
+      ...result,
+      status: normalizedStatus,
+    };
+
+    if (hasMatchNumber) {
+      state.resultsByMatchNumber.set(result.match_number, safeResult);
+    }
+
+    const pairKey = getPairKeyFromResult(safeResult);
+    if (pairKey) {
+      state.resultsByPair.set(pairKey, safeResult);
+    }
+  });
+
+  state.lastResultsPayload = payload;
+  if (payload.meta?.refresh_interval_seconds >= 40) {
+    state.resultsRefreshMs = payload.meta.refresh_interval_seconds * 1000;
+  } else {
+    state.resultsRefreshMs = RESULTS_MIN_REFRESH_MS;
+  }
+
+  return true;
+}
+
+function resolveResultForMatch(match) {
+  const byMatchNumber = state.resultsByMatchNumber.get(match.matchNumber);
+  if (byMatchNumber && isResultCompatibleWithMatch(byMatchNumber, match)) {
+    return byMatchNumber;
+  }
+
+  const byPair = state.resultsByPair.get(buildPairKey(match.homeCanonicalId, match.awayCanonicalId));
+  if (byPair && isResultCompatibleWithMatch(byPair, match)) {
+    return byPair;
+  }
+
+  return null;
+}
+
+function getFallbackTemporalState(match, nowUTC) {
+  const diffMs = matchDatetimeBogota(match) - nowUTC;
+  return {
+    diffMs,
+    isLive: diffMs <= 0 && diffMs > -MATCH_END_MS,
+    isFinished: diffMs <= -MATCH_END_MS,
+  };
+}
+
+function minuteLabelFromElapsedMinutes(rawMinutes) {
+  if (!Number.isFinite(rawMinutes)) return null;
+  const minutes = Math.max(0, Math.floor(rawMinutes));
+  if (minutes < 45) return `min. ${Math.max(1, minutes)}`;
+  if (minutes < 60) return "Medio tiempo";
+  if (minutes <= 105) return `min. ${Math.min(90, Math.max(46, minutes - 15))}`;
+  return null;
+}
+
+function getCalculatedMinuteLabel(match, nowUTC) {
+  const kickoff = matchDatetimeBogota(match);
+  const elapsedMinutes = (nowUTC - kickoff) / 60000;
+  return minuteLabelFromElapsedMinutes(elapsedMinutes);
+}
+
+function getResultMinuteLabel(match, result, nowUTC) {
+  if (!result) return null;
+  const status = normalizeResultStatus(result.status);
+
+  if (status === "FINISHED" || status === "SCHEDULED") return null;
+  if (status === "HALFTIME") return "Medio tiempo";
+
+  const calculated = getCalculatedMinuteLabel(match, nowUTC);
+
+  if (Number.isFinite(result.elapsed) && result.estimated_elapsed === false) {
+    return minuteLabelFromElapsedMinutes(result.elapsed);
+  }
+
+  if (calculated) return calculated;
+
+  if (Number.isFinite(result.elapsed)) {
+    return minuteLabelFromElapsedMinutes(result.elapsed);
+  }
+
+  return null;
+}
+
+function getMatchPresentation(match, nowUTC) {
+  const fallback = getFallbackTemporalState(match, nowUTC);
+  const result = resolveResultForMatch(match);
+  const hasScore = isNumericScore(result);
+
+  let phase = result ? normalizeResultStatus(result.status) : "UNKNOWN";
+  if (phase === "UNKNOWN") {
+    if (fallback.isFinished) phase = "FINISHED";
+    else if (fallback.isLive) phase = "LIVE";
+    else phase = "SCHEDULED";
+  }
+
+  const minuteLabel = getResultMinuteLabel(match, result, nowUTC);
+  const isLive = phase === "LIVE" || phase === "HALFTIME";
+  const isFinished = phase === "FINISHED";
+  const centerPrimary = hasScore ? `${result.score_home} - ${result.score_away}` : formatTime12(match.time);
+  const centerSecondary = hasScore
+    ? (phase === "HALFTIME" ? "Medio tiempo" : phase === "FINISHED" ? "Final" : minuteLabel || "En vivo")
+    : "vs";
+
+  return {
+    result,
+    phase,
+    hasScore,
+    isLive,
+    isFinished,
+    minuteLabel,
+    centerPrimary,
+    centerSecondary,
+    countdownText: formatCountdown(matchDatetimeBogota(match) - nowUTC),
+  };
+}
+
+function buildStatusBadge(presentation) {
+  if (presentation.isLive) return createBadge("● En vivo", "badge-live");
+  if (presentation.isFinished) return createBadge("✓ Finalizado", "badge-done");
+  return createBadge("Próximo", "badge-next");
+}
+
+function buildInfoItem(icon, text) {
+  const item = createElement("div", { className: "fc-info-item" });
+  item.append(createElement("span", { text: icon }), createElement("span", { text }));
+  return item;
+}
+
+function buildChannels(channels, className) {
+  const wrap = createElement("div", { className });
+  channels.forEach((channelKey) => {
+    const badge = createChannelBadge(channelKey);
+    if (badge) wrap.append(badge);
+  });
+  return wrap;
+}
+
+function buildFeaturedMatchBlock(match, nowUTC) {
+  const presentation = getMatchPresentation(match, nowUTC);
+  const block = createElement("article", { className: "fc-block" });
+  const teams = createElement("div", { className: "fc-teams" });
+
+  const home = createElement("div", { className: "fc-team" });
+  home.append(
+    createElement("div", { className: "fc-flag", text: match.home.flag }),
+    createElement("div", { className: "fc-team-name", text: match.home.name })
+  );
+
+  const vs = createElement("div", { className: "fc-vs" });
+  vs.append(
+    createElement("div", { className: "fc-vs-text", text: presentation.centerSecondary }),
+    createElement("div", { className: `fc-time${presentation.hasScore ? " fc-score" : ""}`, text: presentation.centerPrimary })
+  );
+
+  const away = createElement("div", { className: "fc-team" });
+  away.append(
+    createElement("div", { className: "fc-flag", text: match.away.flag }),
+    createElement("div", { className: "fc-team-name", text: match.away.name })
+  );
+
+  teams.append(home, vs, away);
+
+  const info = createElement("div", { className: "fc-info" });
+  const left = createElement("div", { className: "fc-info-left" });
+  left.append(
+    buildInfoItem("🏟️", match.venue),
+    buildInfoItem("📍", match.city),
+    createElement("div", { className: "fc-info-item", text: `Grupo ${match.grupo} · Jornada ${match.jornada}` })
+  );
+  info.append(left);
+
+  if (match.channels.length) {
+    const channelWrap = createElement("div", { className: "fc-channels" });
+    channelWrap.append(createElement("span", { className: "fc-channels-label", text: "Ver en" }));
+    match.channels.forEach((channelKey) => {
+      const badge = createChannelBadge(channelKey);
+      if (badge) channelWrap.append(badge);
+    });
+    info.append(channelWrap);
+  }
+
+  block.append(teams, info);
+  return block;
+}
+
+function buildMatchCard(match, nowUTC) {
+  const presentation = getMatchPresentation(match, nowUTC);
+  const card = createElement("article", { className: "match-card" });
+
+  if (presentation.isFinished) card.classList.add("is-done");
+
+  const top = createElement("div", { className: "mc-top" });
+  const meta = createElement("div", { className: "mc-meta" });
+  meta.append(
+    createElement("span", { className: "mc-time-badge", text: formatTime12(match.time) }),
+    createBadge(`Grupo ${match.grupo}`, "badge-group"),
+    createBadge(`Jornada ${match.jornada}`, "badge-jornada")
+  );
+  top.append(meta, buildStatusBadge(presentation));
+
+  const teams = createElement("div", { className: "mc-teams" });
+  const home = createElement("div", { className: "mc-team left" });
+  home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: match.home.name }));
+
+  const center = createElement("div", { className: "mc-center" });
+  center.append(
+    createElement("div", { className: "mc-center-sub", text: presentation.centerSecondary }),
+    createElement("div", { className: `mc-center-main${presentation.hasScore ? " mc-score" : ""}`, text: presentation.centerPrimary })
+  );
+
+  const away = createElement("div", { className: "mc-team right" });
+  away.append(createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: match.away.name }));
+
+  teams.append(home, center, away);
+
+  const bottom = createElement("div", { className: "mc-bottom" });
+  bottom.append(createElement("div", { className: "mc-venue", text: `🏟️ ${match.venue} · 📍 ${match.city}` }));
+  if (match.channels.length) bottom.append(buildChannels(match.channels, "mc-channels"));
+
+  card.append(top, teams, bottom);
+  return card;
+}
+
+function buildFeaturedSection(dayMatches, nowUTC) {
+  if (!dayMatches.length) return null;
+
+  let featuredIdx = -1;
+  let bestLiveElapsed = Infinity;
+  let bestUpcomingDiff = Infinity;
+
+  dayMatches.forEach((match, index) => {
+    const presentation = getMatchPresentation(match, nowUTC);
+    const diffMs = matchDatetimeBogota(match) - nowUTC;
+
+    if (presentation.isLive) {
+      const elapsed = Math.abs(diffMs);
+      if (elapsed < bestLiveElapsed) {
+        bestLiveElapsed = elapsed;
+        featuredIdx = index;
+      }
+      return;
+    }
+
+    if (featuredIdx === -1 && !presentation.isFinished && diffMs > 0 && diffMs < bestUpcomingDiff) {
+      bestUpcomingDiff = diffMs;
+      featuredIdx = index;
+    }
+  });
+
+  if (featuredIdx === -1) featuredIdx = dayMatches.length - 1;
+
+  const featuredMatch = dayMatches[featuredIdx];
+  const featuredPresentation = getMatchPresentation(featuredMatch, nowUTC);
+  const featuredGroup = dayMatches.filter((match) => match.time === featuredMatch.time);
+  const featuredIndices = new Set(dayMatches.map((match, index) => (match.time === featuredMatch.time ? index : -1)).filter((index) => index >= 0));
+  const isSimultaneous = featuredGroup.length > 1;
+  const remainingUpcoming = dayMatches.some((match) => !getMatchPresentation(match, nowUTC).isFinished && matchDatetimeBogota(match) - nowUTC > 0);
+  const allFinished = dayMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished);
+
+  let featuredHeading = "Próximo partido";
+  let statusText = featuredPresentation.countdownText;
+
+  if (featuredPresentation.isLive) {
+    featuredHeading = isSimultaneous ? `Partidos en vivo · ${formatTime12(featuredMatch.time)}` : "Partido en vivo";
+    statusText = featuredPresentation.minuteLabel || "En juego";
+  } else if (allFinished) {
+    featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
+    statusText = "No quedan partidos por jugar hoy";
+  } else if (!remainingUpcoming && featuredPresentation.isFinished) {
+    featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
+    statusText = "No quedan partidos por jugar hoy";
+  } else if (isSimultaneous) {
+    featuredHeading = `Próximos partidos de hoy · ${formatTime12(featuredMatch.time)}`;
+  } else {
+    featuredHeading = "Próximo partido de hoy";
+  }
+
+  const wrap = createElement("section", { className: "featured-wrap", attrs: { "aria-labelledby": "featuredHeading" } });
+  wrap.append(createElement("h2", { className: "section-label", text: featuredHeading, attrs: { id: "featuredHeading" } }));
+
+  const card = createElement("div", { className: "featured-card" });
+  const top = createElement("div", { className: "fc-top" });
+  const badges = createElement("div", { className: "fc-badges" });
+  badges.append(buildStatusBadge(featuredPresentation));
+
+  if (isSimultaneous) {
+    badges.append(createBadge("⚡ Simultánea", "badge-jornada"));
+  } else {
+    badges.append(createBadge(`Grupo ${featuredMatch.grupo}`, "badge-group"), createBadge(`Jornada ${featuredMatch.jornada}`, "badge-jornada"));
+  }
+
+  top.append(badges);
+  if (statusText) top.append(createElement("div", { className: "fc-countdown", text: `⏱ ${statusText}` }));
+  card.append(top);
+
+  const blockList = createElement("div", { className: "fc-block-list" });
+  featuredGroup.forEach((match) => blockList.append(buildFeaturedMatchBlock(match, nowUTC)));
+  card.append(blockList);
+  wrap.append(card);
+
+  return { node: wrap, featuredIndices };
+}
+
+function buildRestSection(restMatches, nowUTC) {
+  if (!restMatches.length) return null;
+
+  const section = createElement("section", { attrs: { "aria-labelledby": "restHeading" } });
+  section.append(createElement("h2", { className: "section-label", text: "Resto del día", attrs: { id: "restHeading" } }));
+
+  const list = createElement("div", { className: "matches-list" });
+  let i = 0;
+  while (i < restMatches.length) {
+    const current = restMatches[i];
+    let j = i + 1;
+    while (j < restMatches.length && restMatches[j].time === current.time) j += 1;
+    const group = restMatches.slice(i, j);
+
+    if (group.length > 1) {
+      const simulGroup = createElement("section", { className: "simul-group" });
+      simulGroup.append(createElement("h3", { className: "simul-label", text: `Partidos en simultánea · ${formatTime12(current.time)}` }));
+      group.forEach((match) => simulGroup.append(buildMatchCard(match, nowUTC)));
+      list.append(simulGroup);
+    } else {
+      list.append(buildMatchCard(current, nowUTC));
+    }
+    i = j;
+  }
+
+  section.append(list);
+  return section;
+}
+
+function buildFinishedSection(finishedMatches, nowUTC) {
+  if (!finishedMatches.length) return null;
+
+  const section = createElement("section", { attrs: { "aria-labelledby": "finishedHeading" } });
+  section.append(createElement("h2", { className: "section-label", text: "Finalizados", attrs: { id: "finishedHeading" } }));
+
+  const list = createElement("div", { className: "matches-list" });
+  finishedMatches.forEach((match) => list.append(buildMatchCard(match, nowUTC)));
+  section.append(list);
+  return section;
 }
 
 const allDates = getUniqueDates();
@@ -252,241 +762,11 @@ function renderDayNav({ scrollActive = true } = {}) {
   }
 }
 
-function buildInfoItem(icon, text) {
-  const item = createElement("div", { className: "fc-info-item" });
-  item.append(createElement("span", { text: icon }), createElement("span", { text }));
-  return item;
-}
-
-function buildChannels(channels, className) {
-  const wrap = createElement("div", { className });
-  channels.forEach((channelKey) => {
-    const badge = createChannelBadge(channelKey);
-    if (badge) wrap.append(badge);
-  });
-  return wrap;
-}
-
-function buildFeaturedMatchBlock(match) {
-  const block = createElement("article", { className: "fc-block" });
-  const teams = createElement("div", { className: "fc-teams" });
-
-  const home = createElement("div", { className: "fc-team" });
-  home.append(
-    createElement("div", { className: "fc-flag", text: match.home.flag }),
-    createElement("div", { className: "fc-team-name", text: match.home.name })
-  );
-
-  const vs = createElement("div", { className: "fc-vs" });
-  vs.append(
-    createElement("div", { className: "fc-vs-text", text: "vs" }),
-    createElement("div", { className: "fc-time", text: formatTime12(match.time) })
-  );
-
-  const away = createElement("div", { className: "fc-team" });
-  away.append(
-    createElement("div", { className: "fc-flag", text: match.away.flag }),
-    createElement("div", { className: "fc-team-name", text: match.away.name })
-  );
-
-  teams.append(home, vs, away);
-
-  const info = createElement("div", { className: "fc-info" });
-  const left = createElement("div", { className: "fc-info-left" });
-  left.append(
-    buildInfoItem("🏟️", match.venue),
-    buildInfoItem("📍", match.city),
-    createElement("div", { className: "fc-info-item", text: `Grupo ${match.grupo} · Jornada ${match.jornada}` })
-  );
-  info.append(left);
-
-  if (match.channels.length) {
-    const channelWrap = createElement("div", { className: "fc-channels" });
-    channelWrap.append(createElement("span", { className: "fc-channels-label", text: "Ver en" }));
-    match.channels.forEach((channelKey) => {
-      const badge = createChannelBadge(channelKey);
-      if (badge) channelWrap.append(badge);
-    });
-    info.append(channelWrap);
-  }
-
-  block.append(teams, info);
-  return block;
-}
-
-function buildMatchCard(match, nowUTC) {
-  const card = createElement("article", { className: "match-card" });
-  const diff = matchDatetimeBogota(match) - nowUTC;
-  const isLive = diff <= 0 && diff > -MATCH_END_MS;
-  const isDone = diff <= -MATCH_END_MS;
-
-  if (isDone) card.classList.add("is-done");
-
-  const top = createElement("div", { className: "mc-top" });
-  const meta = createElement("div", { className: "mc-meta" });
-  meta.append(
-    createElement("span", { className: "mc-time-badge", text: formatTime12(match.time) }),
-    createBadge(`Grupo ${match.grupo}`, "badge-group"),
-    createBadge(`Jornada ${match.jornada}`, "badge-jornada")
-  );
-  top.append(meta);
-
-  if (isLive) top.append(createBadge("● En vivo", "badge-live"));
-  if (isDone) top.append(createBadge("✓ Finalizado", "badge-done"));
-
-  const teams = createElement("div", { className: "mc-teams" });
-  const home = createElement("div", { className: "mc-team left" });
-  home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: match.home.name }));
-  const away = createElement("div", { className: "mc-team right" });
-  away.append(createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: match.away.name }));
-
-  teams.append(home, createElement("div", { className: "mc-vs", text: "vs" }), away);
-
-  const bottom = createElement("div", { className: "mc-bottom" });
-  bottom.append(createElement("div", { className: "mc-venue", text: `🏟️ ${match.venue} · 📍 ${match.city}` }));
-  if (match.channels.length) bottom.append(buildChannels(match.channels, "mc-channels"));
-
-  card.append(top, teams, bottom);
-  return card;
-}
-
-function buildFeaturedSection(dayMatches, nowUTC) {
-  if (!dayMatches.length) return null;
-
-  let featuredIdx = -1;
-  let minLiveElapsed = Infinity;
-  let minUpcomingDiff = Infinity;
-
-  dayMatches.forEach((match, index) => {
-    const diff = matchDatetimeBogota(match) - nowUTC;
-    const isLive = diff <= 0 && diff > -MATCH_END_MS;
-
-    if (isLive && Math.abs(diff) < minLiveElapsed) {
-      minLiveElapsed = Math.abs(diff);
-      featuredIdx = index;
-      return;
-    }
-
-    if (featuredIdx === -1 && diff > 0 && diff < minUpcomingDiff) {
-      minUpcomingDiff = diff;
-      featuredIdx = index;
-    }
-  });
-
-  if (featuredIdx === -1) featuredIdx = dayMatches.length - 1;
-
-  const featuredMatch = dayMatches[featuredIdx];
-  const featuredTime = matchDatetimeBogota(featuredMatch);
-  const diffMs = featuredTime - nowUTC;
-  const countdown = formatCountdown(diffMs);
-  const isLive = diffMs <= 0 && diffMs > -MATCH_END_MS;
-  const isDone = diffMs <= -MATCH_END_MS;
-  const hasUpcomingMatches = dayMatches.some((match) => matchDatetimeBogota(match) - nowUTC > 0);
-  const allMatchesDone = dayMatches.every((match) => matchDatetimeBogota(match) - nowUTC <= -MATCH_END_MS);
-  const featuredGroup = dayMatches.filter((match) => match.time === featuredMatch.time);
-  const featuredIndices = new Set(dayMatches.map((match, index) => (match.time === featuredMatch.time ? index : -1)).filter((index) => index >= 0));
-  const isSimultaneous = featuredGroup.length > 1;
-
-  let featuredHeading = "Próximo partido";
-  let statusBadge = createBadge("Próximo", "badge-next");
-  let statusText = countdown;
-
-  if (isLive) {
-    featuredHeading = isSimultaneous ? `Partidos en vivo · ${formatTime12(featuredMatch.time)}` : "Partido en vivo";
-    statusBadge = createBadge("● En vivo", "badge-live");
-    statusText = formatElapsed(diffMs);
-  } else if (allMatchesDone) {
-    featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
-    statusBadge = createBadge("Jornada finalizada", "badge-done");
-    statusText = "No quedan partidos por jugar hoy";
-  } else if (!hasUpcomingMatches && isDone) {
-    featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
-    statusBadge = createBadge("Último del día", "badge-done");
-    statusText = "No quedan partidos por jugar hoy";
-  } else if (isSimultaneous) {
-    featuredHeading = `Próximos partidos de hoy · ${formatTime12(featuredMatch.time)}`;
-  } else {
-    featuredHeading = "Próximo partido de hoy";
-  }
-
-  const wrap = createElement("section", { className: "featured-wrap", attrs: { "aria-labelledby": "featuredHeading" } });
-  wrap.append(
-    createElement("h2", {
-      className: "section-label",
-      text: featuredHeading,
-      attrs: { id: "featuredHeading" },
-    })
-  );
-
-  const card = createElement("div", { className: "featured-card" });
-  const top = createElement("div", { className: "fc-top" });
-  const badges = createElement("div", { className: "fc-badges" });
-  badges.append(statusBadge);
-
-  if (isSimultaneous) {
-    badges.append(createBadge("⚡ Simultánea", "badge-jornada"));
-  } else {
-    badges.append(createBadge(`Grupo ${featuredMatch.grupo}`, "badge-group"), createBadge(`Jornada ${featuredMatch.jornada}`, "badge-jornada"));
-  }
-
-  top.append(badges);
-  if (statusText) top.append(createElement("div", { className: "fc-countdown", text: `⏱ ${statusText}` }));
-  card.append(top);
-
-  const blockList = createElement("div", { className: "fc-block-list" });
-  featuredGroup.forEach((match) => blockList.append(buildFeaturedMatchBlock(match)));
-  card.append(blockList);
-  wrap.append(card);
-
-  return { node: wrap, featuredIndices };
-}
-
-function buildRestSection(restMatches, nowUTC) {
-  if (!restMatches.length) return null;
-
-  const section = createElement("section", { attrs: { "aria-labelledby": "restHeading" } });
-  section.append(createElement("h2", { className: "section-label", text: "Resto del día", attrs: { id: "restHeading" } }));
-
-  const list = createElement("div", { className: "matches-list" });
-  let i = 0;
-  while (i < restMatches.length) {
-    const current = restMatches[i];
-    let j = i + 1;
-    while (j < restMatches.length && restMatches[j].time === current.time) j += 1;
-    const group = restMatches.slice(i, j);
-
-    if (group.length > 1) {
-      const simulGroup = createElement("section", { className: "simul-group" });
-      simulGroup.append(createElement("h3", { className: "simul-label", text: `Partidos en simultánea · ${formatTime12(current.time)}` }));
-      group.forEach((match) => simulGroup.append(buildMatchCard(match, nowUTC)));
-      list.append(simulGroup);
-    } else {
-      list.append(buildMatchCard(current, nowUTC));
-    }
-    i = j;
-  }
-
-  section.append(list);
-  return section;
-}
-
-function buildFinishedSection(finishedMatches, nowUTC) {
-  if (!finishedMatches.length) return null;
-
-  const section = createElement("section", { attrs: { "aria-labelledby": "finishedHeading" } });
-  section.append(createElement("h2", { className: "section-label", text: "Finalizados", attrs: { id: "finishedHeading" } }));
-
-  const list = createElement("div", { className: "matches-list" });
-  finishedMatches.forEach((match) => list.append(buildMatchCard(match, nowUTC)));
-  section.append(list);
-  return section;
-}
-
 function render({ animate = true, scrollActiveDay = true } = {}) {
   const nowUTC = new Date();
   const dayMatches = MATCHES.filter((match) => match.date === currentDateStr);
-  const activeMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC > -MATCH_END_MS);
-  const finishedMatches = dayMatches.filter((match) => matchDatetimeBogota(match) - nowUTC <= -MATCH_END_MS);
+  const activeMatches = dayMatches.filter((match) => !getMatchPresentation(match, nowUTC).isFinished);
+  const finishedMatches = dayMatches.filter((match) => getMatchPresentation(match, nowUTC).isFinished);
   const [y, mo, d] = currentDateStr.split("-").map(Number);
   const currentDate = new Date(y, mo - 1, d);
 
@@ -523,9 +803,7 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
     }
 
     const finishedSection = buildFinishedSection(finishedMatches, nowUTC);
-    if (finishedSection) {
-      content.append(finishedSection);
-    }
+    if (finishedSection) content.append(finishedSection);
   }
 
   elements.mainContent.replaceChildren(content);
@@ -566,7 +844,6 @@ function refreshLiveView() {
       ? allDates[allDates.length - 1]
       : today;
 
-  // If the user is viewing "today", keep the page current across minute/day changes
   if (currentDateStr === today || currentDateStr === clampedToday) {
     currentDateStr = clampedToday;
   }
@@ -574,11 +851,72 @@ function refreshLiveView() {
   render({ animate: false, scrollActiveDay: false });
 }
 
+function scheduleResultsRefresh(ms = state.resultsRefreshMs) {
+  if (state.resultsPollTimerId) {
+    clearTimeout(state.resultsPollTimerId);
+  }
+
+  state.resultsPollTimerId = window.setTimeout(() => {
+    fetchResultsSilently();
+  }, Math.max(RESULTS_MIN_REFRESH_MS, ms));
+}
+
+async function fetchResultsSilently() {
+  const config = getAppConfig();
+  if (!config.apiBaseUrl) {
+    scheduleResultsRefresh();
+    return;
+  }
+
+  try {
+    const response = await fetch(`${config.apiBaseUrl.replace(/\/$/, "")}/api/results`, { cache: "no-store" });
+
+    if (!response.ok) {
+      scheduleResultsRefresh();
+      return;
+    }
+
+    const payload = await response.json();
+    if (ingestResultsPayload(payload)) {
+      safeWriteCachedResults(payload);
+      render({ animate: false, scrollActiveDay: false });
+    }
+  } catch {
+    // Keep the last valid cached results silently.
+  } finally {
+    scheduleResultsRefresh();
+  }
+}
+
+function hydrateResultsFromCache() {
+  const cachedPayload = safeReadCachedResults();
+  if (cachedPayload) {
+    ingestResultsPayload(cachedPayload);
+  }
+}
+
+function startClockLoop() {
+  if (state.clockIntervalId) clearInterval(state.clockIntervalId);
+  updateClock();
+  state.clockIntervalId = window.setInterval(updateClock, 30000);
+}
+
+function startLiveRefreshLoop() {
+  if (state.liveRefreshIntervalId) clearInterval(state.liveRefreshIntervalId);
+  state.liveRefreshIntervalId = window.setInterval(refreshLiveView, 60000);
+}
+
+function startResultsPolling() {
+  if (state.resultsPollTimerId) clearTimeout(state.resultsPollTimerId);
+  fetchResultsSilently();
+}
+
 elements.btnPrev.addEventListener("click", () => navigate(-1));
 elements.btnNext.addEventListener("click", () => navigate(1));
 elements.btnToday.addEventListener("click", goToToday);
 
-updateClock();
+hydrateResultsFromCache();
+startClockLoop();
 render({ animate: false, scrollActiveDay: false });
-setInterval(updateClock, 30000);
-setInterval(refreshLiveView, 60000);
+startLiveRefreshLoop();
+startResultsPolling();

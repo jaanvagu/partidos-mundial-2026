@@ -455,17 +455,16 @@ function getResultMinuteLabel(match, result, nowUTC) {
   if (status === "FINISHED" || status === "SCHEDULED") return null;
   if (status === "HALFTIME") return "Medio tiempo";
 
-  const calculated = getCalculatedMinuteLabel(match, nowUTC);
-
   if (Number.isFinite(result.elapsed) && result.estimated_elapsed === false) {
     return minuteLabelFromElapsedMinutes(result.elapsed);
   }
 
-  if (calculated) return calculated;
-
   if (Number.isFinite(result.elapsed)) {
     return minuteLabelFromElapsedMinutes(result.elapsed);
   }
+
+  const calculated = getCalculatedMinuteLabel(match, nowUTC);
+  if (calculated) return calculated;
 
   return null;
 }

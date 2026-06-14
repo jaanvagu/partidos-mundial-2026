@@ -607,7 +607,7 @@ a:focus-visible {
 .mc-center.is-schedule {
   min-width: 168px;
   gap: 8px;
-  transform: translateY(-16px);
+  transform: translateY(-13px);
 }
 
 .mc-center.is-schedule .mc-center-sub {

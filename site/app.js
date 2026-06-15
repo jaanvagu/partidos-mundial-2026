@@ -472,8 +472,13 @@ function getResultMinuteLabel(match, result, nowUTC) {
 function getMatchPresentation(match, nowUTC) {
   const fallback = getFallbackTemporalState(match, nowUTC);
   const result = resolveResultForMatch(match);
-  let phase = result ? normalizeResultStatus(result.status) : "UNKNOWN";
-  if (phase === "UNKNOWN") {
+  const backendPhase = result ? normalizeResultStatus(result.status) : "UNKNOWN";
+  const hasBackendPhase = backendPhase !== "UNKNOWN";
+  let phase = backendPhase;
+
+  // Only fall back to the local time-window heuristic when the backend
+  // does not provide a usable state for this match.
+  if (!hasBackendPhase) {
     if (fallback.isFinished) phase = "FINISHED";
     else if (fallback.isLive) phase = "LIVE";
     else phase = "SCHEDULED";

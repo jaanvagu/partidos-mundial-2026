@@ -873,8 +873,60 @@ a:focus-visible {
     font-size: 22px;
   }
 
+  .day-chip {
+    min-width: 78px;
+    padding: 8px 10px;
+  }
+
+  .dc-num {
+    font-size: 15px;
+  }
+
+  .dc-today {
+    margin-top: 4px;
+    padding: 2px 6px;
+    font-size: 7px;
+  }
+
+  .match-card {
+    padding: 14px;
+  }
+
+  .mc-top {
+    align-items: flex-start;
+  }
+
+  .mc-meta {
+    row-gap: 6px;
+  }
+
+  .mc-teams {
+    grid-template-columns: minmax(0, 1fr) minmax(88px, auto) minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+
   .mc-center {
-    min-width: 72px;
+    min-width: 88px;
+    gap: 4px;
+    transform: none;
+  }
+
+  .mc-center.is-schedule,
+  .mc-center.is-final,
+  .mc-center.is-score,
+  .mc-center.is-live {
+    min-width: 88px;
+    gap: 4px;
+    transform: none;
+  }
+
+  .mc-center-sub {
+    font-size: 10px;
+  }
+
+  .mc-center-main {
+    font-size: clamp(16px, 6vw, 20px);
   }
 
   .mc-flag {
@@ -884,7 +936,6 @@ a:focus-visible {
   .mc-name {
     font-size: 12px;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {

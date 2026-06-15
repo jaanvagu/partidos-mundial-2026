@@ -101,6 +101,7 @@ const state = {
   resultsByMatchNumber: new Map(),
   resultsByPair: new Map(),
   lastResultsPayload: null,
+  lastLiveResultsPayload: null,
   resultsRefreshMs: RESULTS_MIN_REFRESH_MS,
   resultsPollTimerId: null,
   clockIntervalId: null,
@@ -354,12 +355,12 @@ function clearResultMaps() {
   state.resultsByPair.clear();
 }
 
-function ingestResultsPayload(payload) {
-  if (!payload || !Array.isArray(payload.results)) return false;
+function applyResultsCollection(results, { clear = false } = {}) {
+  if (!Array.isArray(results)) return 0;
+  if (clear) clearResultMaps();
 
-  clearResultMaps();
-
-  payload.results.forEach((result) => {
+  let inserted = 0;
+  results.forEach((result) => {
     const normalizedStatus = normalizeResultStatus(result?.status);
     const hasTeamMetadata = Boolean(
       result?.home_name || result?.away_name || result?.home_code || result?.away_code
@@ -376,6 +377,7 @@ function ingestResultsPayload(payload) {
 
     if (hasMatchNumber) {
       state.resultsByMatchNumber.set(result.match_number, safeResult);
+      inserted += 1;
     }
 
     const pairKey = getPairKeyFromResult(safeResult);
@@ -383,16 +385,34 @@ function ingestResultsPayload(payload) {
       state.resultsByPair.set(pairKey, safeResult);
     }
   });
+  return inserted;
+}
+
+function ingestResultsPayload(payload, livePayload = null) {
+  if (!payload || !Array.isArray(payload.results)) return false;
+
+  const baseCount = applyResultsCollection(payload.results, { clear: true });
+  const liveCount = applyResultsCollection(livePayload?.results || [], { clear: false });
 
   state.lastResultsPayload = payload;
-  if (payload.meta?.refresh_interval_seconds >= 40) {
-    state.resultsRefreshMs = payload.meta.refresh_interval_seconds * 1000;
+  state.lastLiveResultsPayload = livePayload || null;
+
+  const refreshIntervalSeconds = Math.max(
+    payload.meta?.refresh_interval_seconds || 0,
+    livePayload?.meta?.refresh_interval_seconds || 0
+  );
+
+  if (refreshIntervalSeconds >= 40) {
+    state.resultsRefreshMs = refreshIntervalSeconds * 1000;
   } else {
     state.resultsRefreshMs = RESULTS_MIN_REFRESH_MS;
   }
 
   debugLog("Payload ingerido", {
     totalResults: payload.results.length,
+    totalLiveResults: Array.isArray(livePayload?.results) ? livePayload.results.length : 0,
+    insertedBase: baseCount,
+    insertedLive: liveCount,
     byMatchNumber: state.resultsByMatchNumber.size,
     byPair: state.resultsByPair.size,
     refreshMs: state.resultsRefreshMs,
@@ -436,10 +456,12 @@ function getFallbackTemporalState(match, nowUTC) {
 function minuteLabelFromElapsedMinutes(rawMinutes) {
   if (!Number.isFinite(rawMinutes)) return null;
   const minutes = Math.max(0, Math.floor(rawMinutes));
-  if (minutes < 45) return `min. ${Math.max(1, minutes)}`;
-  if (minutes < 60) return "Medio tiempo";
-  if (minutes <= 105) return `min. ${Math.min(90, Math.max(46, minutes - 15))}`;
-  return null;
+  return `${Math.max(1, minutes)}'`;
+}
+
+function sanitizeDisplayClock(value) {
+  const text = String(value || "").trim();
+  return text || null;
 }
 
 function getCalculatedMinuteLabel(match, nowUTC) {
@@ -451,9 +473,11 @@ function getCalculatedMinuteLabel(match, nowUTC) {
 function getResultMinuteLabel(match, result, nowUTC) {
   if (!result) return null;
   const status = normalizeResultStatus(result.status);
+  const displayClock = sanitizeDisplayClock(result.display_clock);
 
   if (status === "FINISHED" || status === "SCHEDULED") return null;
   if (status === "HALFTIME") return "Medio tiempo";
+  if (displayClock) return displayClock;
 
   if (Number.isFinite(result.elapsed) && result.estimated_elapsed === false) {
     return minuteLabelFromElapsedMinutes(result.elapsed);
@@ -922,23 +946,54 @@ async function fetchResultsSilently() {
   }
 
   try {
-    debugLog("Fetch /api/results", { apiBaseUrl: config.apiBaseUrl });
-    const response = await fetch(`${config.apiBaseUrl.replace(/\/$/, "")}/api/results`, { cache: "no-store" });
+    const baseUrl = config.apiBaseUrl.replace(/\/$/, "");
+    debugLog("Fetch /api/results + /api/results/live", { apiBaseUrl: baseUrl });
+    const [resultsResponse, liveResponse] = await Promise.allSettled([
+      fetch(`${baseUrl}/api/results`, { cache: "no-store" }),
+      fetch(`${baseUrl}/api/results/live`, { cache: "no-store" }),
+    ]);
 
+    if (resultsResponse.status !== "fulfilled") {
+      debugLog("Fetch /api/results lanzó excepción");
+      scheduleResultsRefresh();
+      return;
+    }
+
+    const response = resultsResponse.value;
     if (!response.ok) {
-      debugLog("Fetch falló", { status: response.status, statusText: response.statusText });
+      debugLog("Fetch /api/results falló", { status: response.status, statusText: response.statusText });
       scheduleResultsRefresh();
       return;
     }
 
     const payload = await response.json();
+
+    let livePayload = null;
+    if (liveResponse.status === "fulfilled") {
+      if (liveResponse.value.ok) {
+        livePayload = await liveResponse.value.json();
+      } else {
+        debugLog("Fetch /api/results/live falló", {
+          status: liveResponse.value.status,
+          statusText: liveResponse.value.statusText,
+        });
+      }
+    } else {
+      debugLog("Fetch /api/results/live lanzó excepción");
+    }
+
     debugLog("Fetch exitoso", {
       status: response.status,
       refresh_interval_seconds: payload?.meta?.refresh_interval_seconds,
       totalResults: Array.isArray(payload?.results) ? payload.results.length : 0,
+      totalLiveResults: Array.isArray(livePayload?.results) ? livePayload.results.length : 0,
     });
-    if (ingestResultsPayload(payload)) {
-      safeWriteCachedResults(payload);
+    if (ingestResultsPayload(payload, livePayload)) {
+      safeWriteCachedResults({
+        meta: payload.meta,
+        live_meta: livePayload?.meta || null,
+        results: Array.from(state.resultsByMatchNumber.values()),
+      });
       render({ animate: false, scrollActiveDay: false });
     }
   } catch {

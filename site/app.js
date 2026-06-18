@@ -222,13 +222,48 @@ function isResultCompatibleWithMatch(result, match) {
   const homeCanonicalId = getResultTeamCanonicalId(result, "home");
   const awayCanonicalId = getResultTeamCanonicalId(result, "away");
 
-  if (homeCanonicalId && match.homeCanonicalId && homeCanonicalId !== match.homeCanonicalId) return false;
-  if (awayCanonicalId && match.awayCanonicalId && awayCanonicalId !== match.awayCanonicalId) return false;
-
-  return Boolean(
-    (homeCanonicalId && awayCanonicalId)
-    || Number.isInteger(result.match_number)
+  const directMatch = (
+    (!homeCanonicalId || !match.homeCanonicalId || homeCanonicalId === match.homeCanonicalId)
+    && (!awayCanonicalId || !match.awayCanonicalId || awayCanonicalId === match.awayCanonicalId)
   );
+  const reversedMatch = (
+    (!homeCanonicalId || !match.awayCanonicalId || homeCanonicalId === match.awayCanonicalId)
+    && (!awayCanonicalId || !match.homeCanonicalId || awayCanonicalId === match.homeCanonicalId)
+  );
+
+  if (!directMatch && !reversedMatch) return false;
+
+  return Boolean((homeCanonicalId && awayCanonicalId) || Number.isInteger(result.match_number));
+}
+
+function getResultOrientation(result, match) {
+  const homeCanonicalId = getResultTeamCanonicalId(result, "home");
+  const awayCanonicalId = getResultTeamCanonicalId(result, "away");
+
+  if (
+    homeCanonicalId
+    && awayCanonicalId
+    && match.homeCanonicalId
+    && match.awayCanonicalId
+  ) {
+    if (homeCanonicalId === match.homeCanonicalId && awayCanonicalId === match.awayCanonicalId) {
+      return "direct";
+    }
+
+    if (homeCanonicalId === match.awayCanonicalId && awayCanonicalId === match.homeCanonicalId) {
+      return "reversed";
+    }
+  }
+
+  return "direct";
+}
+
+function getOrientedScore(result, match) {
+  if (!isNumericScore(result)) return null;
+  const orientation = getResultOrientation(result, match);
+  return orientation === "reversed"
+    ? { home: result.score_away, away: result.score_home, orientation }
+    : { home: result.score_home, away: result.score_away, orientation };
 }
 
 function getAppConfig() {
@@ -431,7 +466,8 @@ function resolveResultForMatch(match) {
     return byMatchNumber;
   }
 
-  const byPair = state.resultsByPair.get(buildPairKey(match.homeCanonicalId, match.awayCanonicalId));
+  const byPair = state.resultsByPair.get(buildPairKey(match.homeCanonicalId, match.awayCanonicalId))
+    || state.resultsByPair.get(buildPairKey(match.awayCanonicalId, match.homeCanonicalId));
   if (byPair && isResultCompatibleWithMatch(byPair, match)) {
     debugLog(`Match #${match.matchNumber} resuelto por alias`, {
       match: `${match.home.name} vs ${match.away.name}`,
@@ -496,6 +532,7 @@ function getResultMinuteLabel(match, result, nowUTC) {
 function getMatchPresentation(match, nowUTC) {
   const fallback = getFallbackTemporalState(match, nowUTC);
   const result = resolveResultForMatch(match);
+  const orientedScore = result ? getOrientedScore(result, match) : null;
   const backendPhase = result ? normalizeResultStatus(result.status) : "UNKNOWN";
   const hasBackendPhase = backendPhase !== "UNKNOWN";
   let phase = backendPhase;
@@ -508,18 +545,19 @@ function getMatchPresentation(match, nowUTC) {
     else phase = "SCHEDULED";
   }
 
-  const hasScore = isNumericScore(result) && phase !== "SCHEDULED";
+  const hasScore = Boolean(orientedScore) && phase !== "SCHEDULED";
 
   const minuteLabel = getResultMinuteLabel(match, result, nowUTC);
   const isLive = phase === "LIVE" || phase === "HALFTIME";
   const isFinished = phase === "FINISHED";
-  const centerPrimary = hasScore ? `${result.score_home} - ${result.score_away}` : formatTime12(match.time);
+  const centerPrimary = hasScore ? `${orientedScore.home} - ${orientedScore.away}` : formatTime12(match.time);
   const centerSecondary = hasScore
     ? (phase === "HALFTIME" ? "Medio tiempo" : phase === "FINISHED" ? "Final" : minuteLabel || "En vivo")
     : "vs";
 
   return {
     result,
+    orientedScore,
     phase,
     hasScore,
     isLive,

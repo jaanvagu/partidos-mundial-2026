@@ -975,6 +975,15 @@ function scheduleResultsRefresh(ms = state.resultsRefreshMs) {
   }, Math.max(RESULTS_MIN_REFRESH_MS, ms));
 }
 
+function persistRenderedResults(payload, livePayload = null) {
+  safeWriteCachedResults({
+    meta: payload?.meta || null,
+    live_meta: livePayload?.meta || null,
+    results: Array.from(state.resultsByMatchNumber.values()),
+  });
+  render({ animate: false, scrollActiveDay: false });
+}
+
 async function fetchResultsSilently() {
   const config = getAppConfig();
   if (!config.apiBaseUrl) {
@@ -1005,6 +1014,15 @@ async function fetchResultsSilently() {
     }
 
     const payload = await response.json();
+    debugLog("Fetch /api/results exitoso", {
+      status: response.status,
+      refresh_interval_seconds: payload?.meta?.refresh_interval_seconds,
+      totalResults: Array.isArray(payload?.results) ? payload.results.length : 0,
+    });
+
+    if (ingestResultsPayload(payload, null)) {
+      persistRenderedResults(payload, null);
+    }
 
     let livePayload = null;
     if (liveResponse.status === "fulfilled") {
@@ -1026,13 +1044,9 @@ async function fetchResultsSilently() {
       totalResults: Array.isArray(payload?.results) ? payload.results.length : 0,
       totalLiveResults: Array.isArray(livePayload?.results) ? livePayload.results.length : 0,
     });
-    if (ingestResultsPayload(payload, livePayload)) {
-      safeWriteCachedResults({
-        meta: payload.meta,
-        live_meta: livePayload?.meta || null,
-        results: Array.from(state.resultsByMatchNumber.values()),
-      });
-      render({ animate: false, scrollActiveDay: false });
+
+    if (livePayload && ingestResultsPayload(payload, livePayload)) {
+      persistRenderedResults(payload, livePayload);
     }
   } catch {
     debugLog("Excepción al consultar resultados");

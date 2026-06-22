@@ -716,7 +716,6 @@ function buildFeaturedMatchBlock(match, nowUTC) {
   const metaText = getMatchMetaText(match);
   left.append(
     buildInfoItem("🏟️", match.venue),
-    buildInfoItem("📍", match.city),
     ...(metaText ? [createElement("div", { className: "fc-info-item", text: metaText })] : [])
   );
   info.append(left);
@@ -766,7 +765,7 @@ function buildMatchCard(match, nowUTC) {
   teams.append(home, center, away);
 
   const bottom = createElement("div", { className: "mc-bottom" });
-  bottom.append(createElement("div", { className: "mc-venue", text: `🏟️ ${match.venue} · 📍 ${match.city}` }));
+  bottom.append(createElement("div", { className: "mc-venue", text: `🏟️ ${match.venue}` }));
   if (match.channels.length) bottom.append(buildChannels(match.channels, "mc-channels"));
 
   card.append(top, teams, bottom);

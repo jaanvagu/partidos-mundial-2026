@@ -12,78 +12,110 @@ const ENGLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E
 const SCOTLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}";
 
 const MATCHES = [
-  { date: "2026-06-11", time: "14:00", jornada: 1, grupo: "A", home: { name: "México", flag: "🇲🇽" }, away: { name: "Sudáfrica", flag: "🇿🇦" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-11", time: "21:00", jornada: 1, grupo: "A", home: { name: "Corea del Sur", flag: "🇰🇷" }, away: { name: "Rep. Checa", flag: "🇨🇿" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports", "win"] },
-  { date: "2026-06-12", time: "14:00", jornada: 1, grupo: "B", home: { name: "Canadá", flag: "🇨🇦" }, away: { name: "Bosnia", flag: "🇧🇦" }, venue: "BMO Field", city: "Toronto", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-12", time: "20:00", jornada: 1, grupo: "D", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-13", time: "14:00", jornada: 1, grupo: "B", home: { name: "Qatar", flag: "🇶🇦" }, away: { name: "Suiza", flag: "🇨🇭" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports", "win"] },
-  { date: "2026-06-13", time: "17:00", jornada: 1, grupo: "C", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-13", time: "20:00", jornada: 1, grupo: "C", home: { name: "Haití", flag: "🇭🇹" }, away: { name: "Escocia", flag: SCOTLAND_FLAG }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports"] },
-  { date: "2026-06-13", time: "23:00", jornada: 1, grupo: "D", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Turquía", flag: "🇹🇷" }, venue: "BC Place", city: "Vancouver", channels: ["dsports"] },
-  { date: "2026-06-14", time: "12:00", jornada: 1, grupo: "E", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Curazao", flag: "🇨🇼" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports"] },
-  { date: "2026-06-14", time: "15:00", jornada: 1, grupo: "F", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-14", time: "18:00", jornada: 1, grupo: "E", home: { name: "Costa de Marfil", flag: "🇨🇮" }, away: { name: "Ecuador", flag: "🇪🇨" }, venue: "Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-14", time: "21:00", jornada: 1, grupo: "F", home: { name: "Suecia", flag: "🇸🇪" }, away: { name: "Túnez", flag: "🇹🇳" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports"] },
-  { date: "2026-06-15", time: "11:00", jornada: 1, grupo: "H", home: { name: "España", flag: "🇪🇸" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-15", time: "14:00", jornada: 1, grupo: "G", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-06-15", time: "17:00", jornada: 1, grupo: "H", home: { name: "Arabia Saudita", flag: "🇸🇦" }, away: { name: "Uruguay", flag: "🇺🇾" }, venue: "Hard Rock Stadium", city: "Miami Gardens", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-15", time: "20:00", jornada: 1, grupo: "G", home: { name: "Irán", flag: "🇮🇷" }, away: { name: "Nueva Zelanda", flag: "🇳🇿" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports"] },
-  { date: "2026-06-16", time: "14:00", jornada: 1, grupo: "I", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-16", time: "17:00", jornada: 1, grupo: "I", home: { name: "Irak", flag: "🇮🇶" }, away: { name: "Noruega", flag: "🇳🇴" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports", "win"] },
-  { date: "2026-06-16", time: "20:00", jornada: 1, grupo: "J", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Argelia", flag: "🇩🇿" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-16", time: "23:00", jornada: 1, grupo: "J", home: { name: "Austria", flag: "🇦🇹" }, away: { name: "Jordania", flag: "🇯🇴" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-06-17", time: "12:00", jornada: 1, grupo: "K", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "RD Congo", flag: "🇨🇩" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports"] },
-  { date: "2026-06-17", time: "15:00", jornada: 1, grupo: "L", home: { name: "Inglaterra", flag: ENGLAND_FLAG }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports", "win"] },
-  { date: "2026-06-17", time: "18:00", jornada: 1, grupo: "L", home: { name: "Ghana", flag: "🇬🇭" }, away: { name: "Panamá", flag: "🇵🇦" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports"] },
-  { date: "2026-06-17", time: "21:00", jornada: 1, grupo: "K", home: { name: "Uzbekistán", flag: "🇺🇿" }, away: { name: "Colombia", flag: "🇨🇴" }, venue: "Allegiant Stadium", city: "Las Vegas", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-18", time: "11:00", jornada: 2, grupo: "A", home: { name: "Sudáfrica", flag: "🇿🇦" }, away: { name: "Rep. Checa", flag: "🇨🇿" }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports"] },
-  { date: "2026-06-18", time: "14:00", jornada: 2, grupo: "B", home: { name: "Bosnia", flag: "🇧🇦" }, away: { name: "Suiza", flag: "🇨🇭" }, venue: "Hard Rock Stadium", city: "Miami Gardens", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-18", time: "17:00", jornada: 2, grupo: "B", home: { name: "Canadá", flag: "🇨🇦" }, away: { name: "Qatar", flag: "🇶🇦" }, venue: "BMO Field", city: "Toronto", channels: ["dsports"] },
-  { date: "2026-06-18", time: "20:00", jornada: 2, grupo: "A", home: { name: "México", flag: "🇲🇽" }, away: { name: "Corea del Sur", flag: "🇰🇷" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports", "win"] },
-  { date: "2026-06-19", time: "14:00", jornada: 2, grupo: "D", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Australia", flag: "🇦🇺" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-19", time: "17:00", jornada: 2, grupo: "C", home: { name: "Escocia", flag: SCOTLAND_FLAG }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-06-19", time: "19:30", jornada: 2, grupo: "C", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Haití", flag: "🇭🇹" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports"] },
-  { date: "2026-06-19", time: "22:00", jornada: 2, grupo: "D", home: { name: "Turquía", flag: "🇹🇷" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports", "win"] },
-  { date: "2026-06-20", time: "12:00", jornada: 2, grupo: "F", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "Allegiant Stadium", city: "Las Vegas", channels: ["dsports", "win"] },
-  { date: "2026-06-20", time: "15:00", jornada: 2, grupo: "E", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Costa de Marfil", flag: "🇨🇮" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-20", time: "19:00", jornada: 2, grupo: "E", home: { name: "Ecuador", flag: "🇪🇨" }, away: { name: "Curazao", flag: "🇨🇼" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-20", time: "23:00", jornada: 2, grupo: "F", home: { name: "Túnez", flag: "🇹🇳" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports"] },
-  { date: "2026-06-21", time: "11:00", jornada: 2, grupo: "H", home: { name: "España", flag: "🇪🇸" }, away: { name: "Arabia Saudita", flag: "🇸🇦" }, venue: "Hard Rock Stadium", city: "Miami Gardens", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-21", time: "14:00", jornada: 2, grupo: "G", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Irán", flag: "🇮🇷" }, venue: "Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-21", time: "17:00", jornada: 2, grupo: "H", home: { name: "Uruguay", flag: "🇺🇾" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-21", time: "20:00", jornada: 2, grupo: "G", home: { name: "Nueva Zelanda", flag: "🇳🇿" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports"] },
-  { date: "2026-06-22", time: "12:00", jornada: 2, grupo: "J", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-22", time: "16:00", jornada: 2, grupo: "I", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Irak", flag: "🇮🇶" }, venue: "Allegiant Stadium", city: "Las Vegas", channels: ["dsports"] },
-  { date: "2026-06-22", time: "19:00", jornada: 2, grupo: "I", home: { name: "Noruega", flag: "🇳🇴" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports", "win"] },
-  { date: "2026-06-22", time: "22:00", jornada: 2, grupo: "J", home: { name: "Jordania", flag: "🇯🇴" }, away: { name: "Argelia", flag: "🇩🇿" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports"] },
-  { date: "2026-06-23", time: "12:00", jornada: 2, grupo: "K", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "Uzbekistán", flag: "🇺🇿" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports", "win"] },
-  { date: "2026-06-23", time: "15:00", jornada: 2, grupo: "L", home: { name: "Inglaterra", flag: ENGLAND_FLAG }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports"] },
-  { date: "2026-06-23", time: "18:00", jornada: 2, grupo: "L", home: { name: "Panamá", flag: "🇵🇦" }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-23", time: "21:00", jornada: 2, grupo: "K", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "RD Congo", flag: "🇨🇩" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-24", time: "14:00", jornada: 3, grupo: "B", home: { name: "Suiza", flag: "🇨🇭" }, away: { name: "Canadá", flag: "🇨🇦" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports"] },
-  { date: "2026-06-24", time: "14:00", jornada: 3, grupo: "B", home: { name: "Bosnia", flag: "🇧🇦" }, away: { name: "Qatar", flag: "🇶🇦" }, venue: "Hard Rock Stadium", city: "Miami Gardens", channels: ["dsports"] },
-  { date: "2026-06-24", time: "17:00", jornada: 3, grupo: "C", home: { name: "Escocia", flag: SCOTLAND_FLAG }, away: { name: "Brasil", flag: "🇧🇷" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-24", time: "17:00", jornada: 3, grupo: "C", home: { name: "Marruecos", flag: "🇲🇦" }, away: { name: "Haití", flag: "🇭🇹" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-06-24", time: "20:00", jornada: 3, grupo: "A", home: { name: "Rep. Checa", flag: "🇨🇿" }, away: { name: "México", flag: "🇲🇽" }, venue: "Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports", "win"] },
-  { date: "2026-06-24", time: "20:00", jornada: 3, grupo: "A", home: { name: "Sudáfrica", flag: "🇿🇦" }, away: { name: "Corea del Sur", flag: "🇰🇷" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-25", time: "15:00", jornada: 3, grupo: "E", home: { name: "Ecuador", flag: "🇪🇨" }, away: { name: "Alemania", flag: "🇩🇪" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-25", time: "15:00", jornada: 3, grupo: "E", home: { name: "Curazao", flag: "🇨🇼" }, away: { name: "Costa de Marfil", flag: "🇨🇮" }, venue: "Allegiant Stadium", city: "Las Vegas", channels: ["dsports"] },
-  { date: "2026-06-25", time: "18:00", jornada: 3, grupo: "F", home: { name: "Túnez", flag: "🇹🇳" }, away: { name: "Países Bajos", flag: "🇳🇱" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports", "win"] },
-  { date: "2026-06-25", time: "18:00", jornada: 3, grupo: "F", home: { name: "Japón", flag: "🇯🇵" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports"] },
-  { date: "2026-06-25", time: "21:00", jornada: 3, grupo: "D", home: { name: "Turquía", flag: "🇹🇷" }, away: { name: "Estados Unidos", flag: "🇺🇸" }, venue: "Levi's Stadium", city: "Santa Clara", channels: ["dsports"] },
-  { date: "2026-06-25", time: "21:00", jornada: 3, grupo: "D", home: { name: "Paraguay", flag: "🇵🇾" }, away: { name: "Australia", flag: "🇦🇺" }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports"] },
-  { date: "2026-06-26", time: "14:00", jornada: 3, grupo: "I", home: { name: "Noruega", flag: "🇳🇴" }, away: { name: "Francia", flag: "🇫🇷" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports", "win"] },
-  { date: "2026-06-26", time: "14:00", jornada: 3, grupo: "I", home: { name: "Senegal", flag: "🇸🇳" }, away: { name: "Irak", flag: "🇮🇶" }, venue: "AT&T Stadium", city: "Arlington", channels: ["dsports"] },
-  { date: "2026-06-26", time: "19:00", jornada: 3, grupo: "H", home: { name: "Uruguay", flag: "🇺🇾" }, away: { name: "España", flag: "🇪🇸" }, venue: "Hard Rock Stadium", city: "Miami Gardens", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-26", time: "19:00", jornada: 3, grupo: "H", home: { name: "Cabo Verde", flag: "🇨🇻" }, away: { name: "Arabia Saudita", flag: "🇸🇦" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-06-26", time: "22:00", jornada: 3, grupo: "G", home: { name: "Nueva Zelanda", flag: "🇳🇿" }, away: { name: "Bélgica", flag: "🇧🇪" }, venue: "Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports"] },
-  { date: "2026-06-26", time: "22:00", jornada: 3, grupo: "G", home: { name: "Egipto", flag: "🇪🇬" }, away: { name: "Irán", flag: "🇮🇷" }, venue: "SoFi Stadium", city: "Inglewood", channels: ["dsports"] },
-  { date: "2026-06-27", time: "16:00", jornada: 3, grupo: "L", home: { name: "Panamá", flag: "🇵🇦" }, away: { name: "Inglaterra", flag: ENGLAND_FLAG }, venue: "Rose Bowl", city: "Pasadena", channels: ["dsports"] },
-  { date: "2026-06-27", time: "16:00", jornada: 3, grupo: "L", home: { name: "Croacia", flag: "🇭🇷" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Arrowhead Stadium", city: "Kansas City", channels: ["dsports"] },
-  { date: "2026-06-27", time: "18:30", jornada: 3, grupo: "K", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Portugal", flag: "🇵🇹" }, venue: "Allegiant Stadium", city: "Las Vegas", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-27", time: "18:30", jornada: 3, grupo: "K", home: { name: "RD Congo", flag: "🇨🇩" }, away: { name: "Uzbekistán", flag: "🇺🇿" }, venue: "Lumen Field", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Jordania", flag: "🇯🇴" }, away: { name: "Argentina", flag: "🇦🇷" }, venue: "Gillette Stadium", city: "Foxborough", channels: ["dsports", "win", "disney"] },
-  { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Argelia", flag: "🇩🇿" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "MetLife Stadium", city: "East Rutherford", channels: ["dsports"] },
+  { date: "2026-06-11", time: "14:00", jornada: 1, grupo: "A", home: { name: "México", flag: "🇲🇽" }, away: { name: "Sudáfrica", flag: "🇿🇦" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-11", time: "21:00", jornada: 1, grupo: "A", home: { name: "Corea del Sur", flag: "🇰🇷" }, away: { name: "Rep. Checa", flag: "🇨🇿" }, venue: "Estadio Guadalajara, Estadio Akron 🇲🇽", city: "Guadalajara", channels: ["dsports", "win"] },
+  { date: "2026-06-12", time: "14:00", jornada: 1, grupo: "B", home: { name: "Canadá", flag: "🇨🇦" }, away: { name: "Bosnia", flag: "🇧🇦" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-12", time: "20:00", jornada: 1, grupo: "D", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-13", time: "14:00", jornada: 1, grupo: "B", home: { name: "Qatar", flag: "🇶🇦" }, away: { name: "Suiza", flag: "🇨🇭" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports", "win"] },
+  { date: "2026-06-13", time: "17:00", jornada: 1, grupo: "C", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-13", time: "20:00", jornada: 1, grupo: "C", home: { name: "Haití", flag: "🇭🇹" }, away: { name: "Escocia", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports"] },
+  { date: "2026-06-13", time: "23:00", jornada: 1, grupo: "D", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Turquía", flag: "🇹🇷" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-06-14", time: "12:00", jornada: 1, grupo: "E", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Curazao", flag: "🇨🇼" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports"] },
+  { date: "2026-06-14", time: "15:00", jornada: 1, grupo: "F", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-14", time: "18:00", jornada: 1, grupo: "E", home: { name: "Costa de Marfil", flag: "🇨🇮" }, away: { name: "Ecuador", flag: "🇪🇨" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-14", time: "21:00", jornada: 1, grupo: "F", home: { name: "Suecia", flag: "🇸🇪" }, away: { name: "Túnez", flag: "🇹🇳" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: ["dsports"] },
+  { date: "2026-06-15", time: "11:00", jornada: 1, grupo: "H", home: { name: "España", flag: "🇪🇸" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-15", time: "14:00", jornada: 1, grupo: "G", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports"] },
+  { date: "2026-06-15", time: "17:00", jornada: 1, grupo: "H", home: { name: "Arabia Saudita", flag: "🇸🇦" }, away: { name: "Uruguay", flag: "🇺🇾" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-15", time: "20:00", jornada: 1, grupo: "G", home: { name: "Irán", flag: "🇮🇷" }, away: { name: "Nueva Zelanda", flag: "🇳🇿" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports"] },
+  { date: "2026-06-16", time: "14:00", jornada: 1, grupo: "I", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports"] },
+  { date: "2026-06-16", time: "17:00", jornada: 1, grupo: "I", home: { name: "Irak", flag: "🇮🇶" }, away: { name: "Noruega", flag: "🇳🇴" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports", "win"] },
+  { date: "2026-06-16", time: "20:00", jornada: 1, grupo: "J", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Argelia", flag: "🇩🇿" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-16", time: "23:00", jornada: 1, grupo: "J", home: { name: "Austria", flag: "🇦🇹" }, away: { name: "Jordania", flag: "🇯🇴" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports"] },
+  { date: "2026-06-17", time: "12:00", jornada: 1, grupo: "K", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "RD Congo", flag: "🇨🇩" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports"] },
+  { date: "2026-06-17", time: "15:00", jornada: 1, grupo: "L", home: { name: "Inglaterra", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "win"] },
+  { date: "2026-06-17", time: "18:00", jornada: 1, grupo: "L", home: { name: "Ghana", flag: "🇬🇭" }, away: { name: "Panamá", flag: "🇵🇦" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports"] },
+  { date: "2026-06-17", time: "21:00", jornada: 1, grupo: "K", home: { name: "Uzbekistán", flag: "🇺🇿" }, away: { name: "Colombia", flag: "🇨🇴" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-18", time: "11:00", jornada: 2, grupo: "A", home: { name: "Sudáfrica", flag: "🇿🇦" }, away: { name: "Rep. Checa", flag: "🇨🇿" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports"] },
+  { date: "2026-06-18", time: "14:00", jornada: 2, grupo: "B", home: { name: "Bosnia", flag: "🇧🇦" }, away: { name: "Suiza", flag: "🇨🇭" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-18", time: "17:00", jornada: 2, grupo: "B", home: { name: "Canadá", flag: "🇨🇦" }, away: { name: "Qatar", flag: "🇶🇦" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-06-18", time: "20:00", jornada: 2, grupo: "A", home: { name: "México", flag: "🇲🇽" }, away: { name: "Corea del Sur", flag: "🇰🇷" }, venue: "Estadio Guadalajara, Estadio Akron 🇲🇽", city: "Guadalajara", channels: ["dsports", "win"] },
+  { date: "2026-06-19", time: "14:00", jornada: 2, grupo: "D", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Australia", flag: "🇦🇺" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports"] },
+  { date: "2026-06-19", time: "17:00", jornada: 2, grupo: "C", home: { name: "Escocia", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-06-19", time: "19:30", jornada: 2, grupo: "C", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Haití", flag: "🇭🇹" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: ["dsports"] },
+  { date: "2026-06-19", time: "22:00", jornada: 2, grupo: "D", home: { name: "Turquía", flag: "🇹🇷" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports", "win"] },
+  { date: "2026-06-20", time: "12:00", jornada: 2, grupo: "F", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports", "win"] },
+  { date: "2026-06-20", time: "15:00", jornada: 2, grupo: "E", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Costa de Marfil", flag: "🇨🇮" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-20", time: "19:00", jornada: 2, grupo: "E", home: { name: "Ecuador", flag: "🇪🇨" }, away: { name: "Curazao", flag: "🇨🇼" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-20", time: "23:00", jornada: 2, grupo: "F", home: { name: "Túnez", flag: "🇹🇳" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: ["dsports"] },
+  { date: "2026-06-21", time: "11:00", jornada: 2, grupo: "H", home: { name: "España", flag: "🇪🇸" }, away: { name: "Arabia Saudita", flag: "🇸🇦" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-21", time: "14:00", jornada: 2, grupo: "G", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Irán", flag: "🇮🇷" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-21", time: "17:00", jornada: 2, grupo: "H", home: { name: "Uruguay", flag: "🇺🇾" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports"] },
+  { date: "2026-06-21", time: "20:00", jornada: 2, grupo: "G", home: { name: "Nueva Zelanda", flag: "🇳🇿" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-06-22", time: "12:00", jornada: 2, grupo: "J", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-22", time: "16:00", jornada: 2, grupo: "I", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Irak", flag: "🇮🇶" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: ["dsports"] },
+  { date: "2026-06-22", time: "19:00", jornada: 2, grupo: "I", home: { name: "Noruega", flag: "🇳🇴" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports", "win"] },
+  { date: "2026-06-22", time: "22:00", jornada: 2, grupo: "J", home: { name: "Jordania", flag: "🇯🇴" }, away: { name: "Argelia", flag: "🇩🇿" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports"] },
+  { date: "2026-06-23", time: "12:00", jornada: 2, grupo: "K", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "Uzbekistán", flag: "🇺🇿" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports", "win"] },
+  { date: "2026-06-23", time: "15:00", jornada: 2, grupo: "L", home: { name: "Inglaterra", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports"] },
+  { date: "2026-06-23", time: "18:00", jornada: 2, grupo: "L", home: { name: "Panamá", flag: "🇵🇦" }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports"] },
+  { date: "2026-06-23", time: "21:00", jornada: 2, grupo: "K", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "RD Congo", flag: "🇨🇩" }, venue: "Guadalajara Stadium, Estadio Akron 🇲🇽", city: "Guadalajara", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-24", time: "14:00", jornada: 3, grupo: "B", home: { name: "Suiza", flag: "🇨🇭" }, away: { name: "Canadá", flag: "🇨🇦" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-06-24", time: "14:00", jornada: 3, grupo: "B", home: { name: "Bosnia", flag: "🇧🇦" }, away: { name: "Qatar", flag: "🇶🇦" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports"] },
+  { date: "2026-06-24", time: "17:00", jornada: 3, grupo: "C", home: { name: "Escocia", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" }, away: { name: "Brasil", flag: "🇧🇷" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-24", time: "17:00", jornada: 3, grupo: "C", home: { name: "Marruecos", flag: "🇲🇦" }, away: { name: "Haití", flag: "🇭🇹" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports"] },
+  { date: "2026-06-24", time: "20:00", jornada: 3, grupo: "A", home: { name: "Rep. Checa", flag: "🇨🇿" }, away: { name: "México", flag: "🇲🇽" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: ["dsports", "win"] },
+  { date: "2026-06-24", time: "20:00", jornada: 3, grupo: "A", home: { name: "Sudáfrica", flag: "🇿🇦" }, away: { name: "Corea del Sur", flag: "🇰🇷" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: ["dsports"] },
+  { date: "2026-06-25", time: "15:00", jornada: 3, grupo: "E", home: { name: "Ecuador", flag: "🇪🇨" }, away: { name: "Alemania", flag: "🇩🇪" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-25", time: "15:00", jornada: 3, grupo: "E", home: { name: "Curazao", flag: "🇨🇼" }, away: { name: "Costa de Marfil", flag: "🇨🇮" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: ["dsports"] },
+  { date: "2026-06-25", time: "18:00", jornada: 3, grupo: "F", home: { name: "Túnez", flag: "🇹🇳" }, away: { name: "Países Bajos", flag: "🇳🇱" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports", "win"] },
+  { date: "2026-06-25", time: "18:00", jornada: 3, grupo: "F", home: { name: "Japón", flag: "🇯🇵" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports"] },
+  { date: "2026-06-25", time: "21:00", jornada: 3, grupo: "D", home: { name: "Turquía", flag: "🇹🇷" }, away: { name: "Estados Unidos", flag: "🇺🇸" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports"] },
+  { date: "2026-06-25", time: "21:00", jornada: 3, grupo: "D", home: { name: "Paraguay", flag: "🇵🇾" }, away: { name: "Australia", flag: "🇦🇺" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports"] },
+  { date: "2026-06-26", time: "14:00", jornada: 3, grupo: "I", home: { name: "Noruega", flag: "🇳🇴" }, away: { name: "Francia", flag: "🇫🇷" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports", "win"] },
+  { date: "2026-06-26", time: "14:00", jornada: 3, grupo: "I", home: { name: "Senegal", flag: "🇸🇳" }, away: { name: "Irak", flag: "🇮🇶" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports"] },
+  { date: "2026-06-26", time: "19:00", jornada: 3, grupo: "H", home: { name: "Uruguay", flag: "🇺🇾" }, away: { name: "España", flag: "🇪🇸" }, venue: "Guadalajara Stadium, Estadio Akron 🇲🇽", city: "Guadalajara", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-26", time: "19:00", jornada: 3, grupo: "H", home: { name: "Cabo Verde", flag: "🇨🇻" }, away: { name: "Arabia Saudita", flag: "🇸🇦" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports"] },
+  { date: "2026-06-26", time: "22:00", jornada: 3, grupo: "G", home: { name: "Nueva Zelanda", flag: "🇳🇿" }, away: { name: "Bélgica", flag: "🇧🇪" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-06-26", time: "22:00", jornada: 3, grupo: "G", home: { name: "Egipto", flag: "🇪🇬" }, away: { name: "Irán", flag: "🇮🇷" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports"] },
+  { date: "2026-06-27", time: "16:00", jornada: 3, grupo: "L", home: { name: "Panamá", flag: "🇵🇦" }, away: { name: "Inglaterra", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports"] },
+  { date: "2026-06-27", time: "16:00", jornada: 3, grupo: "L", home: { name: "Croacia", flag: "🇭🇷" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: ["dsports"] },
+  { date: "2026-06-27", time: "18:30", jornada: 3, grupo: "K", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Portugal", flag: "🇵🇹" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-27", time: "18:30", jornada: 3, grupo: "K", home: { name: "RD Congo", flag: "🇨🇩" }, away: { name: "Uzbekistán", flag: "🇺🇿" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports"] },
+  { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Jordania", flag: "🇯🇴" }, away: { name: "Argentina", flag: "🇦🇷" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "win", "disney"] },
+  { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Argelia", flag: "🇩🇿" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports"] },
+  { date: "2026-06-28", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "2.º Grupo A", flag: "🏆" }, away: { name: "2.º Grupo B", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: [] },
+  { date: "2026-06-29", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo E", flag: "🏆" }, away: { name: "Mejor 3.º A/B/C/D/F", flag: "🏆" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: [] },
+  { date: "2026-06-29", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo F", flag: "🏆" }, away: { name: "2.º Grupo C", flag: "🏆" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: [] },
+  { date: "2026-06-29", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo C", flag: "🏆" }, away: { name: "2.º Grupo F", flag: "🏆" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: [] },
+  { date: "2026-06-30", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo I", flag: "🏆" }, away: { name: "Mejor 3.º C/D/F/G/H", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
+  { date: "2026-06-30", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "2.º Grupo E", flag: "🏆" }, away: { name: "2.º Grupo I", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
+  { date: "2026-06-30", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo A", flag: "🏆" }, away: { name: "Mejor 3.º C/E/F/H/I", flag: "🏆" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: [] },
+  { date: "2026-07-01", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo L", flag: "🏆" }, away: { name: "Mejor 3.º E/H/I/J/K", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
+  { date: "2026-07-01", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo D", flag: "🏆" }, away: { name: "Mejor 3.º B/E/F/I/J", flag: "🏆" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: [] },
+  { date: "2026-07-01", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo G", flag: "🏆" }, away: { name: "Mejor 3.º A/E/H/I/J", flag: "🏆" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: [] },
+  { date: "2026-07-02", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "2.º Grupo K", flag: "🏆" }, away: { name: "2.º Grupo L", flag: "🏆" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: [] },
+  { date: "2026-07-02", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo H", flag: "🏆" }, away: { name: "2.º Grupo J", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: [] },
+  { date: "2026-07-02", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo B", flag: "🏆" }, away: { name: "Mejor 3.º E/F/G/I/J", flag: "🏆" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: [] },
+  { date: "2026-07-03", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo J", flag: "🏆" }, away: { name: "2.º Grupo H", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
+  { date: "2026-07-03", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "1.º Grupo K", flag: "🏆" }, away: { name: "Mejor 3.º D/E/I/J/L", flag: "🏆" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: [] },
+  { date: "2026-07-03", time: null, timeConfirmed: false, stageLabel: "Dieciseisavos de final", home: { name: "2.º Grupo D", flag: "🏆" }, away: { name: "2.º Grupo G", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
+  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 74", flag: "🏆" }, away: { name: "Ganador partido 77", flag: "🏆" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: [] },
+  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 73", flag: "🏆" }, away: { name: "Ganador partido 75", flag: "🏆" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: [] },
+  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 76", flag: "🏆" }, away: { name: "Ganador partido 78", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
+  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 79", flag: "🏆" }, away: { name: "Ganador partido 80", flag: "🏆" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: [] },
+  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 83", flag: "🏆" }, away: { name: "Ganador partido 84", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
+  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 81", flag: "🏆" }, away: { name: "Ganador partido 82", flag: "🏆" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: [] },
+  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 86", flag: "🏆" }, away: { name: "Ganador partido 88", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
+  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 85", flag: "🏆" }, away: { name: "Ganador partido 87", flag: "🏆" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: [] },
+  { date: "2026-07-09", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 89", flag: "🏆" }, away: { name: "Ganador partido 90", flag: "🏆" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: [] },
+  { date: "2026-07-10", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 93", flag: "🏆" }, away: { name: "Ganador partido 94", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: [] },
+  { date: "2026-07-11", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 91", flag: "🏆" }, away: { name: "Ganador partido 92", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
+  { date: "2026-07-11", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 95", flag: "🏆" }, away: { name: "Ganador partido 96", flag: "🏆" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: [] },
+  { date: "2026-07-14", time: null, timeConfirmed: false, stageLabel: "Semifinal", home: { name: "Ganador partido 97", flag: "🏆" }, away: { name: "Ganador partido 98", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
+  { date: "2026-07-15", time: null, timeConfirmed: false, stageLabel: "Semifinal", home: { name: "Ganador partido 99", flag: "🏆" }, away: { name: "Ganador partido 100", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
+  { date: "2026-07-18", time: null, timeConfirmed: false, stageLabel: "Tercer puesto", home: { name: "Perdedor partido 101", flag: "🏆" }, away: { name: "Perdedor partido 102", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
+  { date: "2026-07-19", time: null, timeConfirmed: false, stageLabel: "Final", home: { name: "Ganador partido 101", flag: "🏆" }, away: { name: "Ganador partido 102", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
 ];
 
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -283,13 +315,19 @@ function getBogotaDateStr() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
+function matchHasConfirmedTime(match) {
+  return Boolean(match?.time) && match?.timeConfirmed !== false;
+}
+
 function matchDatetimeBogota(match) {
+  if (!matchHasConfirmedTime(match)) return null;
   const [h, min] = match.time.split(":").map(Number);
   const [y, mo, d] = match.date.split("-").map(Number);
   return new Date(Date.UTC(y, mo - 1, d, h + 5, min));
 }
 
 function formatTime12(time24) {
+  if (!time24) return "Por confirmar";
   let [h, m] = time24.split(":").map(Number);
   const ampm = h >= 12 ? "p. m." : "a. m.";
   h = h % 12 || 12;
@@ -325,6 +363,35 @@ function createElement(tag, options = {}) {
 
 function createBadge(text, className) {
   return createElement("span", { className: `badge ${className}`, text });
+}
+
+function appendMatchMetaBadges(container, match) {
+  if (match.stageLabel) {
+    container.append(createBadge(match.stageLabel, "badge-jornada"));
+    return;
+  }
+
+  if (match.grupo) {
+    container.append(createBadge(`Grupo ${match.grupo}`, "badge-group"));
+  }
+
+  if (match.jornada) {
+    container.append(createBadge(`Jornada ${match.jornada}`, "badge-jornada"));
+  }
+}
+
+function getMatchMetaText(match) {
+  if (match.stageLabel) return match.stageLabel;
+  const parts = [];
+  if (match.grupo) parts.push(`Grupo ${match.grupo}`);
+  if (match.jornada) parts.push(`Jornada ${match.jornada}`);
+  return parts.join(" · ");
+}
+
+function shareKickoffSlot(matchA, matchB) {
+  return matchHasConfirmedTime(matchA)
+    && matchHasConfirmedTime(matchB)
+    && matchA.time === matchB.time;
 }
 
 function createChannelBadge(key) {
@@ -500,7 +567,15 @@ function resolveResultForMatch(match) {
 }
 
 function getFallbackTemporalState(match, nowUTC) {
-  const diffMs = matchDatetimeBogota(match) - nowUTC;
+  const kickoff = matchDatetimeBogota(match);
+  if (!kickoff) {
+    return {
+      diffMs: Infinity,
+      isLive: false,
+      isFinished: false,
+    };
+  }
+  const diffMs = kickoff - nowUTC;
   return {
     diffMs,
     isLive: diffMs <= 0 && diffMs > -MATCH_END_MS,
@@ -521,6 +596,7 @@ function sanitizeDisplayClock(value) {
 
 function getCalculatedMinuteLabel(match, nowUTC) {
   const kickoff = matchDatetimeBogota(match);
+  if (!kickoff) return null;
   const elapsedMinutes = (nowUTC - kickoff) / 60000;
   return minuteLabelFromElapsedMinutes(elapsedMinutes);
 }
@@ -569,6 +645,7 @@ function getMatchPresentation(match, nowUTC) {
   const minuteLabel = getResultMinuteLabel(match, result, nowUTC);
   const isLive = phase === "LIVE" || phase === "HALFTIME";
   const isFinished = phase === "FINISHED";
+  const kickoff = matchDatetimeBogota(match);
   const centerPrimary = hasScore ? `${orientedScore.home} - ${orientedScore.away}` : formatTime12(match.time);
   const centerSecondary = hasScore
     ? (phase === "HALFTIME" ? "Medio tiempo" : phase === "FINISHED" ? "Final" : minuteLabel || "En vivo")
@@ -584,7 +661,7 @@ function getMatchPresentation(match, nowUTC) {
     minuteLabel,
     centerPrimary,
     centerSecondary,
-    countdownText: formatCountdown(matchDatetimeBogota(match) - nowUTC),
+    countdownText: kickoff ? formatCountdown(kickoff - nowUTC) : null,
   };
 }
 
@@ -636,10 +713,11 @@ function buildFeaturedMatchBlock(match, nowUTC) {
 
   const info = createElement("div", { className: "fc-info" });
   const left = createElement("div", { className: "fc-info-left" });
+  const metaText = getMatchMetaText(match);
   left.append(
     buildInfoItem("🏟️", match.venue),
     buildInfoItem("📍", match.city),
-    createElement("div", { className: "fc-info-item", text: `Grupo ${match.grupo} · Jornada ${match.jornada}` })
+    ...(metaText ? [createElement("div", { className: "fc-info-item", text: metaText })] : [])
   );
   info.append(left);
 
@@ -665,11 +743,8 @@ function buildMatchCard(match, nowUTC) {
 
   const top = createElement("div", { className: "mc-top" });
   const meta = createElement("div", { className: "mc-meta" });
-  meta.append(
-    createElement("span", { className: "mc-time-badge", text: formatTime12(match.time) }),
-    createBadge(`Grupo ${match.grupo}`, "badge-group"),
-    createBadge(`Jornada ${match.jornada}`, "badge-jornada")
-  );
+  meta.append(createElement("span", { className: "mc-time-badge", text: formatTime12(match.time) }));
+  appendMatchMetaBadges(meta, match);
   top.append(meta, buildStatusBadge(presentation));
 
   const teams = createElement("div", { className: "mc-teams" });
@@ -707,7 +782,8 @@ function buildFeaturedSection(dayMatches, nowUTC) {
 
   dayMatches.forEach((match, index) => {
     const presentation = getMatchPresentation(match, nowUTC);
-    const diffMs = matchDatetimeBogota(match) - nowUTC;
+    const kickoff = matchDatetimeBogota(match);
+    const diffMs = kickoff ? kickoff - nowUTC : Infinity;
 
     if (presentation.isLive) {
       const elapsed = Math.abs(diffMs);
@@ -724,14 +800,21 @@ function buildFeaturedSection(dayMatches, nowUTC) {
     }
   });
 
-  if (featuredIdx === -1) featuredIdx = dayMatches.length - 1;
+  if (featuredIdx === -1) {
+    featuredIdx = dayMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished)
+      ? dayMatches.length - 1
+      : 0;
+  }
 
   const featuredMatch = dayMatches[featuredIdx];
   const featuredPresentation = getMatchPresentation(featuredMatch, nowUTC);
-  const featuredGroup = dayMatches.filter((match) => match.time === featuredMatch.time);
-  const featuredIndices = new Set(dayMatches.map((match, index) => (match.time === featuredMatch.time ? index : -1)).filter((index) => index >= 0));
+  const featuredGroup = dayMatches.filter((match) => shareKickoffSlot(match, featuredMatch) || match === featuredMatch);
+  const featuredIndices = new Set(dayMatches.map((match, index) => (shareKickoffSlot(match, featuredMatch) || match === featuredMatch ? index : -1)).filter((index) => index >= 0));
   const isSimultaneous = featuredGroup.length > 1;
-  const remainingUpcoming = dayMatches.some((match) => !getMatchPresentation(match, nowUTC).isFinished && matchDatetimeBogota(match) - nowUTC > 0);
+  const remainingUpcoming = dayMatches.some((match) => {
+    const kickoff = matchDatetimeBogota(match);
+    return !getMatchPresentation(match, nowUTC).isFinished && (!kickoff || kickoff - nowUTC > 0);
+  });
   const allFinished = dayMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished);
 
   let featuredHeading = "Próximo partido";
@@ -746,7 +829,7 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   } else if (!remainingUpcoming && featuredPresentation.isFinished) {
     featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
     statusText = "No quedan partidos por jugar hoy";
-  } else if (isSimultaneous) {
+  } else if (isSimultaneous && matchHasConfirmedTime(featuredMatch)) {
     featuredHeading = `Próximos partidos de hoy · ${formatTime12(featuredMatch.time)}`;
   } else {
     featuredHeading = "Próximo partido de hoy";
@@ -763,7 +846,7 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   if (isSimultaneous) {
     badges.append(createBadge("⚡ Simultánea", "badge-jornada"));
   } else {
-    badges.append(createBadge(`Grupo ${featuredMatch.grupo}`, "badge-group"), createBadge(`Jornada ${featuredMatch.jornada}`, "badge-jornada"));
+    appendMatchMetaBadges(badges, featuredMatch);
   }
 
   top.append(badges);
@@ -789,7 +872,7 @@ function buildRestSection(restMatches, nowUTC) {
   while (i < restMatches.length) {
     const current = restMatches[i];
     let j = i + 1;
-    while (j < restMatches.length && restMatches[j].time === current.time) j += 1;
+    while (j < restMatches.length && shareKickoffSlot(restMatches[j], current)) j += 1;
     const group = restMatches.slice(i, j);
 
     if (group.length > 1) {

@@ -89,6 +89,7 @@ const MATCHES = [
 const APP_CONFIG = window.APP_CONFIG || {};
 const RESULTS_STORAGE_KEY = "wc2026-results-cache-v1";
 const RESULTS_MIN_REFRESH_MS = 40000;
+const RESULTS_CACHE_MAX_AGE_MS = 2 * 60 * 1000;
 const KNOWN_RESULT_STATUSES = new Set(["SCHEDULED", "LIVE", "HALFTIME", "FINISHED", "UNKNOWN"]);
 const DEBUG_RESULTS = typeof window !== "undefined"
   && (
@@ -106,6 +107,7 @@ const state = {
   resultsPollTimerId: null,
   clockIntervalId: null,
   liveRefreshIntervalId: null,
+  isResultsLoading: false,
 };
 
 const TEAM_ALIAS_GROUPS = {
@@ -374,6 +376,23 @@ function safeWriteCachedResults(payload) {
   } catch {
     // Ignore storage failures silently.
   }
+}
+
+function getPayloadTimestamp(payload) {
+  const stamp = payload?.live_meta?.cache_updated_at
+    || payload?.live_meta?.generated_at
+    || payload?.meta?.cache_updated_at
+    || payload?.meta?.generated_at
+    || null;
+  const ts = stamp ? Date.parse(stamp) : NaN;
+  return Number.isFinite(ts) ? ts : null;
+}
+
+function isCachedPayloadFresh(payload) {
+  if (!payload || !Array.isArray(payload.results) || payload.results.length === 0) return false;
+  const timestamp = getPayloadTimestamp(payload);
+  if (!timestamp) return false;
+  return (Date.now() - timestamp) <= RESULTS_CACHE_MAX_AGE_MS;
 }
 
 function debugLog(label, payload) {
@@ -875,6 +894,9 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
     createElement("strong", { text: String(dayMatches.length) }),
     document.createTextNode(` partido${dayMatches.length !== 1 ? "s" : ""} este día`)
   );
+  if (state.isResultsLoading) {
+    elements.heroCount.append(document.createTextNode(" · actualizando resultados..."));
+  }
 
   const currentIndex = allDates.indexOf(currentDateStr);
   elements.btnPrev.disabled = currentIndex <= 0;
@@ -992,6 +1014,9 @@ async function fetchResultsSilently() {
     return;
   }
 
+  state.isResultsLoading = true;
+  render({ animate: false, scrollActiveDay: false });
+
   try {
     const baseUrl = config.apiBaseUrl.replace(/\/$/, "");
     debugLog("Fetch /api/results + /api/results/live", { apiBaseUrl: baseUrl });
@@ -1052,17 +1077,25 @@ async function fetchResultsSilently() {
     debugLog("Excepción al consultar resultados");
     // Keep the last valid cached results silently.
   } finally {
+    state.isResultsLoading = false;
+    render({ animate: false, scrollActiveDay: false });
     scheduleResultsRefresh();
   }
 }
 
 function hydrateResultsFromCache() {
   const cachedPayload = safeReadCachedResults();
-  if (cachedPayload) {
+  if (cachedPayload && isCachedPayloadFresh(cachedPayload)) {
     debugLog("Resultados cargados desde localStorage", {
       totalResults: Array.isArray(cachedPayload.results) ? cachedPayload.results.length : 0,
+      cacheAgeMs: Date.now() - getPayloadTimestamp(cachedPayload),
     });
     ingestResultsPayload(cachedPayload);
+  } else if (cachedPayload) {
+    debugLog("Caché local ignorado por antigüedad", {
+      totalResults: Array.isArray(cachedPayload.results) ? cachedPayload.results.length : 0,
+      cacheAgeMs: getPayloadTimestamp(cachedPayload) ? Date.now() - getPayloadTimestamp(cachedPayload) : null,
+    });
   } else {
     debugLog("No había caché local de resultados");
   }

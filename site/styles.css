@@ -573,6 +573,22 @@ a:focus-visible {
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
+.fc-flag-stack {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  min-height: 52px;
+  flex-wrap: wrap;
+  max-width: 110px;
+}
+
+.fc-flag-stack .flag-stack-item {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
 .fc-team-name {
   font-size: clamp(14px, 3.5vw, 20px);
   font-weight: 700;
@@ -953,6 +969,20 @@ a:focus-visible {
   line-height: 1;
 }
 
+.mc-flag-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 26px;
+  flex-wrap: wrap;
+  max-width: 66px;
+}
+
+.mc-flag-stack .flag-stack-item {
+  font-size: 18px;
+  line-height: 1;
+}
+
 .mc-name {
   display: inline-flex;
   align-items: center;
@@ -971,8 +1001,16 @@ a:focus-visible {
 }
 
 .mc-venue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11px;
   color: var(--muted);
+}
+
+.mc-venue-flag {
+  font-size: 12px;
+  line-height: 1;
 }
 
 .empty-state,
@@ -1064,6 +1102,15 @@ a:focus-visible {
     font-size: 38px;
   }
 
+  .fc-flag-stack {
+    min-height: 38px;
+    max-width: 88px;
+  }
+
+  .fc-flag-stack .flag-stack-item {
+    font-size: 28px;
+  }
+
   .fc-team-name {
     font-size: 13px;
   }
@@ -1139,6 +1186,15 @@ a:focus-visible {
 
   .mc-flag {
     font-size: 22px;
+  }
+
+  .mc-flag-stack {
+    min-height: 22px;
+    max-width: 54px;
+  }
+
+  .mc-flag-stack .flag-stack-item {
+    font-size: 15px;
   }
 
   .mc-name {

@@ -455,7 +455,7 @@ function appendMatchMetaBadges(container, match) {
 
 function getMatchMetaText(match) {
   const phaseLabel = getStageLabel(match);
-  if (phaseLabel) return phaseLabel;
+  if (phaseLabel) return null;
   const parts = [];
   if (match.grupo) parts.push(`Grupo ${match.grupo}`);
   if (match.jornada) parts.push(`Jornada ${match.jornada}`);
@@ -469,6 +469,29 @@ function getStageLabel(match) {
   if (match.round && KNOWN_KNOCKOUT_PHASES.has(match.round)) return match.round;
   if (match.phase === "Dieciseisavos" || match.round === "Dieciseisavos") return "Dieciseisavos de final";
   return null;
+}
+
+function getVenueCountryFlag(match) {
+  const venueText = `${match?.venue || ""} ${match?.city || ""}`.toLowerCase();
+  const rules = [
+    { pattern: /mexico|monterrey|ciudad de méxico|guadalajara/, flag: "🇲🇽" },
+    { pattern: /canada|toronto|vancouver/, flag: "🇨🇦" },
+    { pattern: /boston|philadelphia|easton|east rutherford|new york|new jersey|metlife|houston|arlington|seattle|atlanta|miami|dallas|kansas city|santa clara|los angeles|inglewood|foxborough|guadalajara|san francisco bay area|boston stadium|new york new jersey stadium/, flag: "🇺🇸" },
+    { pattern: /bélgica|belgium/, flag: "🇧🇪" },
+    { pattern: /francia|france/, flag: "🇫🇷" },
+  ];
+
+  for (const rule of rules) {
+    if (rule.pattern.test(venueText)) return rule.flag;
+  }
+  return "⚪";
+}
+
+function getVenueDisplayText(match) {
+  const venue = match?.venue || "";
+  if (!venue) return "";
+  const flag = getVenueCountryFlag(match);
+  return flag && flag !== "⚪" ? `${venue} ${flag}` : venue;
 }
 
 function shareKickoffSlot(matchA, matchB) {
@@ -526,7 +549,7 @@ function getTeamFlagByName(teamName) {
   const match = MATCHES.find((item) => item.home.name === teamName || item.away.name === teamName);
   if (match?.home.name === teamName) return match.home.flag;
   if (match?.away.name === teamName) return match.away.flag;
-  return "🏳️";
+  return "⚪";
 }
 
 function getResolvedWinnerName(sourceMatch, nowUTC) {
@@ -545,6 +568,16 @@ function getResolvedLoserName(sourceMatch, nowUTC) {
   if (presentation.orientedScore.home < presentation.orientedScore.away) return sourceMatch.home.name;
   if (presentation.orientedScore.away < presentation.orientedScore.home) return sourceMatch.away.name;
   return null;
+}
+
+function getResolvedWinnerFlag(sourceMatch, nowUTC) {
+  const winner = getResolvedWinnerName(sourceMatch, nowUTC);
+  return winner ? getTeamFlagByName(winner) : "⚪";
+}
+
+function getResolvedLoserFlag(sourceMatch, nowUTC) {
+  const loser = getResolvedLoserName(sourceMatch, nowUTC);
+  return loser ? getTeamFlagByName(loser) : "⚪";
 }
 
 function getKnockoutScheduleMatch(sourceId) {
@@ -567,9 +600,7 @@ function resolveProgramParticipantLabel(sourceId, nowUTC) {
       return `${home} vs ${away}`;
     }
 
-    return source.sourceType === "losers"
-      ? `Perdedor ${source.id}`
-      : `Ganador ${source.id}`;
+    return "Por definir";
   }
 
   const baseSource = knockoutSourceById.get(sourceId);
@@ -580,7 +611,7 @@ function resolveProgramParticipantLabel(sourceId, nowUTC) {
     return `${baseSource.home} / ${baseSource.away}`;
   }
 
-  return `Ganador ${sourceId}`;
+  return "Por definir";
 }
 
 function resolveProgramLoserLabel(sourceId, nowUTC) {
@@ -597,7 +628,7 @@ function resolveProgramLoserLabel(sourceId, nowUTC) {
       return `${home} vs ${away}`;
     }
 
-    return `Perdedor ${source.id}`;
+    return "Por definir";
   }
 
   const baseSource = knockoutSourceById.get(sourceId);
@@ -608,7 +639,48 @@ function resolveProgramLoserLabel(sourceId, nowUTC) {
     return `Perdedor ${sourceId}`;
   }
 
-  return `Perdedor ${sourceId}`;
+  return "Por definir";
+}
+
+function getKnockoutSideVisual(sourceId, nowUTC) {
+  if (!sourceId) {
+    return { text: "Por definir", flags: ["⚪"] };
+  }
+
+  const scheduled = knockoutScheduleById.get(sourceId);
+  if (scheduled) {
+    const winner = getResolvedWinnerName(scheduled, nowUTC);
+    if (winner) {
+      return { text: winner, flags: [getTeamFlagByName(winner)] };
+    }
+
+    const loser = getResolvedLoserName(scheduled, nowUTC);
+    if (loser && scheduled.sourceType === "losers") {
+      return { text: loser, flags: [getTeamFlagByName(loser)] };
+    }
+
+    if (scheduled.stageLabel === "Final") {
+      return { text: "Por definir", flags: ["🏳️"] };
+    }
+
+    return { text: "Por definir", flags: ["⚪"] };
+  }
+
+  const baseSource = knockoutSourceById.get(sourceId);
+  if (baseSource) {
+    const fixture = getMatchByTeams(baseSource.home, baseSource.away);
+    const winner = getResolvedWinnerName(fixture, nowUTC);
+    if (winner) {
+      return { text: winner, flags: [getTeamFlagByName(winner)] };
+    }
+
+    return {
+      text: `${baseSource.home} / ${baseSource.away}`,
+      flags: [getTeamFlagByName(baseSource.home), getTeamFlagByName(baseSource.away)],
+    };
+  }
+
+  return { text: "Por definir", flags: ["⚪"] };
 }
 
 function getKnockoutProgramLabel(match, nowUTC) {
@@ -629,6 +701,27 @@ function getKnockoutProgramLabel(match, nowUTC) {
   return {
     home: resolveProgramParticipantLabel(match.homeSource, nowUTC),
     away: resolveProgramParticipantLabel(match.awaySource, nowUTC),
+  };
+}
+
+function getKnockoutProgramVisual(match, nowUTC) {
+  if (!match?.homeSource || !match?.awaySource) {
+    return {
+      home: { text: match?.home?.name || "", flags: [match?.home?.flag || "⚪"] },
+      away: { text: match?.away?.name || "", flags: [match?.away?.flag || "⚪"] },
+    };
+  }
+
+  if (match.sourceType === "losers") {
+    return {
+      home: getKnockoutSideVisual(match.homeSource, nowUTC),
+      away: getKnockoutSideVisual(match.awaySource, nowUTC),
+    };
+  }
+
+  return {
+    home: getKnockoutSideVisual(match.homeSource, nowUTC),
+    away: getKnockoutSideVisual(match.awaySource, nowUTC),
   };
 }
 
@@ -891,17 +984,27 @@ function buildChannels(channels, className) {
   return wrap;
 }
 
+function buildFlagStack(flags, className = "") {
+  const cleanFlags = Array.isArray(flags) ? flags.filter(Boolean) : [];
+  if (!cleanFlags.length) cleanFlags.push("⚪");
+  const wrap = createElement("span", { className: `flag-stack${className ? ` ${className}` : ""}` });
+  cleanFlags.forEach((flag) => {
+    wrap.append(createElement("span", { className: "flag-stack-item", text: flag }));
+  });
+  return wrap;
+}
+
 function buildFeaturedMatchBlock(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
-  const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
+  const knockoutVisual = getKnockoutProgramVisual(match, nowUTC);
   const isKnockoutProgram = Boolean(match.homeSource && match.awaySource);
   const block = createElement("article", { className: "fc-block" });
   const teams = createElement("div", { className: "fc-teams" });
 
   const home = createElement("div", { className: "fc-team" });
   home.append(
-    createElement("div", { className: "fc-flag", text: match.home.flag }),
-    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutLabels.home : match.home.name })
+    isKnockoutProgram ? buildFlagStack(knockoutVisual.home.flags, "fc-flag-stack") : createElement("div", { className: "fc-flag", text: match.home.flag }),
+    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutVisual.home.text : match.home.name })
   );
 
   const vs = createElement("div", { className: "fc-vs" });
@@ -912,8 +1015,8 @@ function buildFeaturedMatchBlock(match, nowUTC) {
 
   const away = createElement("div", { className: "fc-team" });
   away.append(
-    createElement("div", { className: "fc-flag", text: match.away.flag }),
-    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutLabels.away : match.away.name })
+    isKnockoutProgram ? buildFlagStack(knockoutVisual.away.flags, "fc-flag-stack") : createElement("div", { className: "fc-flag", text: match.away.flag }),
+    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutVisual.away.text : match.away.name })
   );
 
   teams.append(home, vs, away);
@@ -922,7 +1025,7 @@ function buildFeaturedMatchBlock(match, nowUTC) {
   const left = createElement("div", { className: "fc-info-left" });
   const metaText = getMatchMetaText(match);
   left.append(
-    buildInfoItem("🏟️", match.venue),
+    buildInfoItem("🏟️", getVenueDisplayText(match)),
     ...(metaText ? [createElement("div", { className: "fc-info-item", text: metaText })] : [])
   );
   info.append(left);
@@ -943,7 +1046,7 @@ function buildFeaturedMatchBlock(match, nowUTC) {
 
 function buildMatchCard(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
-  const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
+  const knockoutVisual = getKnockoutProgramVisual(match, nowUTC);
   const isKnockoutProgram = Boolean(match.homeSource && match.awaySource);
   const card = createElement("article", { className: "match-card" });
 
@@ -957,7 +1060,7 @@ function buildMatchCard(match, nowUTC) {
 
   const teams = createElement("div", { className: "mc-teams" });
   const home = createElement("div", { className: "mc-team left" });
-  home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutLabels.home : match.home.name }));
+  home.append(isKnockoutProgram ? buildFlagStack(knockoutVisual.home.flags, "mc-flag-stack") : createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutVisual.home.text : match.home.name }));
 
   const center = createElement("div", { className: "mc-center" });
   center.classList.add(presentation.hasScore ? "is-score" : "is-schedule");
@@ -969,12 +1072,17 @@ function buildMatchCard(match, nowUTC) {
   );
 
   const away = createElement("div", { className: "mc-team right" });
-  away.append(createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutLabels.away : match.away.name }));
+  away.append(isKnockoutProgram ? buildFlagStack(knockoutVisual.away.flags, "mc-flag-stack") : createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutVisual.away.text : match.away.name }));
 
   teams.append(home, center, away);
 
   const bottom = createElement("div", { className: "mc-bottom" });
-  bottom.append(createElement("div", { className: "mc-venue", text: `🏟️ ${match.venue}` }));
+  const venueRow = createElement("div", { className: "mc-venue" });
+  venueRow.append(
+    createElement("span", { text: "🏟️" }),
+    createElement("span", { className: "mc-venue-text", text: getVenueDisplayText(match) })
+  );
+  bottom.append(venueRow);
   if (match.channels.length) bottom.append(buildChannels(match.channels, "mc-channels"));
 
   card.append(top, teams, bottom);
@@ -987,8 +1095,14 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   let featuredIdx = -1;
   let bestLiveElapsed = Infinity;
   let bestUpcomingDiff = Infinity;
+  const orderedMatches = [...dayMatches].sort((a, b) => {
+    const aKickoff = matchDatetimeBogota(a)?.getTime() ?? Number.POSITIVE_INFINITY;
+    const bKickoff = matchDatetimeBogota(b)?.getTime() ?? Number.POSITIVE_INFINITY;
+    if (aKickoff !== bKickoff) return aKickoff - bKickoff;
+    return (a.matchNumber || 0) - (b.matchNumber || 0);
+  });
 
-  dayMatches.forEach((match, index) => {
+  orderedMatches.forEach((match, index) => {
     const presentation = getMatchPresentation(match, nowUTC);
     const kickoff = matchDatetimeBogota(match);
     const diffMs = kickoff ? kickoff - nowUTC : Infinity;
@@ -1009,21 +1123,21 @@ function buildFeaturedSection(dayMatches, nowUTC) {
   });
 
   if (featuredIdx === -1) {
-    featuredIdx = dayMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished)
-      ? dayMatches.length - 1
+    featuredIdx = orderedMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished)
+      ? 0
       : 0;
   }
 
-  const featuredMatch = dayMatches[featuredIdx];
+  const featuredMatch = orderedMatches[featuredIdx];
   const featuredPresentation = getMatchPresentation(featuredMatch, nowUTC);
-  const featuredGroup = dayMatches.filter((match) => shareKickoffSlot(match, featuredMatch) || match === featuredMatch);
-  const featuredIndices = new Set(dayMatches.map((match, index) => (shareKickoffSlot(match, featuredMatch) || match === featuredMatch ? index : -1)).filter((index) => index >= 0));
+  const featuredGroup = orderedMatches.filter((match) => shareKickoffSlot(match, featuredMatch) || match === featuredMatch);
+  const featuredIndices = new Set(orderedMatches.map((match, index) => (shareKickoffSlot(match, featuredMatch) || match === featuredMatch ? index : -1)).filter((index) => index >= 0));
   const isSimultaneous = featuredGroup.length > 1;
-  const remainingUpcoming = dayMatches.some((match) => {
+  const remainingUpcoming = orderedMatches.some((match) => {
     const kickoff = matchDatetimeBogota(match);
     return !getMatchPresentation(match, nowUTC).isFinished && (!kickoff || kickoff - nowUTC > 0);
   });
-  const allFinished = dayMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished);
+  const allFinished = orderedMatches.every((match) => getMatchPresentation(match, nowUTC).isFinished);
 
   let featuredHeading = "Próximo partido";
   let statusText = featuredPresentation.countdownText;
@@ -1072,16 +1186,23 @@ function buildFeaturedSection(dayMatches, nowUTC) {
 function buildRestSection(restMatches, nowUTC) {
   if (!restMatches.length) return null;
 
+  const orderedRestMatches = [...restMatches].sort((a, b) => {
+    const aKickoff = matchDatetimeBogota(a)?.getTime() ?? Number.POSITIVE_INFINITY;
+    const bKickoff = matchDatetimeBogota(b)?.getTime() ?? Number.POSITIVE_INFINITY;
+    if (aKickoff !== bKickoff) return aKickoff - bKickoff;
+    return (a.matchNumber || 0) - (b.matchNumber || 0);
+  });
+
   const section = createElement("section", { attrs: { "aria-labelledby": "restHeading" } });
   section.append(createElement("h2", { className: "section-label", text: "Resto del día", attrs: { id: "restHeading" } }));
 
   const list = createElement("div", { className: "matches-list" });
   let i = 0;
-  while (i < restMatches.length) {
-    const current = restMatches[i];
+  while (i < orderedRestMatches.length) {
+    const current = orderedRestMatches[i];
     let j = i + 1;
-    while (j < restMatches.length && shareKickoffSlot(restMatches[j], current)) j += 1;
-    const group = restMatches.slice(i, j);
+    while (j < orderedRestMatches.length && shareKickoffSlot(orderedRestMatches[j], current)) j += 1;
+    const group = orderedRestMatches.slice(i, j);
 
     if (group.length > 1) {
       const simulGroup = createElement("section", { className: "simul-group" });
@@ -1354,7 +1475,14 @@ function renderDayNav({ scrollActive = true } = {}) {
 
 function render({ animate = true, scrollActiveDay = true } = {}) {
   const nowUTC = new Date();
-  const dayMatches = MATCHES.filter((match) => match.date === currentDateStr);
+  const dayMatches = MATCHES
+    .filter((match) => match.date === currentDateStr)
+    .sort((a, b) => {
+      const aKickoff = matchDatetimeBogota(a)?.getTime() ?? Number.POSITIVE_INFINITY;
+      const bKickoff = matchDatetimeBogota(b)?.getTime() ?? Number.POSITIVE_INFINITY;
+      if (aKickoff !== bKickoff) return aKickoff - bKickoff;
+      return (a.matchNumber || 0) - (b.matchNumber || 0);
+    });
   const activeMatches = dayMatches.filter((match) => !getMatchPresentation(match, nowUTC).isFinished);
   const finishedMatches = dayMatches.filter((match) => getMatchPresentation(match, nowUTC).isFinished);
   const [y, mo, d] = currentDateStr.split("-").map(Number);

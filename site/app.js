@@ -487,8 +487,14 @@ function getVenueCountryFlag(match) {
   return "⚪";
 }
 
+function stripVenueFlag(value) {
+  return String(value || "")
+    .replace(/\s*[\u{1F1E6}-\u{1F1FF}]{2}\s*$/u, "")
+    .trim();
+}
+
 function getVenueDisplayText(match) {
-  const venue = match?.venue || "";
+  const venue = stripVenueFlag(match?.venue || "");
   if (!venue) return "";
   const flag = getVenueCountryFlag(match);
   return flag && flag !== "⚪" ? `${venue} ${flag}` : venue;
@@ -1080,7 +1086,8 @@ function buildMatchCard(match, nowUTC) {
   const venueRow = createElement("div", { className: "mc-venue" });
   venueRow.append(
     createElement("span", { text: "🏟️" }),
-    createElement("span", { className: "mc-venue-text", text: getVenueDisplayText(match) })
+    createElement("span", { className: "mc-venue-text", text: stripVenueFlag(match.venue) }),
+    createElement("span", { className: "mc-venue-flag", text: getVenueCountryFlag(match) })
   );
   bottom.append(venueRow);
   if (match.channels.length) bottom.append(buildChannels(match.channels, "mc-channels"));
@@ -1286,128 +1293,257 @@ function buildBracketTeamNode(label, { highlighted = false, eliminated = false }
   return node;
 }
 
-function buildBracketMatchCard(sourceId, nowUTC) {
-  const source = knockoutSourceById.get(sourceId);
-  const label = bracketLabelForSource(sourceId, nowUTC);
-  const fixture = source ? getMatchByTeams(source.home, source.away) : null;
-  const presentation = fixture ? getMatchPresentation(fixture, nowUTC) : null;
-  const completed = Boolean(label.complete);
-
-  const card = createElement("article", {
-    className: `bracket-match-card${completed ? " is-complete" : " is-pending"}`,
+function buildKnockoutSection(nowUTC) {
+  const section = createElement("section", {
+    className: "bracket-section",
+    attrs: { "aria-labelledby": "knockoutHeading" },
   });
 
-  const top = createElement("div", { className: "bracket-match-top" });
-  top.append(
-    createElement("span", { className: "bracket-phase", text: source?.phase || "Dieciseisavos de final" }),
-    createElement("span", { className: "bracket-score", text: presentation?.hasScore ? `${presentation.orientedScore.home} - ${presentation.orientedScore.away}` : " " })
-  );
-  card.append(top);
-
-  const teams = createElement("div", { className: "bracket-match-teams" });
-  if (source) {
-    const homeLabel = { text: source.home, flag: getTeamFlagByName(source.home) };
-    const awayLabel = { text: source.away, flag: getTeamFlagByName(source.away) };
-    teams.append(
-      buildBracketTeamNode(homeLabel, { highlighted: completed && label.winner === source.home, eliminated: completed && label.winner === source.away }),
-      buildBracketTeamNode(awayLabel, { highlighted: completed && label.winner === source.away, eliminated: completed && label.winner === source.home })
-    );
-  } else {
-    teams.append(createElement("div", { className: "bracket-slot-empty", text: "Pendiente" }));
-  }
-  card.append(teams);
-  return card;
-}
-
-function buildBracketSlot(title, label, options = {}) {
-  const slot = createElement("div", { className: `bracket-slot${options.pending ? " is-pending" : ""}` });
-  slot.append(createElement("div", { className: "bracket-slot-title", text: title }));
-  if (options.matchId) {
-    slot.append(buildBracketMatchCard(options.matchId, options.nowUTC));
-  } else if (label) {
-    const name = createElement("div", { className: "bracket-slot-label", text: label });
-    slot.append(name);
-  } else {
-    slot.append(createElement("div", { className: "bracket-slot-label", text: "Pendiente" }));
-  }
-  return slot;
-}
-
-function buildBracketColumn(title, items, nowUTC) {
-  const column = createElement("section", { className: "bracket-column" });
-  column.append(createElement("h3", { className: "bracket-column-title", text: title }));
-  items.forEach((item) => column.append(buildBracketSlot(item.title, item.label, { ...item, nowUTC })));
-  return column;
-}
-
-function buildKnockoutSection(nowUTC) {
-  const section = createElement("section", { className: "bracket-section", attrs: { "aria-labelledby": "knockoutHeading" } });
-  const header = createElement("header", { className: "bracket-header" });
-  header.append(
-    createElement("h2", { className: "section-label", text: "Llaves", attrs: { id: "knockoutHeading" } }),
-    createElement("p", { className: "bracket-subtitle", text: "Cuadro de eliminación" })
-  );
-  section.append(header);
-
-  const gridWrap = createElement("div", { className: "bracket-scroll" });
-  const grid = createElement("div", { className: "bracket-grid" });
-
-  const left16 = [
-    { title: "16vos", matchId: "M74" },
-    { title: "16vos", matchId: "M73" },
-    { title: "16vos", matchId: "M76" },
-    { title: "16vos", matchId: "M79" },
-  ];
-  const left8 = [
-    { title: "Octavos", label: "M89" },
-    { title: "Octavos", label: "M90" },
-    { title: "Octavos", label: "M91" },
-    { title: "Octavos", label: "M92" },
-  ];
-  const left4 = [
-    { title: "Cuartos", label: "M97" },
-    { title: "Cuartos", label: "M99" },
-  ];
-  const left2 = [
-    { title: "Semifinal", label: "M101" },
-  ];
-  const finalCol = [
-    { title: "Final", label: "M104" },
-  ];
-  const right2 = [
-    { title: "Semifinal", label: "M102" },
-  ];
-  const right4 = [
-    { title: "Cuartos", label: "M98" },
-    { title: "Cuartos", label: "M100" },
-  ];
-  const right8 = [
-    { title: "Octavos", label: "M93" },
-    { title: "Octavos", label: "M94" },
-    { title: "Octavos", label: "M95" },
-    { title: "Octavos", label: "M96" },
-  ];
-  const right16 = [
-    { title: "16vos", matchId: "M83" },
-    { title: "16vos", matchId: "M81" },
-    { title: "16vos", matchId: "M86" },
-    { title: "16vos", matchId: "M85" },
-  ];
-
-  grid.append(
-    buildBracketColumn("16vos", left16, nowUTC),
-    buildBracketColumn("Octavos", left8, nowUTC),
-    buildBracketColumn("Cuartos", left4, nowUTC),
-    buildBracketColumn("Semifinal", left2, nowUTC),
-    buildBracketColumn("Final", finalCol, nowUTC),
-    buildBracketColumn("Semifinal", right2, nowUTC),
-    buildBracketColumn("Cuartos", right4, nowUTC),
-    buildBracketColumn("Octavos", right8, nowUTC),
-    buildBracketColumn("16vos", right16, nowUTC)
+  const title = createElement("header", { className: "bracket-header" });
+  title.append(
+    createElement("h2", { className: "section-label", attrs: { id: "knockoutHeading" }, text: "Llaves" }),
+    createElement("p", { className: "bracket-subtitle", text: "Cuadro compacto de eliminación" })
   );
 
-  gridWrap.append(grid);
-  section.append(gridWrap);
+  const scroll = createElement("div", { className: "bracket-scroll" });
+  const frame = createElement("div", { className: "bracket-frame-svg" });
+  frame.innerHTML = `
+    <svg class="bracket-svg" viewBox="0 0 1280 760" role="img" aria-label="Cuadro de eliminación">
+      <defs>
+        <filter id="bracketGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+          <feMerge>
+            <feMergeNode in="blur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <text class="round-title" x="96" y="34" text-anchor="middle">16VOS</text>
+      <text class="round-title" x="276" y="34" text-anchor="middle">OCTAVOS</text>
+      <text class="round-title" x="442" y="34" text-anchor="middle">CUARTOS</text>
+      <text class="round-title" x="640" y="34" text-anchor="middle">FINAL</text>
+      <text class="round-title" x="838" y="34" text-anchor="middle">CUARTOS</text>
+      <text class="round-title" x="1004" y="34" text-anchor="middle">OCTAVOS</text>
+      <text class="round-title" x="1184" y="34" text-anchor="middle">16VOS</text>
+
+      <path class="line" d="M170 101 H214 V142 H246"></path>
+      <path class="line" d="M170 183 H214 V142"></path>
+      <path class="line" d="M170 265 H214 V306 H246"></path>
+      <path class="line" d="M170 347 H214 V306"></path>
+      <path class="line" d="M170 429 H214 V470 H246"></path>
+      <path class="line" d="M170 511 H214 V470"></path>
+      <path class="line" d="M170 593 H214 V634 H246"></path>
+      <path class="line" d="M170 675 H214 V634"></path>
+      <path class="line" d="M356 142 H398 V224 H412"></path>
+      <path class="line" d="M356 306 H398 V224"></path>
+      <path class="line" d="M356 470 H398 V552 H412"></path>
+      <path class="line" d="M356 634 H398 V552"></path>
+      <path class="line" d="M510 224 H538 V388 H562"></path>
+      <path class="line" d="M510 552 H538 V388"></path>
+      <path class="line" d="M640 388 H640 V454"></path>
+
+      <path class="line" d="M1110 101 H1066 V142 H1034"></path>
+      <path class="line" d="M1110 183 H1066 V142"></path>
+      <path class="line" d="M1110 265 H1066 V306 H1034"></path>
+      <path class="line" d="M1110 347 H1066 V306"></path>
+      <path class="line" d="M1110 429 H1066 V470 H1034"></path>
+      <path class="line" d="M1110 511 H1066 V470"></path>
+      <path class="line" d="M1110 593 H1066 V634 H1034"></path>
+      <path class="line" d="M1110 675 H1066 V634"></path>
+      <path class="line" d="M924 142 H882 V224 H868"></path>
+      <path class="line" d="M924 306 H882 V224"></path>
+      <path class="line" d="M924 470 H882 V552 H868"></path>
+      <path class="line" d="M924 634 H882 V552"></path>
+      <path class="line" d="M770 224 H742 V388 H718"></path>
+      <path class="line" d="M770 552 H742 V388"></path>
+      <path class="line" d="M640 388 H640 V454"></path>
+
+      <rect class="final-card" x="555" y="454" width="170" height="160" rx="24"></rect>
+      <text class="final-text" x="640" y="500" text-anchor="middle">FINAL</text>
+      <text class="final-date" x="640" y="526" text-anchor="middle">19 JUL · 2:00 P. M.</text>
+      <rect class="champ" x="582" y="550" width="116" height="36" rx="14"></rect>
+      <text class="pending" x="640" y="574" text-anchor="middle">PENDIENTE</text>
+
+      <g transform="translate(26 62)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M74</text>
+        <text class="flag" x="15" y="45">🇩🇪</text><text class="team small" x="44" y="45">ALEMANIA</text>
+        <text class="flag" x="15" y="67">🇵🇾</text><text class="team small" x="44" y="67">PARAGUAY</text>
+      </g>
+      <g transform="translate(26 144)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M77</text>
+        <text class="flag" x="15" y="45">🇫🇷</text><text class="team small" x="44" y="45">FRANCIA</text>
+        <text class="flag" x="15" y="67">🇸🇪</text><text class="team small" x="44" y="67">SUECIA</text>
+      </g>
+      <g transform="translate(26 226)">
+        <rect class="box-hot" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M73 · FINAL</text>
+        <text class="score" x="125" y="42">0</text>
+        <text class="flag" x="15" y="45">🇿🇦</text><text class="team small loser" x="44" y="45">SUDÁFRICA</text>
+        <text class="score" x="125" y="66">1</text>
+        <text class="flag" x="15" y="67">🇨🇦</text><text class="team small" x="44" y="67">CANADÁ</text>
+      </g>
+      <g transform="translate(26 308)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M75</text>
+        <text class="flag" x="15" y="45">🇳🇱</text><text class="team small" x="44" y="45">PAÍSES BAJOS</text>
+        <text class="flag" x="15" y="67">🇲🇦</text><text class="team small" x="44" y="67">MARRUECOS</text>
+      </g>
+      <g transform="translate(26 390)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M76</text>
+        <text class="flag" x="15" y="45">🇧🇷</text><text class="team small" x="44" y="45">BRASIL</text>
+        <text class="flag" x="15" y="67">🇯🇵</text><text class="team small" x="44" y="67">JAPÓN</text>
+      </g>
+      <g transform="translate(26 472)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M78</text>
+        <text class="flag" x="15" y="45">🇨🇮</text><text class="team small" x="44" y="45">C. MARFIL</text>
+        <text class="flag" x="15" y="67">🇳🇴</text><text class="team small" x="44" y="67">NORUEGA</text>
+      </g>
+      <g transform="translate(26 554)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M79</text>
+        <text class="flag" x="15" y="45">🇲🇽</text><text class="team small" x="44" y="45">MÉXICO</text>
+        <text class="flag" x="15" y="67">🇪🇨</text><text class="team small" x="44" y="67">ECUADOR</text>
+      </g>
+      <g transform="translate(26 636)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M80</text>
+        <text class="flag" x="15" y="45">🏴</text><text class="team small" x="44" y="45">INGLATERRA</text>
+        <text class="flag" x="15" y="67">🇨🇩</text><text class="team small" x="44" y="67">RD CONGO</text>
+      </g>
+      <g transform="translate(1110 62)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M83</text>
+        <text class="flag" x="15" y="45">🇵🇹</text><text class="team small" x="44" y="45">PORTUGAL</text>
+        <text class="flag" x="15" y="67">🇭🇷</text><text class="team small" x="44" y="67">CROACIA</text>
+      </g>
+      <g transform="translate(1110 144)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M84</text>
+        <text class="flag" x="15" y="45">🇪🇸</text><text class="team small" x="44" y="45">ESPAÑA</text>
+        <text class="flag" x="15" y="67">🇦🇹</text><text class="team small" x="44" y="67">AUSTRIA</text>
+      </g>
+      <g transform="translate(1110 226)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M81</text>
+        <text class="flag" x="15" y="45">🇺🇸</text><text class="team small" x="44" y="45">EE. UU.</text>
+        <text class="flag" x="15" y="67">🇧🇦</text><text class="team small" x="44" y="67">BOSNIA</text>
+      </g>
+      <g transform="translate(1110 308)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M82</text>
+        <text class="flag" x="15" y="45">🇧🇪</text><text class="team small" x="44" y="45">BÉLGICA</text>
+        <text class="flag" x="15" y="67">🇸🇳</text><text class="team small" x="44" y="67">SENEGAL</text>
+      </g>
+      <g transform="translate(1110 390)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M86</text>
+        <text class="flag" x="15" y="45">🇦🇷</text><text class="team small" x="44" y="45">ARGENTINA</text>
+        <text class="flag" x="15" y="67">🇨🇻</text><text class="team small" x="44" y="67">CABO VERDE</text>
+      </g>
+      <g transform="translate(1110 472)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M88</text>
+        <text class="flag" x="15" y="45">🇦🇺</text><text class="team small" x="44" y="45">AUSTRALIA</text>
+        <text class="flag" x="15" y="67">🇪🇬</text><text class="team small" x="44" y="67">EGIPTO</text>
+      </g>
+      <g transform="translate(1110 554)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M85</text>
+        <text class="flag" x="15" y="45">🇨🇭</text><text class="team small" x="44" y="45">SUIZA</text>
+        <text class="flag" x="15" y="67">🇩🇿</text><text class="team small" x="44" y="67">ARGELIA</text>
+      </g>
+      <g transform="translate(1110 636)">
+        <rect class="box" width="144" height="78" rx="18"></rect>
+        <text class="matchid" x="14" y="19">M87</text>
+        <text class="flag" x="15" y="45">🇨🇴</text><text class="team small" x="44" y="45">COLOMBIA</text>
+        <text class="flag" x="15" y="67">🇬🇭</text><text class="team small" x="44" y="67">GHANA</text>
+      </g>
+
+      <g transform="translate(246 105)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M89</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(246 269)">
+        <rect class="box-hot" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M90</text>
+        <text class="flag" x="18" y="53">🇨🇦</text>
+        <text class="team small" x="48" y="53">CANADÁ</text>
+      </g>
+      <g transform="translate(246 433)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M91</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(246 597)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M92</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(412 187)">
+        <rect class="box-pending" width="98" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M97</text>
+        <text class="pending" x="49" y="48" text-anchor="middle">Pend.</text>
+      </g>
+      <g transform="translate(412 515)">
+        <rect class="box-pending" width="98" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M99</text>
+        <text class="pending" x="49" y="48" text-anchor="middle">Pend.</text>
+      </g>
+      <g transform="translate(562 351)">
+        <rect class="box-pending" width="78" height="74" rx="16"></rect>
+        <text class="matchid" x="12" y="22">M101</text>
+        <text class="pending" x="39" y="48" text-anchor="middle">Pend.</text>
+      </g>
+
+      <g transform="translate(924 105)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M93</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(924 269)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M94</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(924 433)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M95</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(924 597)">
+        <rect class="box-pending" width="110" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M96</text>
+        <text class="pending" x="55" y="48" text-anchor="middle">Pendiente</text>
+      </g>
+      <g transform="translate(770 187)">
+        <rect class="box-pending" width="98" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M98</text>
+        <text class="pending" x="49" y="48" text-anchor="middle">Pend.</text>
+      </g>
+      <g transform="translate(770 515)">
+        <rect class="box-pending" width="98" height="74" rx="16"></rect>
+        <text class="matchid" x="16" y="22">M100</text>
+        <text class="pending" x="49" y="48" text-anchor="middle">Pend.</text>
+      </g>
+      <g transform="translate(640 351)">
+        <rect class="box-pending" width="78" height="74" rx="16"></rect>
+        <text class="matchid" x="12" y="22">M102</text>
+        <text class="pending" x="39" y="48" text-anchor="middle">Pend.</text>
+      </g>
+    </svg>
+  `;
+
+  scroll.append(frame);
+  section.append(title, scroll, createElement("div", {
+    className: "legend",
+    html: '<span><span class="dot green"></span>Ganador confirmado avanza</span><span><span class="dot gray"></span>Espacio pendiente</span><span><span class="dot yellow"></span>Marcador confirmado</span>'
+  }));
   return section;
 }
 

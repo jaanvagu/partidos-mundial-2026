@@ -749,135 +749,125 @@ a:focus-visible {
   padding-bottom: 8px;
 }
 
-.bracket-grid {
-  display: grid;
-  grid-template-columns: repeat(9, minmax(150px, 1fr));
-  gap: 18px;
-  align-items: start;
-  min-width: 1400px;
+.bracket-frame-svg {
+  width: 100%;
+  min-width: 1280px;
 }
 
-.bracket-column {
-  display: grid;
-  gap: 14px;
-}
-
-.bracket-column-title {
-  margin: 0;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
-}
-
-.bracket-column-title::after {
-  content: "";
+.bracket-svg {
+  width: 100%;
+  height: auto;
   display: block;
-  height: 1px;
-  margin-top: 10px;
-  background: var(--border);
 }
 
-.bracket-slot {
-  position: relative;
-  min-height: 110px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: rgba(20, 28, 46, 0.94);
-  box-shadow: var(--shadow);
+.round-title {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  fill: var(--muted2);
 }
 
-.bracket-slot.is-pending {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.small-title {
+  font-size: 11px;
+  letter-spacing: 2px;
+  fill: var(--muted);
+  font-weight: 900;
 }
 
-.bracket-slot-title {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 10px;
+.box,
+.box-soft,
+.box-pending,
+.box-hot,
+.final-card,
+.champ {
+  vector-effect: non-scaling-stroke;
 }
 
-.bracket-slot-label {
-  font-size: 12px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.box {
+  fill: #141c2e;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1.5;
 }
 
-.bracket-match-card {
-  display: grid;
-  gap: 10px;
+.box-pending {
+  fill: #0e1726;
+  stroke: rgba(160, 176, 204, 0.22);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 5;
 }
 
-.bracket-match-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  align-items: center;
+.box-hot {
+  fill: #0f2a2d;
+  stroke: rgba(0, 212, 170, 0.8);
+  stroke-width: 2;
 }
 
-.bracket-phase {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--muted2);
+.final-card {
+  fill: #111827;
+  stroke: rgba(0, 212, 170, 0.36);
+  stroke-width: 2;
 }
 
-.bracket-score {
-  font-family: "Oswald", sans-serif;
-  font-size: 17px;
-  color: var(--accent3);
+.champ {
+  fill: #0d1323;
+  stroke: rgba(255, 214, 10, 0.55);
+  stroke-width: 1.6;
+  stroke-dasharray: 7 6;
 }
 
-.bracket-match-teams {
-  display: grid;
-  gap: 10px;
+.line {
+  fill: none;
+  stroke: rgba(160, 176, 204, 0.52);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.bracket-team-node {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.line.hot {
+  stroke: rgba(0, 212, 170, 0.95);
+  stroke-width: 3;
+}
+
+.team {
   font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.3px;
+  font-weight: 900;
+  fill: var(--text);
   text-transform: uppercase;
 }
 
-.bracket-team-node.is-winner {
-  color: #ecfff9;
-}
-
-.bracket-team-node.is-loser {
-  color: var(--muted2);
-  opacity: 0.5;
-}
-
-.bracket-team-flag {
-  font-size: 22px;
-  line-height: 1;
-}
-
-.bracket-slot-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  border-radius: 12px;
-  border: 1px dashed var(--border);
-  color: var(--muted);
+.team.small {
   font-size: 12px;
+}
+
+.team.loser {
+  fill: var(--muted);
+  opacity: 0.6;
+}
+
+.score {
+  font-family: "Oswald", sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  fill: var(--accent3);
+}
+
+.flag {
+  font-size: 19px;
+}
+
+.pending {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  fill: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+}
+
+.matchid {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+  fill: var(--muted);
 }
 
 .ch-badge {
@@ -1138,9 +1128,8 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 
-  .bracket-grid {
-    grid-template-columns: 1fr;
-    min-width: 0;
+  .bracket-frame-svg {
+    min-width: 1120px;
   }
 
   .match-card {

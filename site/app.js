@@ -1030,72 +1030,161 @@ function getBracketResolution(sourceId, nowUTC) {
   };
 }
 
-function buildKnockoutMatch(match, nowUTC) {
-  const left = getBracketResolution(match.sources?.[0], nowUTC);
-  const right = getBracketResolution(match.sources?.[1], nowUTC);
+function bracketLabelForSource(sourceId, nowUTC) {
+  const source = knockoutSourceById.get(sourceId);
+  if (!source) {
+    return { text: "Pendiente", winner: null, complete: false, flag: "🏳️" };
+  }
+
+  const fixture = getMatchByTeams(source.home, source.away);
+  const presentation = fixture ? getMatchPresentation(fixture, nowUTC) : null;
+  const hasWinner = Boolean(presentation?.isFinished && presentation?.hasScore && presentation?.orientedScore);
+  let winner = null;
+  if (hasWinner) {
+    winner = presentation.orientedScore.home > presentation.orientedScore.away ? source.home : source.away;
+  }
+
+  return {
+    text: winner || `${source.home} / ${source.away}`,
+    winner,
+    complete: hasWinner,
+    flag: winner ? getTeamFlagByName(winner) : "🏳️",
+  };
+}
+
+function buildBracketTeamNode(label, { highlighted = false, eliminated = false } = {}) {
+  const node = createElement("div", {
+    className: `bracket-team-node${highlighted ? " is-winner" : ""}${eliminated ? " is-loser" : ""}`,
+  });
+  node.append(
+    createElement("span", { className: "bracket-team-flag", text: label.flag }),
+    createElement("span", { className: "bracket-team-name", text: label.text })
+  );
+  return node;
+}
+
+function buildBracketMatchCard(sourceId, nowUTC) {
+  const source = knockoutSourceById.get(sourceId);
+  const label = bracketLabelForSource(sourceId, nowUTC);
+  const fixture = source ? getMatchByTeams(source.home, source.away) : null;
+  const presentation = fixture ? getMatchPresentation(fixture, nowUTC) : null;
+  const completed = Boolean(label.complete);
+
   const card = createElement("article", {
-    className: `bracket-match ${left.completed && right.completed ? "is-complete" : "is-pending"}`,
+    className: `bracket-match-card${completed ? " is-complete" : " is-pending"}`,
   });
 
   const top = createElement("div", { className: "bracket-match-top" });
   top.append(
-    createElement("span", { className: "bracket-phase", text: match.phase || "Octavos de final" }),
-    createElement("span", { className: "bracket-score", text: match.time || "Pendiente" })
+    createElement("span", { className: "bracket-phase", text: source?.phase || "Dieciseisavos de final" }),
+    createElement("span", { className: "bracket-score", text: presentation?.hasScore ? `${presentation.orientedScore.home} - ${presentation.orientedScore.away}` : " " })
   );
   card.append(top);
 
-  const teams = createElement("div", { className: "bracket-teams" });
-
-  const leftLine = createElement("div", {
-    className: `bracket-team ${left.completed ? "is-winner" : ""}`,
-  });
-  leftLine.append(
-    createElement("span", { className: "bracket-team-flag", text: left.homeFlag }),
-    createElement("span", { text: left.text })
-  );
-
-  const rightLine = createElement("div", {
-    className: `bracket-team ${right.completed ? "is-winner" : ""}`,
-  });
-  rightLine.append(
-    createElement("span", { className: "bracket-team-flag", text: right.homeFlag }),
-    createElement("span", { text: right.text })
-  );
-  teams.append(leftLine, rightLine);
+  const teams = createElement("div", { className: "bracket-match-teams" });
+  if (source) {
+    const homeLabel = { text: source.home, flag: getTeamFlagByName(source.home) };
+    const awayLabel = { text: source.away, flag: getTeamFlagByName(source.away) };
+    teams.append(
+      buildBracketTeamNode(homeLabel, { highlighted: completed && label.winner === source.home, eliminated: completed && label.winner === source.away }),
+      buildBracketTeamNode(awayLabel, { highlighted: completed && label.winner === source.away, eliminated: completed && label.winner === source.home })
+    );
+  } else {
+    teams.append(createElement("div", { className: "bracket-slot-empty", text: "Pendiente" }));
+  }
   card.append(teams);
-
-  const advance = createElement("div", { className: "bracket-advance" });
-  advance.append(
-    createElement("span", { className: "bracket-advance-label", text: "Avanza" }),
-    createElement("div", {
-      className: "bracket-advance-value",
-      text: left.completed && right.completed ? "Pendiente de definir rival" : "Pendiente",
-    })
-  );
-  card.append(advance);
   return card;
 }
 
-function buildKnockoutColumn(title, matches, nowUTC) {
+function buildBracketSlot(title, label, options = {}) {
+  const slot = createElement("div", { className: `bracket-slot${options.pending ? " is-pending" : ""}` });
+  slot.append(createElement("div", { className: "bracket-slot-title", text: title }));
+  if (options.matchId) {
+    slot.append(buildBracketMatchCard(options.matchId, options.nowUTC));
+  } else if (label) {
+    const name = createElement("div", { className: "bracket-slot-label", text: label });
+    slot.append(name);
+  } else {
+    slot.append(createElement("div", { className: "bracket-slot-label", text: "Pendiente" }));
+  }
+  return slot;
+}
+
+function buildBracketColumn(title, items, nowUTC) {
   const column = createElement("section", { className: "bracket-column" });
-  column.append(createElement("h2", { className: "bracket-side-title", text: title }));
-  matches.forEach((match) => {
-    const slot = createElement("div", { className: "bracket-round" });
-    slot.append(buildKnockoutMatch(match, nowUTC));
-    column.append(slot);
-  });
+  column.append(createElement("h3", { className: "bracket-column-title", text: title }));
+  items.forEach((item) => column.append(buildBracketSlot(item.title, item.label, { ...item, nowUTC })));
   return column;
 }
 
 function buildKnockoutSection(nowUTC) {
-  const section = createElement("section", { className: "bracket-wrap", attrs: { "aria-labelledby": "knockoutHeading" } });
-  section.append(createElement("h2", { className: "section-label", text: "Llaves", attrs: { id: "knockoutHeading" } }));
+  const section = createElement("section", { className: "bracket-section", attrs: { "aria-labelledby": "knockoutHeading" } });
+  const header = createElement("header", { className: "bracket-header" });
+  header.append(
+    createElement("h2", { className: "section-label", text: "Llaves", attrs: { id: "knockoutHeading" } }),
+    createElement("p", { className: "bracket-subtitle", text: "Cuadro de eliminación" })
+  );
+  section.append(header);
 
-  const columns = createElement("div", { className: "bracket-columns" });
-  const leftColumn = buildKnockoutColumn("Lado izquierdo", KNOCKOUT_BRACKET.roundOf16.slice(0, 4), nowUTC);
-  const rightColumn = buildKnockoutColumn("Lado derecho", KNOCKOUT_BRACKET.roundOf16.slice(4), nowUTC);
-  columns.append(leftColumn, rightColumn);
-  section.append(columns);
+  const gridWrap = createElement("div", { className: "bracket-scroll" });
+  const grid = createElement("div", { className: "bracket-grid" });
+
+  const left16 = [
+    { title: "16vos", matchId: "M74" },
+    { title: "16vos", matchId: "M73" },
+    { title: "16vos", matchId: "M76" },
+    { title: "16vos", matchId: "M79" },
+  ];
+  const left8 = [
+    { title: "Octavos", label: "M89" },
+    { title: "Octavos", label: "M90" },
+    { title: "Octavos", label: "M91" },
+    { title: "Octavos", label: "M92" },
+  ];
+  const left4 = [
+    { title: "Cuartos", label: "M97" },
+    { title: "Cuartos", label: "M99" },
+  ];
+  const left2 = [
+    { title: "Semifinal", label: "M101" },
+  ];
+  const finalCol = [
+    { title: "Final", label: "M104" },
+  ];
+  const right2 = [
+    { title: "Semifinal", label: "M102" },
+  ];
+  const right4 = [
+    { title: "Cuartos", label: "M98" },
+    { title: "Cuartos", label: "M100" },
+  ];
+  const right8 = [
+    { title: "Octavos", label: "M93" },
+    { title: "Octavos", label: "M94" },
+    { title: "Octavos", label: "M95" },
+    { title: "Octavos", label: "M96" },
+  ];
+  const right16 = [
+    { title: "16vos", matchId: "M83" },
+    { title: "16vos", matchId: "M81" },
+    { title: "16vos", matchId: "M86" },
+    { title: "16vos", matchId: "M85" },
+  ];
+
+  grid.append(
+    buildBracketColumn("16vos", left16, nowUTC),
+    buildBracketColumn("Octavos", left8, nowUTC),
+    buildBracketColumn("Cuartos", left4, nowUTC),
+    buildBracketColumn("Semifinal", left2, nowUTC),
+    buildBracketColumn("Final", finalCol, nowUTC),
+    buildBracketColumn("Semifinal", right2, nowUTC),
+    buildBracketColumn("Cuartos", right4, nowUTC),
+    buildBracketColumn("Octavos", right8, nowUTC),
+    buildBracketColumn("16vos", right16, nowUTC)
+  );
+
+  gridWrap.append(grid);
+  section.append(gridWrap);
   return section;
 }
 

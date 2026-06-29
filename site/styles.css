@@ -712,15 +712,33 @@ a:focus-visible {
   content: "⚡";
 }
 
-.bracket-wrap {
+.bracket-section {
   display: grid;
-  gap: 18px;
+  gap: 16px;
 }
 
-.bracket-columns {
+.bracket-header {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.bracket-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.bracket-scroll {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.bracket-grid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(150px, 1fr));
   gap: 18px;
+  align-items: start;
+  min-width: 1400px;
 }
 
 .bracket-column {
@@ -728,43 +746,59 @@ a:focus-visible {
   gap: 14px;
 }
 
-.bracket-side-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.bracket-column-title {
+  margin: 0;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--muted);
+  text-align: center;
 }
 
-.bracket-side-title::after {
+.bracket-column-title::after {
   content: "";
-  flex: 1;
+  display: block;
   height: 1px;
+  margin-top: 10px;
   background: var(--border);
 }
 
-.bracket-round {
-  display: grid;
-  gap: 10px;
-}
-
-.bracket-match {
-  padding: 14px;
+.bracket-slot {
+  position: relative;
+  min-height: 110px;
+  padding: 12px;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(20, 28, 46, 0.98), rgba(12, 18, 33, 0.98));
+  border-radius: 18px;
+  background: rgba(20, 28, 46, 0.94);
   box-shadow: var(--shadow);
 }
 
-.bracket-match.is-complete {
-  border-color: rgba(0, 212, 170, 0.22);
+.bracket-slot.is-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.bracket-match.is-pending {
-  opacity: 0.82;
+.bracket-slot-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 10px;
+}
+
+.bracket-slot-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bracket-match-card {
+  display: grid;
+  gap: 10px;
 }
 
 .bracket-match-top {
@@ -772,7 +806,6 @@ a:focus-visible {
   justify-content: space-between;
   gap: 8px;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .bracket-phase {
@@ -785,32 +818,32 @@ a:focus-visible {
 
 .bracket-score {
   font-family: "Oswald", sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--accent3);
 }
 
-.bracket-teams {
+.bracket-match-teams {
   display: grid;
   gap: 10px;
 }
 
-.bracket-team {
+.bracket-team-node {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 800;
   letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
-.bracket-team.is-winner {
+.bracket-team-node.is-winner {
   color: #ecfff9;
 }
 
-.bracket-team.is-loser {
+.bracket-team-node.is-loser {
   color: var(--muted2);
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .bracket-team-flag {
@@ -818,47 +851,17 @@ a:focus-visible {
   line-height: 1;
 }
 
-.bracket-connector {
+.bracket-slot-empty {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
   color: var(--muted);
   font-size: 12px;
-  padding-left: 12px;
-  margin-top: 6px;
-}
-
-.bracket-pending {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.bracket-advance {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-left: 2px solid rgba(0, 212, 170, 0.35);
-  border-radius: 10px;
-  background: rgba(0, 212, 170, 0.06);
-}
-
-.bracket-advance-label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--muted2);
-}
-
-.bracket-advance-value {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 800;
-  color: #ecfff9;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .ch-badge {
@@ -1086,6 +1089,11 @@ a:focus-visible {
 
   .bracket-columns {
     grid-template-columns: 1fr;
+  }
+
+  .bracket-grid {
+    grid-template-columns: 1fr;
+    min-width: 0;
   }
 
   .match-card {

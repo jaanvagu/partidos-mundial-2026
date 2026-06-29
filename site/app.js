@@ -8,6 +8,39 @@ const CHANNELS = {
 
 const MATCH_END_MS = (2 * 60 + 10) * 60000;
 
+const KNOCKOUT_BRACKET = {
+  roundOf32: [
+    { id: "M73", phase: "Dieciseisavos de final", home: "Sudáfrica", away: "Canadá", winner: "Canadá", score: "0-1", completed: true },
+    { id: "M74", phase: "Dieciseisavos de final", home: "Alemania", away: "Paraguay", completed: false },
+    { id: "M75", phase: "Dieciseisavos de final", home: "Países Bajos", away: "Marruecos", completed: false },
+    { id: "M76", phase: "Dieciseisavos de final", home: "Brasil", away: "Japón", completed: false },
+    { id: "M77", phase: "Dieciseisavos de final", home: "Francia", away: "Suecia", completed: false },
+    { id: "M78", phase: "Dieciseisavos de final", home: "Costa de Marfil", away: "Noruega", completed: false },
+    { id: "M79", phase: "Dieciseisavos de final", home: "México", away: "Ecuador", completed: false },
+    { id: "M80", phase: "Dieciseisavos de final", home: "Inglaterra", away: "RD Congo", completed: false },
+    { id: "M81", phase: "Dieciseisavos de final", home: "Estados Unidos", away: "Bosnia y Herzegovina", completed: false },
+    { id: "M82", phase: "Dieciseisavos de final", home: "Bélgica", away: "Senegal", completed: false },
+    { id: "M83", phase: "Dieciseisavos de final", home: "Portugal", away: "Croacia", completed: false },
+    { id: "M84", phase: "Dieciseisavos de final", home: "España", away: "Austria", completed: false },
+    { id: "M85", phase: "Dieciseisavos de final", home: "Suiza", away: "Argelia", completed: false },
+    { id: "M86", phase: "Dieciseisavos de final", home: "Argentina", away: "Cabo Verde", completed: false },
+    { id: "M87", phase: "Dieciseisavos de final", home: "Colombia", away: "Ghana", completed: false },
+    { id: "M88", phase: "Dieciseisavos de final", home: "Australia", away: "Egipto", completed: false },
+  ],
+  roundOf16: [
+    { id: "M89", phase: "Octavos de final", sources: ["M74", "M77"], date: "2026-07-04", time: "4:00 p. m.", venue: "Lincoln Financial Field, Philadelphia" },
+    { id: "M90", phase: "Octavos de final", sources: ["M73", "M75"], date: "2026-07-04", time: "12:00 p. m.", venue: "NRG Stadium, Houston" },
+    { id: "M91", phase: "Octavos de final", sources: ["M76", "M78"], date: "2026-07-05", time: "3:00 p. m.", venue: "MetLife Stadium, East Rutherford" },
+    { id: "M92", phase: "Octavos de final", sources: ["M79", "M80"], date: "2026-07-05", time: "7:00 p. m.", venue: "Estadio Azteca, Ciudad de México" },
+    { id: "M93", phase: "Octavos de final", sources: ["M83", "M84"], date: "2026-07-06", time: "2:00 p. m.", venue: "AT&T Stadium, Arlington" },
+    { id: "M94", phase: "Octavos de final", sources: ["M81", "M82"], date: "2026-07-06", time: "7:00 p. m.", venue: "Lumen Field, Seattle" },
+    { id: "M95", phase: "Octavos de final", sources: ["M86", "M88"], date: "2026-07-07", time: "11:00 a. m.", venue: "Mercedes-Benz Stadium, Atlanta" },
+    { id: "M96", phase: "Octavos de final", sources: ["M85", "M87"], date: "2026-07-07", time: "3:00 p. m.", venue: "BC Place, Vancouver" },
+  ],
+};
+
+const KNOWN_KNOCKOUT_PHASES = new Set(["Dieciseisavos de final", "Octavos de final", "Cuartos de final", "Semifinal", "Final"]);
+
 const ENGLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}";
 const SCOTLAND_FLAG = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}";
 
@@ -100,14 +133,14 @@ const MATCHES = [
   { date: "2026-07-03", time: "13:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports"] },
   { date: "2026-07-03", time: "17:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports"] },
   { date: "2026-07-03", time: "20:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 74", flag: "🏆" }, away: { name: "Ganador partido 77", flag: "🏆" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: [] },
-  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 73", flag: "🏆" }, away: { name: "Ganador partido 75", flag: "🏆" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: [] },
-  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 76", flag: "🏆" }, away: { name: "Ganador partido 78", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
-  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 79", flag: "🏆" }, away: { name: "Ganador partido 80", flag: "🏆" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: [] },
-  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 83", flag: "🏆" }, away: { name: "Ganador partido 84", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
-  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 81", flag: "🏆" }, away: { name: "Ganador partido 82", flag: "🏆" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: [] },
-  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 86", flag: "🏆" }, away: { name: "Ganador partido 88", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
-  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", home: { name: "Ganador partido 85", flag: "🏆" }, away: { name: "Ganador partido 87", flag: "🏆" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: [] },
+  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M74", "M77"], home: { name: "Ganador partido 74", flag: "🏆" }, away: { name: "Ganador partido 77", flag: "🏆" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: [] },
+  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M73", "M75"], home: { name: "Ganador partido 73", flag: "🏆" }, away: { name: "Ganador partido 75", flag: "🏆" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: [] },
+  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M76", "M78"], home: { name: "Ganador partido 76", flag: "🏆" }, away: { name: "Ganador partido 78", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
+  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M79", "M80"], home: { name: "Ganador partido 79", flag: "🏆" }, away: { name: "Ganador partido 80", flag: "🏆" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: [] },
+  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M83", "M84"], home: { name: "Ganador partido 83", flag: "🏆" }, away: { name: "Ganador partido 84", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
+  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M81", "M82"], home: { name: "Ganador partido 81", flag: "🏆" }, away: { name: "Ganador partido 82", flag: "🏆" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: [] },
+  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M86", "M88"], home: { name: "Ganador partido 86", flag: "🏆" }, away: { name: "Ganador partido 88", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
+  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M85", "M87"], home: { name: "Ganador partido 85", flag: "🏆" }, away: { name: "Ganador partido 87", flag: "🏆" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: [] },
   { date: "2026-07-09", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 89", flag: "🏆" }, away: { name: "Ganador partido 90", flag: "🏆" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: [] },
   { date: "2026-07-10", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 93", flag: "🏆" }, away: { name: "Ganador partido 94", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: [] },
   { date: "2026-07-11", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 91", flag: "🏆" }, away: { name: "Ganador partido 92", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
@@ -140,6 +173,7 @@ const state = {
   clockIntervalId: null,
   liveRefreshIntervalId: null,
   isResultsLoading: false,
+  currentView: "programacion",
 };
 
 const TEAM_ALIAS_GROUPS = {
@@ -204,6 +238,10 @@ MATCHES.forEach((match, index) => {
   match.awayCanonicalId = resolveCanonicalTeamId(match.away.name);
 });
 
+const knockoutSourceById = new Map([
+  ...KNOCKOUT_BRACKET.roundOf32,
+].map((match) => [match.id, match]));
+
 const elements = {
   heroDate: document.getElementById("heroDate"),
   heroCount: document.getElementById("heroCount"),
@@ -212,6 +250,8 @@ const elements = {
   btnPrev: document.getElementById("btnPrev"),
   btnNext: document.getElementById("btnNext"),
   btnToday: document.getElementById("btnToday"),
+  btnScheduleView: document.getElementById("btnScheduleView"),
+  btnKnockoutView: document.getElementById("btnKnockoutView"),
   mainContent: document.getElementById("mainContent"),
 };
 
@@ -366,8 +406,9 @@ function createBadge(text, className) {
 }
 
 function appendMatchMetaBadges(container, match) {
-  if (match.stageLabel) {
-    container.append(createBadge(match.stageLabel, "badge-jornada"));
+  const phaseLabel = getStageLabel(match);
+  if (phaseLabel) {
+    container.append(createBadge(phaseLabel, "badge-jornada"));
     return;
   }
 
@@ -381,11 +422,21 @@ function appendMatchMetaBadges(container, match) {
 }
 
 function getMatchMetaText(match) {
-  if (match.stageLabel) return match.stageLabel;
+  const phaseLabel = getStageLabel(match);
+  if (phaseLabel) return phaseLabel;
   const parts = [];
   if (match.grupo) parts.push(`Grupo ${match.grupo}`);
   if (match.jornada) parts.push(`Jornada ${match.jornada}`);
   return parts.join(" · ");
+}
+
+function getStageLabel(match) {
+  if (!match) return null;
+  if (match.stageLabel) return match.stageLabel;
+  if (match.phase && KNOWN_KNOCKOUT_PHASES.has(match.phase)) return match.phase;
+  if (match.round && KNOWN_KNOCKOUT_PHASES.has(match.round)) return match.round;
+  if (match.phase === "Dieciseisavos" || match.round === "Dieciseisavos") return "Dieciseisavos de final";
+  return null;
 }
 
 function shareKickoffSlot(matchA, matchB) {
@@ -425,6 +476,51 @@ function createChannelBadge(key) {
 
   link.append(img, fallback);
   return link;
+}
+
+function getMatchByTeams(homeName, awayName) {
+  const homeId = resolveCanonicalTeamId(homeName);
+  const awayId = resolveCanonicalTeamId(awayName);
+  if (!homeId || !awayId) return null;
+
+  return MATCHES.find((match) => {
+    const direct = match.homeCanonicalId === homeId && match.awayCanonicalId === awayId;
+    const reversed = match.homeCanonicalId === awayId && match.awayCanonicalId === homeId;
+    return direct || reversed;
+  }) || null;
+}
+
+function getResolvedWinnerName(sourceMatch, nowUTC) {
+  if (!sourceMatch) return null;
+  const presentation = getMatchPresentation(sourceMatch, nowUTC);
+  if (!presentation.isFinished || !presentation.hasScore || !presentation.orientedScore) return null;
+  if (presentation.orientedScore.home > presentation.orientedScore.away) return sourceMatch.home.name;
+  if (presentation.orientedScore.away > presentation.orientedScore.home) return sourceMatch.away.name;
+  return null;
+}
+
+function getSourcePairLabel(sourceId, nowUTC) {
+  const source = knockoutSourceById.get(sourceId);
+  if (!source) return "Pendiente";
+  const fixture = getMatchByTeams(source.home, source.away);
+  const winner = getResolvedWinnerName(fixture, nowUTC);
+  if (winner) return winner;
+  return `${source.home} / ${source.away}`;
+}
+
+function getKnockoutProgramLabel(match, nowUTC) {
+  if (!match?.sources?.length) {
+    return {
+      home: match?.home?.name || "",
+      away: match?.away?.name || "",
+    };
+  }
+
+  const [leftSource, rightSource] = match.sources;
+  return {
+    home: getSourcePairLabel(leftSource, nowUTC),
+    away: getSourcePairLabel(rightSource, nowUTC),
+  };
 }
 
 function safeReadCachedResults() {
@@ -688,13 +784,15 @@ function buildChannels(channels, className) {
 
 function buildFeaturedMatchBlock(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
+  const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
+  const isKnockoutProgram = Boolean(match.sources?.length);
   const block = createElement("article", { className: "fc-block" });
   const teams = createElement("div", { className: "fc-teams" });
 
   const home = createElement("div", { className: "fc-team" });
   home.append(
     createElement("div", { className: "fc-flag", text: match.home.flag }),
-    createElement("div", { className: "fc-team-name", text: match.home.name })
+    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutLabels.home : match.home.name })
   );
 
   const vs = createElement("div", { className: "fc-vs" });
@@ -706,7 +804,7 @@ function buildFeaturedMatchBlock(match, nowUTC) {
   const away = createElement("div", { className: "fc-team" });
   away.append(
     createElement("div", { className: "fc-flag", text: match.away.flag }),
-    createElement("div", { className: "fc-team-name", text: match.away.name })
+    createElement("div", { className: "fc-team-name", text: isKnockoutProgram ? knockoutLabels.away : match.away.name })
   );
 
   teams.append(home, vs, away);
@@ -736,6 +834,8 @@ function buildFeaturedMatchBlock(match, nowUTC) {
 
 function buildMatchCard(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
+  const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
+  const isKnockoutProgram = Boolean(match.sources?.length);
   const card = createElement("article", { className: "match-card" });
 
   if (presentation.isFinished) card.classList.add("is-done");
@@ -748,7 +848,7 @@ function buildMatchCard(match, nowUTC) {
 
   const teams = createElement("div", { className: "mc-teams" });
   const home = createElement("div", { className: "mc-team left" });
-  home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: match.home.name }));
+  home.append(createElement("span", { className: "mc-flag", text: match.home.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutLabels.home : match.home.name }));
 
   const center = createElement("div", { className: "mc-center" });
   center.classList.add(presentation.hasScore ? "is-score" : "is-schedule");
@@ -760,7 +860,7 @@ function buildMatchCard(match, nowUTC) {
   );
 
   const away = createElement("div", { className: "mc-team right" });
-  away.append(createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: match.away.name }));
+  away.append(createElement("span", { className: "mc-flag", text: match.away.flag }), createElement("span", { className: "mc-name", text: isKnockoutProgram ? knockoutLabels.away : match.away.name }));
 
   teams.append(home, center, away);
 
@@ -901,6 +1001,85 @@ function buildFinishedSection(finishedMatches, nowUTC) {
   return section;
 }
 
+function getBracketResolution(sourceId, nowUTC) {
+  const source = knockoutSourceById.get(sourceId);
+  if (!source) {
+    return { text: "Pendiente", completed: false, winner: null };
+  }
+
+  const fixture = getMatchByTeams(source.home, source.away);
+  const presentation = fixture ? getMatchPresentation(fixture, nowUTC) : null;
+  const winner = presentation?.isFinished && presentation?.hasScore && presentation?.orientedScore
+    ? (presentation.orientedScore.home > presentation.orientedScore.away ? source.home : presentation.orientedScore.away > presentation.orientedScore.home ? source.away : null)
+    : null;
+
+  return {
+    text: winner || `${source.home} / ${source.away}`,
+    completed: Boolean(winner),
+    winner,
+    fixture,
+  };
+}
+
+function buildKnockoutMatch(match, nowUTC) {
+  const left = getBracketResolution(match.sources?.[0], nowUTC);
+  const right = getBracketResolution(match.sources?.[1], nowUTC);
+  const card = createElement("article", {
+    className: `bracket-match ${left.completed && right.completed ? "is-complete" : "is-pending"}`,
+  });
+
+  const top = createElement("div", { className: "bracket-match-top" });
+  top.append(
+    createElement("span", { className: "bracket-phase", text: match.phase || "Octavos de final" }),
+    createElement("span", { className: "bracket-score", text: match.time || "Pendiente" })
+  );
+  card.append(top);
+
+  const teams = createElement("div", { className: "bracket-teams" });
+
+  const leftLine = createElement("div", {
+    className: `bracket-team ${left.completed ? "is-winner" : ""}`,
+    text: left.text,
+  });
+  const rightLine = createElement("div", {
+    className: `bracket-team ${right.completed ? "is-winner" : ""}`,
+    text: right.text,
+  });
+  teams.append(leftLine, rightLine);
+  card.append(teams);
+
+  const connector = createElement("div", { className: "bracket-connector" });
+  connector.append(
+    createElement("span", { text: "↳" }),
+    createElement("span", { className: "bracket-pending", text: left.completed && right.completed ? "Emparejamiento confirmado" : "Pendiente" })
+  );
+  card.append(connector);
+  return card;
+}
+
+function buildKnockoutColumn(title, matches, nowUTC) {
+  const column = createElement("section", { className: "bracket-column" });
+  column.append(createElement("h2", { className: "bracket-side-title", text: title }));
+  matches.forEach((match) => {
+    const slot = createElement("div", { className: "bracket-round" });
+    slot.append(buildKnockoutMatch(match, nowUTC));
+    column.append(slot);
+  });
+  return column;
+}
+
+function buildKnockoutSection(nowUTC) {
+  const section = createElement("section", { className: "bracket-wrap", attrs: { "aria-labelledby": "knockoutHeading" } });
+  section.append(createElement("h2", { className: "section-label", text: "Llaves", attrs: { id: "knockoutHeading" } }));
+
+  const columns = createElement("div", { className: "bracket-columns" });
+  const leftColumn = buildKnockoutColumn("Lado izquierdo", KNOCKOUT_BRACKET.roundOf16.slice(0, 4), nowUTC);
+  const rightColumn = buildKnockoutColumn("Lado derecho", KNOCKOUT_BRACKET.roundOf16.slice(4), nowUTC);
+  columns.append(leftColumn, rightColumn);
+  section.append(columns);
+  return section;
+}
+
 const allDates = getUniqueDates();
 let currentDateStr = getBogotaDateStr();
 if (currentDateStr < allDates[0]) currentDateStr = allDates[0];
@@ -983,10 +1162,19 @@ function render({ animate = true, scrollActiveDay = true } = {}) {
   const currentIndex = allDates.indexOf(currentDateStr);
   elements.btnPrev.disabled = currentIndex <= 0;
   elements.btnNext.disabled = currentIndex >= allDates.length - 1;
+  if (elements.btnScheduleView && elements.btnKnockoutView) {
+    elements.btnScheduleView.classList.toggle("is-active", state.currentView === "programacion");
+    elements.btnKnockoutView.classList.toggle("is-active", state.currentView === "llaves");
+  }
 
   renderDayNav({ scrollActive: scrollActiveDay });
 
   const content = createElement("div", { className: `content-stack${animate ? " fade-in" : ""}` });
+  if (state.currentView === "llaves") {
+    content.append(buildKnockoutSection(nowUTC));
+    elements.mainContent.replaceChildren(content);
+    return;
+  }
   if (DEBUG_RESULTS) {
     console.groupCollapsed(`[results-debug] Render ${currentDateStr}`);
     dayMatches.forEach((match) => {
@@ -1202,6 +1390,14 @@ function startResultsPolling() {
 elements.btnPrev.addEventListener("click", () => navigate(-1));
 elements.btnNext.addEventListener("click", () => navigate(1));
 elements.btnToday.addEventListener("click", goToToday);
+elements.btnScheduleView?.addEventListener("click", () => {
+  state.currentView = "programacion";
+  render({ animate: true, scrollActiveDay: false });
+});
+elements.btnKnockoutView?.addEventListener("click", () => {
+  state.currentView = "llaves";
+  render({ animate: true, scrollActiveDay: false });
+});
 
 hydrateResultsFromCache();
 startClockLoop();

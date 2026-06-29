@@ -350,6 +350,33 @@ a:focus-visible {
   padding: 0 20px 60px;
 }
 
+.view-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px 18px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.view-tab {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.view-tab.is-active {
+  border-color: rgba(0, 212, 170, 0.35);
+  background: rgba(0, 212, 170, 0.14);
+  color: #d9fff6;
+}
+
 .content-stack,
 .matches-list,
 .fc-info-left,
@@ -670,6 +697,124 @@ a:focus-visible {
   content: "⚡";
 }
 
+.bracket-wrap {
+  display: grid;
+  gap: 18px;
+}
+
+.bracket-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.bracket-column {
+  display: grid;
+  gap: 14px;
+}
+
+.bracket-side-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.bracket-side-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.bracket-round {
+  display: grid;
+  gap: 10px;
+}
+
+.bracket-match,
+.bracket-slot {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.bracket-match.is-complete {
+  border-color: rgba(0, 212, 170, 0.22);
+}
+
+.bracket-match.is-pending {
+  opacity: 0.82;
+}
+
+.bracket-match-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.bracket-phase {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.bracket-score {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  color: var(--accent3);
+}
+
+.bracket-teams {
+  display: grid;
+  gap: 8px;
+}
+
+.bracket-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bracket-team.is-winner {
+  color: #ecfff9;
+}
+
+.bracket-team.is-loser {
+  color: var(--muted2);
+  opacity: 0.6;
+}
+
+.bracket-team-flag {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.bracket-connector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  padding-left: 12px;
+}
+
+.bracket-pending {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .ch-badge {
   justify-content: center;
   min-height: 28px;
@@ -835,6 +980,10 @@ a:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .view-tabs {
+    padding-inline: 16px;
+  }
+
   .nav-buttons {
     flex-wrap: wrap;
   }
@@ -851,6 +1000,7 @@ a:focus-visible {
   }
 
   .main,
+  .view-tabs,
   .day-nav,
   .nav-buttons,
   .hero {
@@ -886,6 +1036,10 @@ a:focus-visible {
     margin-top: 4px;
     padding: 2px 6px;
     font-size: 7px;
+  }
+
+  .bracket-columns {
+    grid-template-columns: 1fr;
   }
 
   .match-card {

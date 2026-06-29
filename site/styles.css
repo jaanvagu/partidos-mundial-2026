@@ -92,6 +92,10 @@ a:focus-visible {
   margin: 0 auto;
 }
 
+body.is-knockout-view .main {
+  max-width: 1320px;
+}
+
 .header-inner {
   display: flex;
   align-items: center;
@@ -370,6 +374,10 @@ a:focus-visible {
   padding: 0 20px 18px;
   max-width: 900px;
   margin: 0 auto;
+}
+
+body.is-knockout-view .view-tabs {
+  max-width: 1320px;
 }
 
 .view-tab {
@@ -751,7 +759,7 @@ a:focus-visible {
 
 .bracket-frame-svg {
   width: 100%;
-  min-width: 1280px;
+  min-width: 1320px;
 }
 
 .bracket-svg {
@@ -761,9 +769,9 @@ a:focus-visible {
 }
 
 .round-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   fill: var(--muted2);
 }
 
@@ -808,6 +816,23 @@ a:focus-visible {
   stroke-width: 2;
 }
 
+.final-text,
+.final-date {
+  fill: #fff;
+}
+
+.final-text {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.final-date {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
 .champ {
   fill: #0d1323;
   stroke: rgba(255, 214, 10, 0.55);
@@ -828,6 +853,37 @@ a:focus-visible {
   stroke-width: 3;
 }
 
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  padding: 0 2px;
+}
+
+.legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.legend .green {
+  background: var(--accent);
+}
+
+.legend .gray {
+  background: var(--muted2);
+}
+
+.legend .yellow {
+  background: var(--accent3);
+}
+
 .team {
   font-size: 13px;
   font-weight: 900;
@@ -846,7 +902,7 @@ a:focus-visible {
 
 .score {
   font-family: "Oswald", sans-serif;
-  font-size: 21px;
+  font-size: 13px;
   font-weight: 700;
   fill: var(--accent3);
 }

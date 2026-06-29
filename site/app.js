@@ -490,6 +490,13 @@ function getMatchByTeams(homeName, awayName) {
   }) || null;
 }
 
+function getTeamFlagByName(teamName) {
+  const match = MATCHES.find((item) => item.home.name === teamName || item.away.name === teamName);
+  if (match?.home.name === teamName) return match.home.flag;
+  if (match?.away.name === teamName) return match.away.flag;
+  return "🏳️";
+}
+
 function getResolvedWinnerName(sourceMatch, nowUTC) {
   if (!sourceMatch) return null;
   const presentation = getMatchPresentation(sourceMatch, nowUTC);
@@ -1018,6 +1025,8 @@ function getBracketResolution(sourceId, nowUTC) {
     completed: Boolean(winner),
     winner,
     fixture,
+    homeFlag: fixture?.home.flag || getTeamFlagByName(source.home),
+    awayFlag: fixture?.away.flag || getTeamFlagByName(source.away),
   };
 }
 
@@ -1039,21 +1048,31 @@ function buildKnockoutMatch(match, nowUTC) {
 
   const leftLine = createElement("div", {
     className: `bracket-team ${left.completed ? "is-winner" : ""}`,
-    text: left.text,
   });
+  leftLine.append(
+    createElement("span", { className: "bracket-team-flag", text: left.homeFlag }),
+    createElement("span", { text: left.text })
+  );
+
   const rightLine = createElement("div", {
     className: `bracket-team ${right.completed ? "is-winner" : ""}`,
-    text: right.text,
   });
+  rightLine.append(
+    createElement("span", { className: "bracket-team-flag", text: right.homeFlag }),
+    createElement("span", { text: right.text })
+  );
   teams.append(leftLine, rightLine);
   card.append(teams);
 
-  const connector = createElement("div", { className: "bracket-connector" });
-  connector.append(
-    createElement("span", { text: "↳" }),
-    createElement("span", { className: "bracket-pending", text: left.completed && right.completed ? "Emparejamiento confirmado" : "Pendiente" })
+  const advance = createElement("div", { className: "bracket-advance" });
+  advance.append(
+    createElement("span", { className: "bracket-advance-label", text: "Avanza" }),
+    createElement("div", {
+      className: "bracket-advance-value",
+      text: left.completed && right.completed ? "Pendiente de definir rival" : "Pendiente",
+    })
   );
-  card.append(connector);
+  card.append(advance);
   return card;
 }
 

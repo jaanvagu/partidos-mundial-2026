@@ -133,22 +133,22 @@ const MATCHES = [
   { date: "2026-07-03", time: "13:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports"] },
   { date: "2026-07-03", time: "17:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports"] },
   { date: "2026-07-03", time: "20:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M74", "M77"], home: { name: "Ganador partido 74", flag: "🏆" }, away: { name: "Ganador partido 77", flag: "🏆" }, venue: "Philadelphia Stadium, Lincoln Financial Field 🇺🇸", city: "Philadelphia", channels: [] },
-  { date: "2026-07-04", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M73", "M75"], home: { name: "Ganador partido 73", flag: "🏆" }, away: { name: "Ganador partido 75", flag: "🏆" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: [] },
-  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M76", "M78"], home: { name: "Ganador partido 76", flag: "🏆" }, away: { name: "Ganador partido 78", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
-  { date: "2026-07-05", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M79", "M80"], home: { name: "Ganador partido 79", flag: "🏆" }, away: { name: "Ganador partido 80", flag: "🏆" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: [] },
-  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M83", "M84"], home: { name: "Ganador partido 83", flag: "🏆" }, away: { name: "Ganador partido 84", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
-  { date: "2026-07-06", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M81", "M82"], home: { name: "Ganador partido 81", flag: "🏆" }, away: { name: "Ganador partido 82", flag: "🏆" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: [] },
-  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M86", "M88"], home: { name: "Ganador partido 86", flag: "🏆" }, away: { name: "Ganador partido 88", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
-  { date: "2026-07-07", time: null, timeConfirmed: false, stageLabel: "Octavos de final", sources: ["M85", "M87"], home: { name: "Ganador partido 85", flag: "🏆" }, away: { name: "Ganador partido 87", flag: "🏆" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: [] },
-  { date: "2026-07-09", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 89", flag: "🏆" }, away: { name: "Ganador partido 90", flag: "🏆" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: [] },
-  { date: "2026-07-10", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 93", flag: "🏆" }, away: { name: "Ganador partido 94", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: [] },
-  { date: "2026-07-11", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 91", flag: "🏆" }, away: { name: "Ganador partido 92", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
-  { date: "2026-07-11", time: null, timeConfirmed: false, stageLabel: "Cuartos de final", home: { name: "Ganador partido 95", flag: "🏆" }, away: { name: "Ganador partido 96", flag: "🏆" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: [] },
-  { date: "2026-07-14", time: null, timeConfirmed: false, stageLabel: "Semifinal", home: { name: "Ganador partido 97", flag: "🏆" }, away: { name: "Ganador partido 98", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: [] },
-  { date: "2026-07-15", time: null, timeConfirmed: false, stageLabel: "Semifinal", home: { name: "Ganador partido 99", flag: "🏆" }, away: { name: "Ganador partido 100", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: [] },
-  { date: "2026-07-18", time: null, timeConfirmed: false, stageLabel: "Tercer puesto", home: { name: "Perdedor partido 101", flag: "🏆" }, away: { name: "Perdedor partido 102", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: [] },
-  { date: "2026-07-19", time: null, timeConfirmed: false, stageLabel: "Final", home: { name: "Ganador partido 101", flag: "🏆" }, away: { name: "Ganador partido 102", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: [] },
+  { date: "2026-07-04", time: "4:00 p. m.", stageLabel: "Octavos de final", id: "M89", homeSource: "M74", awaySource: "M77", home: { name: "Ganador M74", flag: "🏆" }, away: { name: "Ganador M77", flag: "🏆" }, venue: "Lincoln Financial Field, Philadelphia", city: "Philadelphia", channels: ["dsports"] },
+  { date: "2026-07-04", time: "12:00 p. m.", stageLabel: "Octavos de final", id: "M90", homeSource: "M73", awaySource: "M75", home: { name: "Ganador M73", flag: "🏆" }, away: { name: "Ganador M75", flag: "🏆" }, venue: "NRG Stadium, Houston", city: "Houston", channels: ["dsports"] },
+  { date: "2026-07-05", time: "3:00 p. m.", stageLabel: "Octavos de final", id: "M91", homeSource: "M76", awaySource: "M78", home: { name: "Ganador M76", flag: "🏆" }, away: { name: "Ganador M78", flag: "🏆" }, venue: "MetLife Stadium, East Rutherford", city: "East Rutherford", channels: ["dsports"] },
+  { date: "2026-07-05", time: "7:00 p. m.", stageLabel: "Octavos de final", id: "M92", homeSource: "M79", awaySource: "M80", home: { name: "Ganador M79", flag: "🏆" }, away: { name: "Ganador M80", flag: "🏆" }, venue: "Estadio Azteca, Ciudad de México", city: "Ciudad de México", channels: ["dsports"] },
+  { date: "2026-07-06", time: "2:00 p. m.", stageLabel: "Octavos de final", id: "M93", homeSource: "M83", awaySource: "M84", home: { name: "Ganador M83", flag: "🏆" }, away: { name: "Ganador M84", flag: "🏆" }, venue: "AT&T Stadium, Arlington", city: "Arlington", channels: ["dsports"] },
+  { date: "2026-07-06", time: "7:00 p. m.", stageLabel: "Octavos de final", id: "M94", homeSource: "M81", awaySource: "M82", home: { name: "Ganador M81", flag: "🏆" }, away: { name: "Ganador M82", flag: "🏆" }, venue: "Lumen Field, Seattle", city: "Seattle", channels: ["dsports"] },
+  { date: "2026-07-07", time: "11:00 a. m.", stageLabel: "Octavos de final", id: "M95", homeSource: "M86", awaySource: "M88", home: { name: "Ganador M86", flag: "🏆" }, away: { name: "Ganador M88", flag: "🏆" }, venue: "Mercedes-Benz Stadium, Atlanta", city: "Atlanta", channels: ["dsports"] },
+  { date: "2026-07-07", time: "3:00 p. m.", stageLabel: "Octavos de final", id: "M96", homeSource: "M85", awaySource: "M87", home: { name: "Ganador M85", flag: "🏆" }, away: { name: "Ganador M87", flag: "🏆" }, venue: "BC Place, Vancouver", city: "Vancouver", channels: ["dsports"] },
+  { date: "2026-07-09", time: "3:00 p. m.", stageLabel: "Cuartos de final", id: "M97", homeSource: "M89", awaySource: "M90", home: { name: "Ganador M89", flag: "🏆" }, away: { name: "Ganador M90", flag: "🏆" }, venue: "Boston Stadium, Gillette Stadium", city: "Boston", channels: ["dsports"] },
+  { date: "2026-07-10", time: "2:00 p. m.", stageLabel: "Cuartos de final", id: "M98", homeSource: "M93", awaySource: "M94", home: { name: "Ganador M93", flag: "🏆" }, away: { name: "Ganador M94", flag: "🏆" }, venue: "Los Angeles Stadium, SoFi Stadium", city: "Los Ángeles", channels: ["dsports"] },
+  { date: "2026-07-11", time: "4:00 p. m.", stageLabel: "Cuartos de final", id: "M99", homeSource: "M91", awaySource: "M92", home: { name: "Ganador M91", flag: "🏆" }, away: { name: "Ganador M92", flag: "🏆" }, venue: "Miami Stadium, Hard Rock Stadium", city: "Miami", channels: ["dsports"] },
+  { date: "2026-07-11", time: "8:00 p. m.", stageLabel: "Cuartos de final", id: "M100", homeSource: "M95", awaySource: "M96", home: { name: "Ganador M95", flag: "🏆" }, away: { name: "Ganador M96", flag: "🏆" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium", city: "Kansas City", channels: ["dsports"] },
+  { date: "2026-07-14", time: "2:00 p. m.", stageLabel: "Semifinal", id: "M101", homeSource: "M97", awaySource: "M98", home: { name: "Ganador M97", flag: "🏆" }, away: { name: "Ganador M98", flag: "🏆" }, venue: "Dallas Stadium, AT&T Stadium", city: "Dallas", channels: ["dsports"] },
+  { date: "2026-07-15", time: "2:00 p. m.", stageLabel: "Semifinal", id: "M102", homeSource: "M99", awaySource: "M100", home: { name: "Ganador M99", flag: "🏆" }, away: { name: "Ganador M100", flag: "🏆" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium", city: "Atlanta", channels: ["dsports"] },
+  { date: "2026-07-18", time: "4:00 p. m.", stageLabel: "Tercer puesto", id: "M103", homeSource: "M101", awaySource: "M102", home: { name: "Perdedor M101", flag: "🏆" }, away: { name: "Perdedor M102", flag: "🏆" }, sourceType: "losers", venue: "Miami Stadium, Hard Rock Stadium", city: "Miami", channels: ["dsports"] },
+  { date: "2026-07-19", time: "2:00 p. m.", stageLabel: "Final", id: "M104", homeSource: "M101", awaySource: "M102", home: { name: "Ganador M101", flag: "🏆" }, away: { name: "Ganador M102", flag: "🏆" }, venue: "New York New Jersey Stadium, MetLife Stadium", city: "Nueva York/Nueva Jersey", channels: ["dsports"] },
 ];
 
 const APP_CONFIG = window.APP_CONFIG || {};
@@ -241,6 +241,10 @@ MATCHES.forEach((match, index) => {
 const knockoutSourceById = new Map([
   ...KNOCKOUT_BRACKET.roundOf32,
 ].map((match) => [match.id, match]));
+const knockoutScheduleById = new Map(
+  MATCHES.filter((match) => match.id && match.stageLabel && KNOWN_KNOCKOUT_PHASES.has(match.stageLabel))
+    .map((match) => [match.id, match])
+);
 
 const elements = {
   heroDate: document.getElementById("heroDate"),
@@ -359,16 +363,44 @@ function matchHasConfirmedTime(match) {
   return Boolean(match?.time) && match?.timeConfirmed !== false;
 }
 
+function parseMatchTime(timeValue) {
+  const text = String(timeValue || "").trim();
+  if (!text) return null;
+
+  const ampmMatch = text.match(/^(\d{1,2}):(\d{2})\s*(a\.?\s*m\.?|p\.?\s*m\.?)$/i);
+  if (ampmMatch) {
+    let hour = Number(ampmMatch[1]);
+    const minute = Number(ampmMatch[2]);
+    const isPm = /p/i.test(ampmMatch[3]);
+    if (hour === 12) hour = isPm ? 12 : 0;
+    else if (isPm) hour += 12;
+    return { hour, minute };
+  }
+
+  const hhmm = text.match(/^(\d{1,2}):(\d{2})$/);
+  if (hhmm) {
+    return { hour: Number(hhmm[1]), minute: Number(hhmm[2]) };
+  }
+
+  return null;
+}
+
 function matchDatetimeBogota(match) {
   if (!matchHasConfirmedTime(match)) return null;
-  const [h, min] = match.time.split(":").map(Number);
+  const parsed = parseMatchTime(match.time);
+  if (!parsed) return null;
   const [y, mo, d] = match.date.split("-").map(Number);
-  return new Date(Date.UTC(y, mo - 1, d, h + 5, min));
+  return new Date(Date.UTC(y, mo - 1, d, parsed.hour + 5, parsed.minute));
 }
 
 function formatTime12(time24) {
   if (!time24) return "Por confirmar";
-  let [h, m] = time24.split(":").map(Number);
+  const text = String(time24).trim();
+  if (/[ap]\.?\s*m\.?/i.test(text)) return text.replace(/\s+/g, " ");
+  const parsed = parseMatchTime(text);
+  if (!parsed) return text;
+  let h = parsed.hour;
+  const m = parsed.minute;
   const ampm = h >= 12 ? "p. m." : "a. m.";
   h = h % 12 || 12;
   return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
@@ -506,27 +538,97 @@ function getResolvedWinnerName(sourceMatch, nowUTC) {
   return null;
 }
 
-function getSourcePairLabel(sourceId, nowUTC) {
-  const source = knockoutSourceById.get(sourceId);
-  if (!source) return "Pendiente";
-  const fixture = getMatchByTeams(source.home, source.away);
-  const winner = getResolvedWinnerName(fixture, nowUTC);
-  if (winner) return winner;
-  return `${source.home} / ${source.away}`;
+function getResolvedLoserName(sourceMatch, nowUTC) {
+  if (!sourceMatch) return null;
+  const presentation = getMatchPresentation(sourceMatch, nowUTC);
+  if (!presentation.isFinished || !presentation.hasScore || !presentation.orientedScore) return null;
+  if (presentation.orientedScore.home < presentation.orientedScore.away) return sourceMatch.home.name;
+  if (presentation.orientedScore.away < presentation.orientedScore.home) return sourceMatch.away.name;
+  return null;
+}
+
+function getKnockoutScheduleMatch(sourceId) {
+  return knockoutScheduleById.get(sourceId) || null;
+}
+
+function resolveProgramParticipantLabel(sourceId, nowUTC) {
+  if (!sourceId) return "Pendiente";
+
+  const source = knockoutScheduleById.get(sourceId);
+  if (source) {
+    const winner = getResolvedWinnerName(source, nowUTC);
+    if (winner) return winner;
+    const loser = getResolvedLoserName(source, nowUTC);
+    if (loser && source.sourceType === "losers") return loser;
+
+    if (source.stageLabel === "Dieciseisavos de final") {
+      const home = source.homeSource ? resolveProgramParticipantLabel(source.homeSource, nowUTC) : source.home.name;
+      const away = source.awaySource ? resolveProgramParticipantLabel(source.awaySource, nowUTC) : source.away.name;
+      return `${home} vs ${away}`;
+    }
+
+    return source.sourceType === "losers"
+      ? `Perdedor ${source.id}`
+      : `Ganador ${source.id}`;
+  }
+
+  const baseSource = knockoutSourceById.get(sourceId);
+  if (baseSource) {
+    const fixture = getMatchByTeams(baseSource.home, baseSource.away);
+    const winner = getResolvedWinnerName(fixture, nowUTC);
+    if (winner) return winner;
+    return `${baseSource.home} / ${baseSource.away}`;
+  }
+
+  return `Ganador ${sourceId}`;
+}
+
+function resolveProgramLoserLabel(sourceId, nowUTC) {
+  if (!sourceId) return "Pendiente";
+
+  const source = knockoutScheduleById.get(sourceId);
+  if (source) {
+    const loser = getResolvedLoserName(source, nowUTC);
+    if (loser) return loser;
+
+    if (source.stageLabel === "Dieciseisavos de final") {
+      const home = source.homeSource ? resolveProgramLoserLabel(source.homeSource, nowUTC) : source.home.name;
+      const away = source.awaySource ? resolveProgramLoserLabel(source.awaySource, nowUTC) : source.away.name;
+      return `${home} vs ${away}`;
+    }
+
+    return `Perdedor ${source.id}`;
+  }
+
+  const baseSource = knockoutSourceById.get(sourceId);
+  if (baseSource) {
+    const fixture = getMatchByTeams(baseSource.home, baseSource.away);
+    const loser = getResolvedLoserName(fixture, nowUTC);
+    if (loser) return loser;
+    return `Perdedor ${sourceId}`;
+  }
+
+  return `Perdedor ${sourceId}`;
 }
 
 function getKnockoutProgramLabel(match, nowUTC) {
-  if (!match?.sources?.length) {
+  if (!match?.homeSource || !match?.awaySource) {
     return {
       home: match?.home?.name || "",
       away: match?.away?.name || "",
     };
   }
 
-  const [leftSource, rightSource] = match.sources;
+  if (match.sourceType === "losers") {
+    return {
+      home: resolveProgramLoserLabel(match.homeSource, nowUTC),
+      away: resolveProgramLoserLabel(match.awaySource, nowUTC),
+    };
+  }
+
   return {
-    home: getSourcePairLabel(leftSource, nowUTC),
-    away: getSourcePairLabel(rightSource, nowUTC),
+    home: resolveProgramParticipantLabel(match.homeSource, nowUTC),
+    away: resolveProgramParticipantLabel(match.awaySource, nowUTC),
   };
 }
 
@@ -792,7 +894,7 @@ function buildChannels(channels, className) {
 function buildFeaturedMatchBlock(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
   const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
-  const isKnockoutProgram = Boolean(match.sources?.length);
+  const isKnockoutProgram = Boolean(match.homeSource && match.awaySource);
   const block = createElement("article", { className: "fc-block" });
   const teams = createElement("div", { className: "fc-teams" });
 
@@ -842,7 +944,7 @@ function buildFeaturedMatchBlock(match, nowUTC) {
 function buildMatchCard(match, nowUTC) {
   const presentation = getMatchPresentation(match, nowUTC);
   const knockoutLabels = getKnockoutProgramLabel(match, nowUTC);
-  const isKnockoutProgram = Boolean(match.sources?.length);
+  const isKnockoutProgram = Boolean(match.homeSource && match.awaySource);
   const card = createElement("article", { className: "match-card" });
 
   if (presentation.isFinished) card.classList.add("is-done");

@@ -1694,9 +1694,9 @@ function renderBracketTeamRow(team, {
         const scoreText = escapeSvgText(String(score));
         if (String(score).includes("(") && String(score).includes(")")) {
           const [baseScore, penaltyScore] = String(score).split(" ");
-          return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" x="${scoreX}" y="${y}" text-anchor="middle"><tspan x="${scoreX}" dy="0">${escapeSvgText(baseScore)}</tspan><tspan x="${scoreX}" dy="13">${escapeSvgText(penaltyScore || "")}</tspan></text>`;
+          return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" fill="#ffffff" x="${scoreX}" y="${y}" text-anchor="middle"><tspan x="${scoreX}" dy="0">${escapeSvgText(baseScore)}</tspan><tspan x="${scoreX}" dy="11">${escapeSvgText(penaltyScore || "")}</tspan></text>`;
         }
-        return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" x="${scoreX}" y="${y}" text-anchor="middle">${scoreText}</text>`;
+        return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" fill="#ffffff" x="${scoreX}" y="${y}" text-anchor="middle">${scoreText}</text>`;
       })()
     : "";
 

@@ -1057,6 +1057,13 @@ function getResultMinuteLabel(match, result, nowUTC) {
   return null;
 }
 
+function getLiveMinuteText(match, result, nowUTC) {
+  const minuteLabel = getResultMinuteLabel(match, result, nowUTC);
+  if (!minuteLabel) return "En vivo";
+  if (result?.extra_time) return `${minuteLabel} · T.E.`;
+  return minuteLabel;
+}
+
 function getMatchPresentation(match, nowUTC) {
   const fallback = getFallbackTemporalState(match, nowUTC);
   const result = resolveResultForMatch(match);
@@ -1086,7 +1093,7 @@ function getMatchPresentation(match, nowUTC) {
       ? "Medio tiempo"
       : phase === "FINISHED"
         ? `Final${penaltySummary ? `\n${penaltySummary}` : (result?.extra_time ? "\nPrórroga" : "")}`
-        : minuteLabel || "En vivo")
+        : (result?.extra_time ? `${minuteLabel || "En vivo"} · T.E.` : (minuteLabel || "En vivo")))
     : "vs";
 
   return {
@@ -1286,7 +1293,7 @@ function buildFeaturedSection(dayMatches, nowUTC) {
 
   if (featuredPresentation.isLive) {
     featuredHeading = isSimultaneous ? `Partidos en vivo · ${formatTime12(featuredMatch.time)}` : "Partido en vivo";
-    statusText = featuredPresentation.minuteLabel || "En juego";
+    statusText = getLiveMinuteText(featuredMatch, featuredPresentation.result, nowUTC);
   } else if (allFinished) {
     featuredHeading = isSimultaneous ? `Últimos partidos del día · ${formatTime12(featuredMatch.time)}` : "Último partido del día";
     statusText = "No quedan partidos por jugar hoy";

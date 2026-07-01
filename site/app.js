@@ -118,21 +118,21 @@ const MATCHES = [
   { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Jordania", flag: "🇯🇴" }, away: { name: "Argentina", flag: "🇦🇷" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "win", "disney"] },
   { date: "2026-06-27", time: "21:00", jornada: 3, grupo: "J", home: { name: "Argelia", flag: "🇩🇿" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports"] },
   { date: "2026-06-28", time: "14:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Sudáfrica", flag: "🇿🇦" }, away: { name: "Canadá", flag: "🇨🇦" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports"] },
-  { date: "2026-06-29", time: "12:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports", "caracol", "rcn", "disney"] },
-  { date: "2026-06-29", time: "15:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-06-29", time: "20:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports"] },
-  { date: "2026-06-30", time: "12:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Costa de Marfil", flag: "🇨🇮" }, away: { name: "Noruega", flag: "🇳🇴" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports"] },
-  { date: "2026-06-30", time: "16:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-06-29", time: "12:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Brasil", flag: "🇧🇷" }, away: { name: "Japón", flag: "🇯🇵" }, venue: "Houston Stadium, NRG Stadium 🇺🇸", city: "Houston", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-06-29", time: "15:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Alemania", flag: "🇩🇪" }, away: { name: "Paraguay", flag: "🇵🇾" }, venue: "Boston Stadium, Gillette Stadium 🇺🇸", city: "Foxborough / Boston", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-06-29", time: "20:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Países Bajos", flag: "🇳🇱" }, away: { name: "Marruecos", flag: "🇲🇦" }, venue: "Estadio Monterrey, Estadio BBVA 🇲🇽", city: "Monterrey", channels: ["dsports"] },
+  { date: "2026-06-30", time: "12:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Costa de Marfil", flag: "🇨🇮" }, away: { name: "Noruega", flag: "🇳🇴" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports"] },
+  { date: "2026-06-30", time: "16:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Francia", flag: "🇫🇷" }, away: { name: "Suecia", flag: "🇸🇪" }, venue: "New York New Jersey Stadium, MetLife Stadium 🇺🇸", city: "East Rutherford / Nueva York-Nueva Jersey", channels: ["dsports", "caracol", "rcn"] },
   { date: "2026-06-30", time: "20:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "México", flag: "🇲🇽" }, away: { name: "Ecuador", flag: "🇪🇨" }, venue: "Mexico City Stadium, Estadio Azteca 🇲🇽", city: "Ciudad de México", channels: ["dsports", "win"] },
   { date: "2026-07-01", time: "11:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Inglaterra", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" }, away: { name: "RD Congo", flag: "🇨🇩" }, venue: "Atlanta Stadium, Mercedes-Benz Stadium 🇺🇸", city: "Atlanta", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-07-01", time: "15:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports", "win"] },
-  { date: "2026-07-01", time: "19:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Bosnia y Herzegovina", flag: "🇧🇦" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports"] },
-  { date: "2026-07-02", time: "14:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "España", flag: "🇪🇸" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-07-02", time: "18:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-07-01", time: "15:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Bélgica", flag: "🇧🇪" }, away: { name: "Senegal", flag: "🇸🇳" }, venue: "Seattle Stadium, Lumen Field 🇺🇸", city: "Seattle", channels: ["dsports", "win"] },
+  { date: "2026-07-01", time: "19:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Estados Unidos", flag: "🇺🇸" }, away: { name: "Bosnia y Herzegovina", flag: "🇧🇦" }, venue: "San Francisco Bay Area Stadium, Levi's Stadium 🇺🇸", city: "Santa Clara / San Francisco Bay Area", channels: ["dsports"] },
+  { date: "2026-07-02", time: "14:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "España", flag: "🇪🇸" }, away: { name: "Austria", flag: "🇦🇹" }, venue: "Los Angeles Stadium, SoFi Stadium 🇺🇸", city: "Inglewood / Los Ángeles", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-07-02", time: "18:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Portugal", flag: "🇵🇹" }, away: { name: "Croacia", flag: "🇭🇷" }, venue: "Toronto Stadium, BMO Field 🇨🇦", city: "Toronto", channels: ["dsports", "caracol", "rcn"] },
   { date: "2026-07-02", time: "22:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Suiza", flag: "🇨🇭" }, away: { name: "Argelia", flag: "🇩🇿" }, venue: "BC Place Vancouver, BC Place 🇨🇦", city: "Vancouver", channels: ["dsports"] },
-  { date: "2026-07-03", time: "13:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports"] },
-  { date: "2026-07-03", time: "17:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports", "caracol", "rcn"] },
-  { date: "2026-07-03", time: "20:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports", "caracol", "rcn", "disney"] },
+  { date: "2026-07-03", time: "13:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Australia", flag: "🇦🇺" }, away: { name: "Egipto", flag: "🇪🇬" }, venue: "Dallas Stadium, AT&T Stadium 🇺🇸", city: "Arlington / Dallas", channels: ["dsports"] },
+  { date: "2026-07-03", time: "17:00", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Argentina", flag: "🇦🇷" }, away: { name: "Cabo Verde", flag: "🇨🇻" }, venue: "Miami Stadium, Hard Rock Stadium 🇺🇸", city: "Miami Gardens / Miami", channels: ["dsports", "caracol", "rcn"] },
+  { date: "2026-07-03", time: "20:30", phase: "Dieciseisavos", round: "Dieciseisavos", home: { name: "Colombia", flag: "🇨🇴" }, away: { name: "Ghana", flag: "🇬🇭" }, venue: "Kansas City Stadium, GEHA Field at Arrowhead Stadium 🇺🇸", city: "Kansas City", channels: ["dsports", "caracol", "rcn", "disney"] },
   { date: "2026-07-04", time: "4:00 p. m.", stageLabel: "Octavos de final", id: "M89", homeSource: "M74", awaySource: "M77", home: { name: "Ganador M74", flag: "🏆" }, away: { name: "Ganador M77", flag: "🏆" }, venue: "Lincoln Financial Field, Philadelphia", city: "Philadelphia", channels: ["dsports"] },
   { date: "2026-07-04", time: "12:00 p. m.", stageLabel: "Octavos de final", id: "M90", homeSource: "M73", awaySource: "M75", home: { name: "Ganador M73", flag: "🏆" }, away: { name: "Ganador M75", flag: "🏆" }, venue: "NRG Stadium, Houston", city: "Houston", channels: ["dsports"] },
   { date: "2026-07-05", time: "3:00 p. m.", stageLabel: "Octavos de final", id: "M91", homeSource: "M76", awaySource: "M78", home: { name: "Ganador M76", flag: "🏆" }, away: { name: "Ganador M78", flag: "🏆" }, venue: "MetLife Stadium, East Rutherford", city: "East Rutherford", channels: ["dsports"] },
@@ -166,12 +166,17 @@ const DEBUG_RESULTS = typeof window !== "undefined"
 const state = {
   resultsByMatchNumber: new Map(),
   resultsByPair: new Map(),
+  bracketByMatchNumber: new Map(),
+  bracketById: new Map(),
   lastResultsPayload: null,
   lastLiveResultsPayload: null,
+  lastBracketPayload: null,
   resultsRefreshMs: RESULTS_MIN_REFRESH_MS,
+  bracketRefreshMs: 60000,
   resultsPollTimerId: null,
   clockIntervalId: null,
   liveRefreshIntervalId: null,
+  bracketPollTimerId: null,
   isResultsLoading: false,
   currentView: "programacion",
 };
@@ -342,6 +347,50 @@ function getOrientedScore(result, match) {
   return orientation === "reversed"
     ? { home: result.score_away, away: result.score_home, orientation }
     : { home: result.score_home, away: result.score_away, orientation };
+}
+
+function getPenaltyScoreValue(result, side) {
+  const directKey = side === "home" ? "penalty_score_home" : "penalty_score_away";
+  const fallbackKey = side === "home" ? "home_penalty_score" : "away_penalty_score";
+  const alternateKey = side === "home" ? "home_penalties" : "away_penalties";
+  const value = result?.[directKey] ?? result?.[fallbackKey] ?? result?.[alternateKey];
+  return Number.isFinite(value) ? Number(value) : null;
+}
+
+function getPenaltySummary(result, match) {
+  if (!result?.penalties) return null;
+  const home = getPenaltyScoreValue(result, "home");
+  const away = getPenaltyScoreValue(result, "away");
+  if (!Number.isFinite(home) || !Number.isFinite(away)) return "Penales";
+  const oriented = getResultOrientation(result, match);
+  const homeScore = oriented === "reversed" ? away : home;
+  const awayScore = oriented === "reversed" ? home : away;
+  return `Penales: ${homeScore}-${awayScore}`;
+}
+
+function getResultWinnerSide(result, match) {
+  if (!result) return null;
+  const orientedScore = getOrientedScore(result, match);
+  if (orientedScore && orientedScore.home !== orientedScore.away) {
+    return orientedScore.home > orientedScore.away ? "home" : "away";
+  }
+
+  if (result.penalties) {
+    const homePenalties = getPenaltyScoreValue(result, "home");
+    const awayPenalties = getPenaltyScoreValue(result, "away");
+    if (Number.isFinite(homePenalties) && Number.isFinite(awayPenalties) && homePenalties !== awayPenalties) {
+      const orientation = getResultOrientation(result, match);
+      const homeScore = orientation === "reversed" ? awayPenalties : homePenalties;
+      const awayScore = orientation === "reversed" ? homePenalties : awayPenalties;
+      return homeScore > awayScore ? "home" : "away";
+    }
+
+    if (result.penalty_winner === "home" || result.penalty_winner === "away") {
+      return result.penalty_winner;
+    }
+  }
+
+  return null;
 }
 
 function getAppConfig() {
@@ -561,18 +610,20 @@ function getTeamFlagByName(teamName) {
 function getResolvedWinnerName(sourceMatch, nowUTC) {
   if (!sourceMatch) return null;
   const presentation = getMatchPresentation(sourceMatch, nowUTC);
-  if (!presentation.isFinished || !presentation.hasScore || !presentation.orientedScore) return null;
-  if (presentation.orientedScore.home > presentation.orientedScore.away) return sourceMatch.home.name;
-  if (presentation.orientedScore.away > presentation.orientedScore.home) return sourceMatch.away.name;
+  if (!presentation.isFinished || !presentation.hasScore) return null;
+  const winnerSide = getResultWinnerSide(presentation.result, sourceMatch);
+  if (winnerSide === "home") return sourceMatch.home.name;
+  if (winnerSide === "away") return sourceMatch.away.name;
   return null;
 }
 
 function getResolvedLoserName(sourceMatch, nowUTC) {
   if (!sourceMatch) return null;
   const presentation = getMatchPresentation(sourceMatch, nowUTC);
-  if (!presentation.isFinished || !presentation.hasScore || !presentation.orientedScore) return null;
-  if (presentation.orientedScore.home < presentation.orientedScore.away) return sourceMatch.home.name;
-  if (presentation.orientedScore.away < presentation.orientedScore.home) return sourceMatch.away.name;
+  if (!presentation.isFinished || !presentation.hasScore) return null;
+  const winnerSide = getResultWinnerSide(presentation.result, sourceMatch);
+  if (winnerSide === "home") return sourceMatch.away.name;
+  if (winnerSide === "away") return sourceMatch.home.name;
   return null;
 }
 
@@ -780,6 +831,84 @@ function clearResultMaps() {
   state.resultsByPair.clear();
 }
 
+function clearBracketMaps() {
+  state.bracketByMatchNumber.clear();
+  state.bracketById.clear();
+}
+
+function normalizeBracketStatus(value) {
+  return normalizeResultStatus(value);
+}
+
+function normalizeBracketTeam(team) {
+  if (!team) return null;
+  if (typeof team === "string") {
+    const name = team.trim();
+    if (!name || /^por definir$/i.test(name) || /^pend/i.test(name)) return null;
+    return { name, flag: getTeamFlagByName(name) };
+  }
+
+  const name = String(team.name || team.display_name || team.short_name || team.code || "").trim();
+  if (!name || /^por definir$/i.test(name) || /^pend/i.test(name)) return null;
+  return {
+    name,
+    flag: team.flag || team.emoji || getTeamFlagByName(name),
+  };
+}
+
+function getBracketMatchNumberFromId(matchId) {
+  const match = String(matchId || "").match(/^M(\d+)$/);
+  return match ? Number(match[1]) : null;
+}
+
+function getBackendBracketMatch(matchId) {
+  const matchNumber = getBracketMatchNumberFromId(matchId);
+  if (!Number.isInteger(matchNumber)) return null;
+  return state.bracketByMatchNumber.get(matchNumber) || null;
+}
+
+function getBackendBracketTeam(matchId, side) {
+  const backendMatch = getBackendBracketMatch(matchId);
+  if (!backendMatch) return null;
+  return normalizeBracketTeam(backendMatch[side]);
+}
+
+function applyBracketPayload(payload) {
+  if (!payload || !Array.isArray(payload.stages)) return false;
+
+  clearBracketMaps();
+  let inserted = 0;
+
+  payload.stages.forEach((stage) => {
+    if (!Array.isArray(stage?.matches)) return;
+    stage.matches.forEach((match) => {
+      if (!match || !Number.isInteger(match.match_number)) return;
+      const safeMatch = {
+        ...match,
+        status: normalizeBracketStatus(match.status),
+      };
+      state.bracketByMatchNumber.set(match.match_number, safeMatch);
+      if (match.id) state.bracketById.set(String(match.id), safeMatch);
+      inserted += 1;
+    });
+  });
+
+  state.lastBracketPayload = payload;
+  const refreshIntervalSeconds = payload.meta?.refresh_interval_seconds;
+  state.bracketRefreshMs = Number.isFinite(refreshIntervalSeconds) && refreshIntervalSeconds > 0
+    ? Math.max(30000, refreshIntervalSeconds * 1000)
+    : 60000;
+
+  debugLog("Bracket ingerido", {
+    stages: Array.isArray(payload.stages) ? payload.stages.length : 0,
+    byMatchNumber: state.bracketByMatchNumber.size,
+    byId: state.bracketById.size,
+    refreshMs: state.bracketRefreshMs,
+  });
+
+  return inserted > 0;
+}
+
 function applyResultsCollection(results, { clear = false } = {}) {
   if (!Array.isArray(results)) return 0;
   if (clear) clearResultMaps();
@@ -951,8 +1080,13 @@ function getMatchPresentation(match, nowUTC) {
   const isFinished = phase === "FINISHED";
   const kickoff = matchDatetimeBogota(match);
   const centerPrimary = hasScore ? `${orientedScore.home} - ${orientedScore.away}` : formatTime12(match.time);
+  const penaltySummary = phase === "FINISHED" ? getPenaltySummary(result, match) : null;
   const centerSecondary = hasScore
-    ? (phase === "HALFTIME" ? "Medio tiempo" : phase === "FINISHED" ? "Final" : minuteLabel || "En vivo")
+    ? (phase === "HALFTIME"
+      ? "Medio tiempo"
+      : phase === "FINISHED"
+        ? `Final${penaltySummary ? `\n${penaltySummary}` : (result?.extra_time ? "\nPrórroga" : "")}`
+        : minuteLabel || "En vivo")
     : "vs";
 
   return {
@@ -965,6 +1099,7 @@ function getMatchPresentation(match, nowUTC) {
     minuteLabel,
     centerPrimary,
     centerSecondary,
+    penaltySummary,
     countdownText: kickoff ? formatCountdown(kickoff - nowUTC) : null,
   };
 }
@@ -1415,8 +1550,53 @@ function getBracketResultState(matchId, nowUTC) {
   };
 }
 
+function buildBracketStateFromBackend(matchId) {
+  const backendMatch = getBackendBracketMatch(matchId);
+  if (!backendMatch) return null;
+
+  const home = normalizeBracketTeam(backendMatch.home);
+  const away = normalizeBracketTeam(backendMatch.away);
+  const scoreHome = Number.isFinite(backendMatch.score_home) ? Number(backendMatch.score_home) : null;
+  const scoreAway = Number.isFinite(backendMatch.score_away) ? Number(backendMatch.score_away) : null;
+  const status = normalizeBracketStatus(backendMatch.status);
+  const winnerSide = backendMatch.winner_side === "home" || backendMatch.winner_side === "away"
+    ? backendMatch.winner_side
+    : (
+      Number.isFinite(scoreHome) && Number.isFinite(scoreAway) && scoreHome !== scoreAway
+        ? (scoreHome > scoreAway ? "home" : "away")
+        : (
+          backendMatch.penalties
+            ? (getPenaltyScoreValue(backendMatch, "home") > getPenaltyScoreValue(backendMatch, "away") ? "home" : getPenaltyScoreValue(backendMatch, "away") > getPenaltyScoreValue(backendMatch, "home") ? "away" : null)
+            : null
+        )
+    );
+  const loserSide = winnerSide === "home" ? "away" : winnerSide === "away" ? "home" : null;
+  const isFinalized = status === "FINISHED";
+
+  return {
+    id: matchId,
+    home,
+    away,
+    completed: isFinalized || Boolean(winnerSide),
+    scoreHome: isFinalized ? scoreHome : null,
+    scoreAway: isFinalized ? scoreAway : null,
+    winnerSide,
+    loserSide,
+    winner: winnerSide === "home" ? home : winnerSide === "away" ? away : normalizeBracketTeam(backendMatch.winner),
+    loser: loserSide === "home" ? home : loserSide === "away" ? away : null,
+    status,
+    raw: backendMatch,
+  };
+}
+
 function resolveBracketMatch(matchId, nowUTC, cache = new Map()) {
   if (cache.has(matchId)) return cache.get(matchId);
+
+  const backendState = buildBracketStateFromBackend(matchId);
+  if (backendState) {
+    cache.set(matchId, backendState);
+    return backendState;
+  }
 
   const source = getBracketStaticMatch(matchId);
   const isScheduledKnockout = Boolean(source?.homeSource || source?.awaySource);
@@ -1479,10 +1659,14 @@ function formatBracketTeamName(name, compact = false) {
     "Bosnia y Herzegovina": "BOSNIA",
     "Costa de Marfil": "C. MARFIL",
     "Estados Unidos": "EE. UU.",
+    "Inglaterra": "INGLAT.",
   };
   const label = aliases[raw] || raw;
-  if (compact && label.length > 14) return label.replace("PAÍSES BAJOS", "P. BAJ.");
-  return label.toUpperCase();
+  const upper = label.toUpperCase();
+  if (!compact) return upper;
+  if (upper.length <= 12) return upper;
+  if (upper.includes(" ")) return upper.split(" ")[0];
+  return upper.slice(0, 9);
 }
 
 function renderBracketTeamRow(team, {
@@ -1490,24 +1674,27 @@ function renderBracketTeamRow(team, {
   width,
   score = null,
   loser = false,
+  winner = false,
   compact = false,
 } = {}) {
   if (!team) {
     return `<text class="pending" x="${width / 2}" y="${y}" text-anchor="middle">Pendiente</text>`;
   }
 
-  const flagX = compact ? 15 : 15;
-  const teamX = compact ? 38 : 44;
-  const scoreX = width - 18;
-  const name = escapeSvgText(formatBracketTeamName(team.name, compact));
+  const flagX = score !== null && score !== undefined && score !== ""
+    ? Math.round(width * 0.27)
+    : Math.round(width / 2);
+  const flagAnchor = score !== null && score !== undefined && score !== "" ? "start" : "middle";
+  const scoreX = score !== null && score !== undefined && score !== ""
+    ? Math.round(width * 0.73)
+    : Math.round(width / 2);
   const flag = escapeSvgText(team.flag || getTeamFlagByName(team.name));
-  const scoreMarkup = Number.isFinite(score)
-    ? `<text class="score" x="${scoreX}" y="${y}" text-anchor="middle">${score}</text>`
+  const scoreMarkup = score !== null && score !== undefined && score !== ""
+    ? `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" x="${scoreX}" y="${y}" text-anchor="middle">${escapeSvgText(score)}</text>`
     : "";
 
   return `
-        <text class="flag" x="${flagX}" y="${y}">${flag}</text>
-        <text class="team small${loser ? " loser" : ""}" x="${teamX}" y="${y}">${name}</text>
+        <text class="flag${winner ? " winner" : ""}${loser ? " loser" : ""}" x="${flagX}" y="${y}" text-anchor="${flagAnchor}">${flag}</text>
         ${scoreMarkup}`;
 }
 
@@ -1526,41 +1713,42 @@ function renderBracketMatchBox(matchId, nowUTC, {
   const boxClass = isHot ? "box-hot" : hasKnownTeam ? "box" : "box-pending";
   const compact = width <= 110;
   const pendingText = pendingShort ? "Pend." : "Pendiente";
+  const showScore = matchState.completed && Number.isFinite(matchState.scoreHome) && Number.isFinite(matchState.scoreAway);
+  const title = `${matchState.home?.name || "Pendiente"} vs ${matchState.away?.name || "Pendiente"}`;
+  const homePenalty = Number.isFinite(matchState.raw?.penalty_score_home) ? Number(matchState.raw.penalty_score_home) : Number.isFinite(matchState.raw?.home_penalty_score) ? Number(matchState.raw.home_penalty_score) : Number.isFinite(matchState.raw?.home_penalties) ? Number(matchState.raw.home_penalties) : null;
+  const awayPenalty = Number.isFinite(matchState.raw?.penalty_score_away) ? Number(matchState.raw.penalty_score_away) : Number.isFinite(matchState.raw?.away_penalty_score) ? Number(matchState.raw.away_penalty_score) : Number.isFinite(matchState.raw?.away_penalties) ? Number(matchState.raw.away_penalties) : null;
+  const usePenalties = Boolean(matchState.raw?.penalties) && Number.isFinite(homePenalty) && Number.isFinite(awayPenalty);
 
   let content = "";
   if (!hasKnownTeam) {
     content = `<text class="pending" x="${width / 2}" y="${height / 2 + 5}" text-anchor="middle">${pendingText}</text>`;
-  } else if (compact && width <= 86) {
-    const team = matchState.winner || matchState.home || matchState.away;
-    if (team) {
-      content = `
-        <text class="flag" x="${width / 2}" y="31" text-anchor="middle">${escapeSvgText(team.flag || getTeamFlagByName(team.name))}</text>
-        <text class="pending" x="${width / 2}" y="56" text-anchor="middle">${escapeSvgText(formatBracketTeamName(team.name, true))}</text>`;
-    } else {
-      content = `<text class="pending" x="${width / 2}" y="${height / 2 + 5}" text-anchor="middle">${pendingText}</text>`;
-    }
   } else {
-    const homeLoser = matchState.completed && matchState.winnerSide === "away";
-    const awayLoser = matchState.completed && matchState.winnerSide === "home";
+  const homeLoser = matchState.completed && matchState.winnerSide === "away";
+  const awayLoser = matchState.completed && matchState.winnerSide === "home";
+    const homeWinner = matchState.completed && matchState.winnerSide === "home";
+    const awayWinner = matchState.completed && matchState.winnerSide === "away";
     content = `
         ${renderBracketTeamRow(matchState.home, {
           y: 34,
           width,
-          score: matchState.scoreHome,
+          score: showScore ? `${matchState.scoreHome}${usePenalties ? ` (${homePenalty})` : ""}` : null,
           loser: homeLoser,
+          winner: homeWinner,
           compact,
         })}
         ${renderBracketTeamRow(matchState.away, {
           y: 58,
           width,
-          score: matchState.scoreAway,
+          score: showScore ? `${matchState.scoreAway}${usePenalties ? ` (${awayPenalty})` : ""}` : null,
           loser: awayLoser,
+          winner: awayWinner,
           compact,
         })}`;
   }
 
   return `
-      <g transform="translate(${x} ${y})">
+      <g transform="translate(${x} ${y})" aria-label="${escapeSvgText(title)}" data-home-name="${escapeSvgText(matchState.home?.name || "")}" data-away-name="${escapeSvgText(matchState.away?.name || "")}" role="img">
+        <title>${escapeSvgText(title)}</title>
         <rect class="${boxClass}" width="${width}" height="${height}" rx="${rx}"></rect>
         ${content}
       </g>`;
@@ -1574,8 +1762,10 @@ function renderBracketChampion(nowUTC, cache) {
   }
 
   return `
-      <text class="flag" x="606" y="450" text-anchor="middle">${escapeSvgText(champion.flag || getTeamFlagByName(champion.name))}</text>
-      <text class="pending" x="650" y="450" text-anchor="middle">${escapeSvgText(formatBracketTeamName(champion.name, true))}</text>`;
+      <g aria-label="${escapeSvgText(champion.name)}" role="img">
+        <title>${escapeSvgText(champion.name)}</title>
+        <text class="flag" x="606" y="450" text-anchor="middle">${escapeSvgText(champion.flag || getTeamFlagByName(champion.name))}</text>
+      </g>`;
 }
 
 function buildKnockoutSection(nowUTC) {
@@ -1615,19 +1805,19 @@ function buildKnockoutSection(nowUTC) {
       <text class="round-title" x="988" y="34" text-anchor="middle">R16</text>
       <text class="round-title" x="1184" y="34" text-anchor="middle">R32</text>
 
-      <path class="line" d="M170 101 H214 V142 H246"></path>
-      <path class="line" d="M170 183 H214 V142"></path>
-      <path class="line" d="M170 265 H214 V306 H246"></path>
-      <path class="line" d="M170 347 H214 V306"></path>
-      <path class="line" d="M170 429 H214 V470 H246"></path>
-      <path class="line" d="M170 511 H214 V470"></path>
-      <path class="line" d="M170 593 H214 V634 H246"></path>
-      <path class="line" d="M170 675 H214 V634"></path>
+      <path class="line" d="M132 101 H176 V142 H246"></path>
+      <path class="line" d="M132 183 H176 V142"></path>
+      <path class="line" d="M132 265 H176 V306 H246"></path>
+      <path class="line" d="M132 347 H176 V306"></path>
+      <path class="line" d="M132 429 H176 V470 H246"></path>
+      <path class="line" d="M132 511 H176 V470"></path>
+      <path class="line" d="M132 593 H176 V634 H246"></path>
+      <path class="line" d="M132 675 H176 V634"></path>
       <path class="line" d="M356 142 H398 V224 H412"></path>
       <path class="line" d="M356 306 H398 V224"></path>
       <path class="line" d="M356 470 H398 V552 H412"></path>
       <path class="line" d="M356 634 H398 V552"></path>
-      <path class="line" d="M510 224 H538 V388 H455"></path>
+      <path class="line" d="M510 224 H538 V388 H447"></path>
       <path class="line" d="M510 552 H538 V388"></path>
       <path class="line" d="M533 388 H555"></path>
 
@@ -1643,7 +1833,7 @@ function buildKnockoutSection(nowUTC) {
       <path class="line" d="M924 306 H882 V224"></path>
       <path class="line" d="M924 470 H882 V552 H868"></path>
       <path class="line" d="M924 634 H882 V552"></path>
-      <path class="line" d="M770 224 H742 V388 H740"></path>
+      <path class="line" d="M770 224 H742 V388 H749"></path>
       <path class="line" d="M770 552 H742 V388"></path>
       <path class="line" d="M740 388 H725"></path>
 
@@ -1653,39 +1843,39 @@ function buildKnockoutSection(nowUTC) {
       <rect class="champ" x="582" y="426" width="116" height="36" rx="14"></rect>
       ${renderBracketChampion(nowUTC, bracketCache)}
 
-      ${renderBracketMatchBox("M74", nowUTC, { x: 26, y: 62, cache: bracketCache })}
-      ${renderBracketMatchBox("M77", nowUTC, { x: 26, y: 144, cache: bracketCache })}
-      ${renderBracketMatchBox("M73", nowUTC, { x: 26, y: 226, cache: bracketCache })}
-      ${renderBracketMatchBox("M75", nowUTC, { x: 26, y: 308, cache: bracketCache })}
-      ${renderBracketMatchBox("M76", nowUTC, { x: 26, y: 390, cache: bracketCache })}
-      ${renderBracketMatchBox("M78", nowUTC, { x: 26, y: 472, cache: bracketCache })}
-      ${renderBracketMatchBox("M79", nowUTC, { x: 26, y: 554, cache: bracketCache })}
-      ${renderBracketMatchBox("M80", nowUTC, { x: 26, y: 636, cache: bracketCache })}
+      ${renderBracketMatchBox("M74", nowUTC, { x: 26, y: 62, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M77", nowUTC, { x: 26, y: 144, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M73", nowUTC, { x: 26, y: 226, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M75", nowUTC, { x: 26, y: 308, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M76", nowUTC, { x: 26, y: 390, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M78", nowUTC, { x: 26, y: 472, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M79", nowUTC, { x: 26, y: 554, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M80", nowUTC, { x: 26, y: 636, width: 106, cache: bracketCache })}
 
-      ${renderBracketMatchBox("M83", nowUTC, { x: 1110, y: 62, cache: bracketCache })}
-      ${renderBracketMatchBox("M84", nowUTC, { x: 1110, y: 144, cache: bracketCache })}
-      ${renderBracketMatchBox("M81", nowUTC, { x: 1110, y: 226, cache: bracketCache })}
-      ${renderBracketMatchBox("M82", nowUTC, { x: 1110, y: 308, cache: bracketCache })}
-      ${renderBracketMatchBox("M86", nowUTC, { x: 1110, y: 390, cache: bracketCache })}
-      ${renderBracketMatchBox("M88", nowUTC, { x: 1110, y: 472, cache: bracketCache })}
-      ${renderBracketMatchBox("M85", nowUTC, { x: 1110, y: 554, cache: bracketCache })}
-      ${renderBracketMatchBox("M87", nowUTC, { x: 1110, y: 636, cache: bracketCache })}
+      ${renderBracketMatchBox("M83", nowUTC, { x: 1110, y: 62, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M84", nowUTC, { x: 1110, y: 144, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M81", nowUTC, { x: 1110, y: 226, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M82", nowUTC, { x: 1110, y: 308, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M86", nowUTC, { x: 1110, y: 390, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M88", nowUTC, { x: 1110, y: 472, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M85", nowUTC, { x: 1110, y: 554, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M87", nowUTC, { x: 1110, y: 636, width: 106, cache: bracketCache })}
 
-      ${renderBracketMatchBox("M89", nowUTC, { x: 246, y: 105, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M90", nowUTC, { x: 246, y: 269, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M91", nowUTC, { x: 246, y: 433, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M92", nowUTC, { x: 246, y: 597, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M97", nowUTC, { x: 412, y: 187, width: 98, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
-      ${renderBracketMatchBox("M99", nowUTC, { x: 412, y: 515, width: 98, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
-      ${renderBracketMatchBox("M101", nowUTC, { x: 455, y: 351, width: 78, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M89", nowUTC, { x: 246, y: 105, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M90", nowUTC, { x: 246, y: 269, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M91", nowUTC, { x: 246, y: 433, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M92", nowUTC, { x: 246, y: 597, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M97", nowUTC, { x: 412, y: 187, width: 82, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M99", nowUTC, { x: 412, y: 515, width: 82, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M101", nowUTC, { x: 447, y: 351, width: 84, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
 
-      ${renderBracketMatchBox("M93", nowUTC, { x: 924, y: 105, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M94", nowUTC, { x: 924, y: 269, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M95", nowUTC, { x: 924, y: 433, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M96", nowUTC, { x: 924, y: 597, width: 110, height: 74, rx: 16, cache: bracketCache })}
-      ${renderBracketMatchBox("M98", nowUTC, { x: 770, y: 187, width: 98, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
-      ${renderBracketMatchBox("M100", nowUTC, { x: 770, y: 515, width: 98, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
-      ${renderBracketMatchBox("M102", nowUTC, { x: 740, y: 351, width: 78, height: 74, rx: 16, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M93", nowUTC, { x: 924, y: 105, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M94", nowUTC, { x: 924, y: 269, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M95", nowUTC, { x: 924, y: 433, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M96", nowUTC, { x: 924, y: 597, width: 90, height: 72, rx: 15, cache: bracketCache })}
+      ${renderBracketMatchBox("M98", nowUTC, { x: 770, y: 187, width: 82, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M100", nowUTC, { x: 770, y: 515, width: 82, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
+      ${renderBracketMatchBox("M102", nowUTC, { x: 749, y: 351, width: 84, height: 72, rx: 15, pendingShort: true, cache: bracketCache })}
     </svg>
   `;
 
@@ -2011,6 +2201,52 @@ function startLiveRefreshLoop() {
   state.liveRefreshIntervalId = window.setInterval(refreshLiveView, 60000);
 }
 
+function scheduleBracketRefresh(ms = state.bracketRefreshMs) {
+  if (state.bracketPollTimerId) {
+    clearTimeout(state.bracketPollTimerId);
+  }
+
+  state.bracketPollTimerId = window.setTimeout(() => {
+    fetchBracketSilently();
+  }, Math.max(30000, ms));
+}
+
+async function fetchBracketSilently() {
+  const config = getAppConfig();
+  if (!config.apiBaseUrl) {
+    scheduleBracketRefresh();
+    return;
+  }
+
+  try {
+    const baseUrl = config.apiBaseUrl.replace(/\/$/, "");
+    debugLog("Fetch /api/bracket", { apiBaseUrl: baseUrl });
+    const response = await fetch(`${baseUrl}/api/bracket`, { cache: "no-store" });
+    if (!response.ok) {
+      debugLog("Fetch /api/bracket falló", { status: response.status, statusText: response.statusText });
+      scheduleBracketRefresh();
+      return;
+    }
+
+    const payload = await response.json();
+    debugLog("Fetch /api/bracket exitoso", {
+      status: response.status,
+      totalStages: Array.isArray(payload?.stages) ? payload.stages.length : 0,
+      totalMatches: Array.isArray(payload?.stages)
+        ? payload.stages.reduce((sum, stage) => sum + (Array.isArray(stage?.matches) ? stage.matches.length : 0), 0)
+        : 0,
+    });
+
+    if (applyBracketPayload(payload)) {
+      render({ animate: false, scrollActiveDay: false });
+    }
+  } catch {
+    debugLog("Excepción al consultar bracket");
+  } finally {
+    scheduleBracketRefresh();
+  }
+}
+
 function startResultsPolling() {
   if (state.resultsPollTimerId) clearTimeout(state.resultsPollTimerId);
   fetchResultsSilently();
@@ -2033,3 +2269,4 @@ startClockLoop();
 render({ animate: false, scrollActiveDay: false });
 startLiveRefreshLoop();
 startResultsPolling();
+fetchBracketSilently();

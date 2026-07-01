@@ -1694,7 +1694,7 @@ function renderBracketTeamRow(team, {
         const scoreText = escapeSvgText(String(score));
         if (String(score).includes("(") && String(score).includes(")")) {
           const [baseScore, penaltyScore] = String(score).split(" ");
-          return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" fill="#ffffff" x="${scoreX}" y="${y}" text-anchor="middle"><tspan x="${scoreX}" dy="0">${escapeSvgText(baseScore)}</tspan><tspan x="${scoreX}" dy="11">${escapeSvgText(penaltyScore || "")}</tspan></text>`;
+          return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" fill="#ffffff" font-size="10" x="${scoreX}" y="${y}" text-anchor="middle"><tspan x="${scoreX}" dy="0">${escapeSvgText(baseScore)}</tspan><tspan x="${scoreX}" dy="10">${escapeSvgText(penaltyScore || "")}</tspan></text>`;
         }
         return `<text class="score${winner ? " winner" : ""}${loser ? " loser" : ""}" fill="#ffffff" x="${scoreX}" y="${y}" text-anchor="middle">${scoreText}</text>`;
       })()
@@ -1850,23 +1850,23 @@ function buildKnockoutSection(nowUTC) {
       <rect class="champ" x="582" y="426" width="116" height="36" rx="14"></rect>
       ${renderBracketChampion(nowUTC, bracketCache)}
 
-      ${renderBracketMatchBox("M74", nowUTC, { x: 26, y: 62, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M77", nowUTC, { x: 26, y: 144, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M73", nowUTC, { x: 26, y: 226, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M75", nowUTC, { x: 26, y: 308, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M76", nowUTC, { x: 26, y: 390, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M78", nowUTC, { x: 26, y: 472, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M79", nowUTC, { x: 26, y: 554, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M80", nowUTC, { x: 26, y: 636, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M74", nowUTC, { x: 18, y: 62, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M77", nowUTC, { x: 18, y: 144, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M73", nowUTC, { x: 18, y: 226, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M75", nowUTC, { x: 18, y: 308, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M76", nowUTC, { x: 18, y: 390, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M78", nowUTC, { x: 18, y: 472, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M79", nowUTC, { x: 18, y: 554, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M80", nowUTC, { x: 18, y: 636, width: 114, cache: bracketCache })}
 
-      ${renderBracketMatchBox("M83", nowUTC, { x: 1110, y: 62, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M84", nowUTC, { x: 1110, y: 144, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M81", nowUTC, { x: 1110, y: 226, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M82", nowUTC, { x: 1110, y: 308, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M86", nowUTC, { x: 1110, y: 390, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M88", nowUTC, { x: 1110, y: 472, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M85", nowUTC, { x: 1110, y: 554, width: 106, cache: bracketCache })}
-      ${renderBracketMatchBox("M87", nowUTC, { x: 1110, y: 636, width: 106, cache: bracketCache })}
+      ${renderBracketMatchBox("M83", nowUTC, { x: 1102, y: 62, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M84", nowUTC, { x: 1102, y: 144, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M81", nowUTC, { x: 1102, y: 226, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M82", nowUTC, { x: 1102, y: 308, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M86", nowUTC, { x: 1102, y: 390, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M88", nowUTC, { x: 1102, y: 472, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M85", nowUTC, { x: 1102, y: 554, width: 114, cache: bracketCache })}
+      ${renderBracketMatchBox("M87", nowUTC, { x: 1102, y: 636, width: 114, cache: bracketCache })}
 
       ${renderBracketMatchBox("M89", nowUTC, { x: 246, y: 105, width: 90, height: 72, rx: 15, cache: bracketCache })}
       ${renderBracketMatchBox("M90", nowUTC, { x: 246, y: 269, width: 90, height: 72, rx: 15, cache: bracketCache })}
